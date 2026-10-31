@@ -136,8 +136,8 @@ def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: d
         ww = "light wind" if wind < 10 else ("a breeze" if wind < rules.WINDY_MPH else "wind")
         out.append(f"Burn night looks like {ww} (around {wind} mph), {'probably dry' if (r or 0) < 0.2 else 'a chance of rain'}, "
                    f"and about {cold}° at the burns. Night: {kit.wear(cold - rules.STANDING_STILL_F)}.")
-    out.append(f"In a normal Engulf week, afternoons run around {sd['high_f']['median']}° and nights around {sd['low_f']['median']}°; "
-               f"it rains on about {one_in(sd['share_days_rain_at_least_0.1'])} days, frost comes about {one_in(sd['share_nights_at_or_below_32'])} nights, "
+    out.append(f"A normal Engulf week: afternoons around {sd['high_f']['median']}°, nights around {sd['low_f']['median']}°. "
+               f"It rains on about {one_in(sd['share_days_rain_at_least_0.1'])} days, frost comes about {one_in(sd['share_nights_at_or_below_32'])} nights, "
                f"and wind at burn time rarely reaches {rules.WINDY_MPH} mph. Day: {kit.wear(sd['high_f']['median'])}. "
                f"Night: {kit.wear(sd['low_f']['median'])}; {kit.wear(sd['low_f']['p10'])} in a cold year.")
     burn = date.fromisoformat(bd)
@@ -186,6 +186,16 @@ def why(days: list[dict], ground: dict, outlook: dict, today: date) -> list[str]
     if 0 < min(ws) < 1:
         out.append("Each update leans more on the forecast; from a week out it's all forecast.")
     return out
+
+
+def lead_split(x: str) -> tuple[str, str]:
+    """A bullet's lead, to set in bold: its first sentence, or, if that runs long, a short 'Label:' it opens with."""
+    d = x.find(". ")
+    first = (x[:d + 1], x[d + 1:]) if d > 0 else (x, "")
+    c = x.find(": ")
+    if len(first[0]) > 110 and 0 < c <= 30:
+        return x[:c + 1], x[c + 1:]
+    return first
 
 
 def river_words(share: float | None) -> str:
@@ -312,8 +322,9 @@ def build(today: date | None = None) -> dict:
 
 
 def render(r: dict, clim: dict) -> str:
-    L = [f"# Engulf weather, read {r['written_on']}", "", f"**{r['banner']}**", "", *[f"- {x}" for x in r["summary"]], "",
-         "## Why we think that", "", *[f"- {x}" for x in r["why"]], "",
+    lead_md = lambda x: "**{}**{}".format(*lead_split(x))
+    L = [f"# Engulf weather, read {r['written_on']}", "", f"**{r['banner']}**", "", *[f"- {lead_md(x)}" for x in r["summary"]], "",
+         "## Why we think that", "", *[f"- {lead_md(x)}" for x in r["why"]], "",
          f"_{r['lead']}_ Forecast read {r['forecast_read_at']}.", ""]
     for d in r["days"]:
         L += [f"## {datetime.fromisoformat(d['date']).strftime('%A %b %-d')}: {d['about']}",

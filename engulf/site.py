@@ -117,6 +117,11 @@ def nws_table(ev: dict, f: dict) -> str:
     return "<h3>Hour by hour (National Weather Service)</h3>" + table(["Time", "Temperature", "Wind", "Chance of rain", "Sky"], rows)
 
 
+def lead_bullets(xs: list[str]) -> str:
+    """Bullets whose lead (first sentence, or a short 'Label:') is bold."""
+    return "<ul>" + "".join("<li><b>{}</b>{}</li>".format(*map(e, reading.lead_split(x))) for x in xs) + "</ul>"
+
+
 def bullets(xs: list[str]) -> str:
     return "<ul>" + "".join(f"<li>{e(x)}</li>" for x in xs) + "</ul>"
 
@@ -228,8 +233,8 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict, outlook: dict |
 <header><h1>Engulf 2026 weather</h1>
 <p class=small>Kentwood, Louisiana · Thu Nov 12 to Sun Nov 15 · updated {e(updated)}, twice a day</p>
 <p class=banner>{e(r.get('banner', ''))}</p></header>
-<section class=summary><h2>The short version</h2>{bullets(r.get("summary", []))}</section>
-<section class=summary><h2>Why we think that</h2>{bullets(r.get("why", []))}</section>
+<section class=summary><h2>The short version</h2>{lead_bullets(r.get("summary", []))}</section>
+<section class=summary><h2>Why we think that</h2>{lead_bullets(r.get("why", []))}</section>
 {glance(ev, f, clim, r)}
 <section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{nws_table(ev, f)}</section>
 <section class=method><h2>The details</h2>

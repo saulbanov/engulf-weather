@@ -189,6 +189,13 @@ class Reading(unittest.TestCase):
         close = [{"date": "2026-11-14", "kit": {"inputs": {"forecast_weight": 1.0, "outlook": {}}}}]
         self.assertIn("within a week", reading.why(close, {}, {}, date(2026, 11, 10))[0])
 
+    def test_lead_split(self):
+        self.assertEqual(reading.lead_split("Expect warm days. Day: T-shirt."), ("Expect warm days.", " Day: T-shirt."))
+        long = "When you'll know more: " + "the forecast reaches burn night soon; " * 3 + "then it firms up."
+        self.assertEqual(reading.lead_split(long)[0], "When you'll know more:")
+        self.assertEqual(reading.lead_split("A normal week: warm days. Rain is rare.")[0], "A normal week: warm days.")
+        self.assertEqual(reading.lead_split("One sentence only."), ("One sentence only.", ""))
+
     def test_lean_words(self):
         self.assertEqual(reading.lean_words({"lean": "above", "chance": 33}, "temperature"), "slightly warmer than normal")
         self.assertEqual(reading.lean_words({"lean": "below", "chance": 55}, "rain"), "likely drier than normal")

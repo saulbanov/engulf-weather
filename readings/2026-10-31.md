@@ -2,17 +2,17 @@
 
 **This is preliminary until about Nov 7, when the hour-by-hour forecast for burn night comes in. It gets more accurate the closer we get to the burn.**
 
-- Expect afternoons around 72°, nights around 51°, and a chance of a shower or two. Day: T-shirt. Night: fleece.
-- Burn night looks like light wind (around 5 mph), probably dry, and about 58° at the burns. Night: fleece.
-- In a normal Engulf week, afternoons run around 72° and nights around 45°; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year.
-- When you'll know more: the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees.
+- **Expect afternoons around 72°, nights around 51°, and a chance of a shower or two.** Day: T-shirt. Night: fleece.
+- **Burn night looks like light wind (around 5 mph), probably dry, and about 58° at the burns.** Night: fleece.
+- **A normal Engulf week: afternoons around 72°, nights around 45°.** It rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year.
+- **When you'll know more:** the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees.
 
 ## Why we think that
 
-- The latest forecasts from the European and US weather services make up 50% to 69% of each day's numbers. This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.
-- NOAA's longer-range outlook leans slightly warmer than normal for Nov 7–13, so the normal-year part of Thursday and Friday is nudged that way.
-- The last month ran warm and dry, but that says little about any single day two weeks from now, so it isn't in the numbers.
-- Each update leans more on the forecast; from a week out it's all forecast.
+- **The latest forecasts from the European and US weather services make up 50% to 69% of each day's numbers.** This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.
+- **NOAA's longer-range outlook leans slightly warmer than normal for Nov 7–13, so the normal-year part of Thursday and Friday is nudged that way.**
+- **The last month ran warm and dry, but that says little about any single day two weeks from now, so it isn't in the numbers.**
+- **Each update leans more on the forecast; from a week out it's all forecast.**
 
 _12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day._ Forecast read 2026-10-31T08:12-05:00.
 
