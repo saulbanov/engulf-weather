@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from datetime import date, datetime
 from zoneinfo import ZoneInfo
-from . import ROOT, event, astro, rules
+from . import ROOT, event, astro, kit, rules
 
 SIGNS = {0: ("The Gate", "arrival, setting up camp, the roads in"),
          1: ("The Wanderer", "the long art day and the night after"),
@@ -37,13 +37,50 @@ def pooled_burn(models: dict, key: str) -> tuple[float | None, int]:
     return (round(yes / runs, 2) if runs else None), runs
 
 
-def median_of(models: dict, day: str, key: str) -> int | None:
-    vals = [m["days"][day][key]["median"] for m in models.values() if m.get("days", {}).get(day, {}).get("runs")]
-    return round(sum(vals) / len(vals)) if vals else None
+def median_of(models: dict, day: str, key: str, stat: str = "median") -> int | None:
+    """Across the models that reach the day: the mean of their medians, the lowest p10 or the highest p90."""
+    vals = [(m["days"][day].get(key) or {}).get(stat) for m in models.values() if m.get("days", {}).get(day, {}).get("runs")]
+    vals = [v for v in vals if v is not None]
+    if not vals:
+        return None
+    return {"median": round(sum(vals) / len(vals)), "p10": min(vals), "p90": max(vals)}[stat]
+
+
+def wear_eat(i: int, day: str, models: dict, clim: dict, ev: dict) -> dict:
+    """Clothes for three parts of the day and a meal plan; the climatology stands in where no run reaches."""
+    sd, bh = clim["site_daily"], clim["burn_hours"]
+    reached = bool(reach(models, day))
+    k = {"high_f": median_of(models, day, "high_f") if reached else sd["high_f"]["median"],
+         "morning_f": median_of(models, day, "low_f") if reached else sd["low_f"]["median"],
+         "evening_feels_f": median_of(models, day, "evening_feels_f") if reached else bh["evening_feels_f"]["median"],
+         "overnight_f": median_of(models, day, "overnight_low_f") if reached else bh["overnight_low_f"]["median"],
+         "high_p90_f": median_of(models, day, "high_f", "p90") if reached else sd["high_f"]["p90"],
+         "evening_p10_f": median_of(models, day, "evening_feels_f", "p10") if reached else bh["evening_feels_f"]["p10"],
+         "overnight_p10_f": median_of(models, day, "overnight_low_f", "p10") if reached else bh["overnight_low_f"]["p10"],
+         "from": "the model runs" if reached else "past years (no run reaches this day yet)"}
+    last = i == len(ev["days"]) - 1
+    if last:
+        k["overnight_f"] = k["overnight_p10_f"] = k["evening_p10_f"] = None
+    wear = [f"Afternoon (near {k['high_f']}°F): {kit.dress(k['high_f'])}."]
+    if not last:
+        wear.append(f"After dark (feels near {k['evening_feels_f']}°F): {kit.dress(k['evening_feels_f'])}.")
+        if k["overnight_f"] is not None:
+            wear.append(f"Overnight (low near {k['overnight_f']}°F): sleep in {kit.sleepwear(k['overnight_f'])}.")
+    k["wear"] = wear
+    sunset = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])[1].strftime("%-I:%M pm")
+    k["eat"] = kit.meals(k, day == ev["burn_window"]["date"], last, i == 0, sunset)
+    return k
 
 
 def reach(models: dict, day: str) -> list[str]:
     return [name for name, m in models.items() if m.get("days", {}).get(day, {}).get("runs")]
+
+
+def any_rain(models: dict, ev: dict) -> float | None:
+    """The highest pooled share of runs showing 0.1 in or more on any one festival day."""
+    vals = [pooled(models, d, "share_rain_at_least_0.1")[0] for d in ev["days"]]
+    vals = [v for v in vals if v is not None]
+    return max(vals) if vals else None
 
 
 def odds(p: float | None) -> str:
@@ -113,7 +150,7 @@ def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -
             lines.append(f"The Tangipahoa at Osyka runs {rv['flow_cfs']:g} cfs, at or above "
                          f"{round(rv['share_of_same_weeks_at_or_below'] * 100)}% of past readings for these weeks.")
     rise, set_ = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])
-    return {"date": day, "sign": sign, "about": about, "stars": stars(flags), "runs": runs, "lines": lines,
+    return {"kit": wear_eat(i, day, models, clim, ev), "date": day, "sign": sign, "about": about, "stars": stars(flags), "runs": runs, "lines": lines,
             "sunrise": rise.strftime("%-I:%M am"), "sunset": set_.strftime("%-I:%M pm"),
             "high_f": hi, "low_f": lo, "share_rain_at_least_0.1": wet, "share_low_at_or_below_40": cold, "burn": burn}
 
@@ -131,7 +168,9 @@ def build(today: date | None = None) -> dict:
     days = [day_reading(i, d, f, clim, ground, ev) for i, d in enumerate(ev["days"])]
     out = {"meaning": "Engulf weather horoscope: readings for each day, from the numbers below them.",
            "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
-           "days": days, "drought": ground.get("drought"), "refused": f.get("refused", [])}
+           "days": days, "drought": ground.get("drought"), "refused": f.get("refused", []),
+           "packing": kit.packing([d["kit"] for d in days], any_rain(f["models"], ev), clim["burn_hours"].get("share_predawn_hours_dewy"),
+                                 clim["burn_hours"]["overnight_low_f"]["p10"], clim["burn_hours"]["evening_feels_f"]["p10"])}
     (ROOT / "readings").mkdir(exist_ok=True)
     (ROOT / "readings" / "latest.json").write_text(json.dumps(out, indent=1) + "\n")
     md = render(out, clim)
@@ -149,10 +188,14 @@ def render(r: dict, clim: dict) -> str:
         L += [f"**The ground:** on the US Drought Monitor's {dr['map_date']} map, {round(s['D1'] * 100)}% of Tangipahoa Parish is in "
               f"moderate drought or worse and {round(s['D2'] * 100)}% in severe. Dry parishes issue burn bans; Engulf's "
               f"flame-effect policy says a ban can restrict fire at the event. Burn ban status: {dr['burn_ban']}.", ""]
+    L += ["## Pack for the weekend", "", "_Planned for the cold end of the runs: a layer you didn't need costs less than one you didn't bring._", ""]
+    L += [f"- {x}" for x in r["packing"]] + [""]
     for d in r["days"]:
         L += [f"## {d['sign']} — {datetime.fromisoformat(d['date']).strftime('%A %b %-d')}  {'★' * d['stars']}{'☆' * (5 - d['stars'])}",
               f"_{d['about']}. Sunrise {d['sunrise']}, sunset {d['sunset']}._", "",
               f"{OPENERS[d['stars']]}", ""] + [f"- {x}" for x in d["lines"]] + [""]
+        L += [f"**Wear** (from {d['kit']['from']}):", ""] + [f"- {x}" for x in d["kit"]["wear"]] + [""]
+        L += ["**Eat:**", ""] + [f"- {x}" for x in d["kit"]["eat"]] + [""]
     L += ["## How to read this", "",
           "- Shares are of model runs: ECMWF's 51-run ensemble and NOAA's 31-run GEFS, pooled where both reach the day. "
           "They are leanings, not promises; past about a week no single forecast is better than the spread.",

@@ -12,9 +12,9 @@ days a year), because four days a year is too few to say "how often". A year is 
 mid-November week; the shares below are counts of those days or nights over the years read.
 """
 from __future__ import annotations
-import csv, io, json, statistics, time
+import csv, gzip, io, json, statistics, time
 from datetime import date, timedelta
-from . import ROOT, event, rules
+from . import ROOT, event, kit, rules
 from .fetch import get, get_json
 
 ACIS = "https://data.rcc-acis.org/GridData"
@@ -60,13 +60,18 @@ def pct(xs: list[float], p: int) -> int:
     return round(statistics.quantiles(xs, n=100, method="inclusive")[p - 1])
 
 
-def asos_year(station: str, y: int, md: list[tuple[int, int]], tz: str) -> list[dict]:
+def asos_year(station: str, y: int, md: list[tuple[int, int]], tz: str, pause: float = 0.0) -> list[dict]:
     (m1, d1), (m2, d2) = md[0], md[-1]
     end = date(y, m2, d2) + timedelta(days=1)
     q = (f"{IEM}?station={station}&data=tmpf&data=dwpf&data=sknt&data=gust&data=p01i"
          f"&year1={y}&month1={m1}&day1={d1}&year2={end.year}&month2={end.month}&day2={end.day}"
          f"&tz={tz.replace('/', '%2F')}&format=onlycomma&latlon=no&missing=M&trace=T&report_type=3")
-    text = get(q, "iem-asos", f"{station}-{y}", accept="text/csv").decode()
+    kept = sorted((ROOT / "data" / "captures" / "iem-asos").glob(f"*-{station}-{y}.gz"))
+    if kept:                              # a past year does not change: reread the kept bytes
+        text = gzip.decompress(kept[-1].read_bytes()).decode()
+    else:
+        text = get(q, "iem-asos", f"{station}-{y}", accept="text/csv").decode()
+        time.sleep(pause)
     out = []
     for r in csv.DictReader(io.StringIO(text)):
         v = r["valid"]
@@ -103,15 +108,32 @@ def burn_nights(hours: list[dict], start_h: int, end_h: int) -> list[dict]:
     return out
 
 
+def evenings(hours: list[dict]) -> list[dict]:
+    """Per date: the coldest it felt 6 pm to midnight (wind chill applied) and the low into the next morning."""
+    by: dict[str, dict[int, dict]] = {}
+    for h in hours:
+        if h["temp_f"] is not None:
+            by.setdefault(h["date"], {})[h["hour"]] = h
+    out = []
+    for d in sorted(by):
+        nxt = (date.fromisoformat(d) + timedelta(days=1)).isoformat()
+        eve = [kit.feels(h["temp_f"], h["wind_mph"] or 0.0) for k, h in by[d].items() if 18 <= k <= 23]
+        night = [h["temp_f"] for k, h in by[d].items() if k >= 22] + [h["temp_f"] for k, h in by.get(nxt, {}).items() if k <= 8]
+        if len(eve) >= 4 and len(night) >= 8:
+            out.append({"date": d, "evening_feels_f": min(eve), "overnight_low_f": min(night)})
+    return out
+
+
 def hourly(ev: dict, years: range, md: list[tuple[int, int]], pause: float = 1.0) -> dict:
     st = ev["neighbours"]["station"]["id"]
     hours = []
     for y in years:
-        hours += asos_year(st, y, md, ev["timezone"]); time.sleep(pause)
+        hours += asos_year(st, y, md, ev["timezone"], pause)
     keep = {f"{m:02d}-{d:02d}" for m, d in md}
     hours = [h for h in hours if h["date"][5:] in keep]
     bw = ev["burn_window"]
     nights = burn_nights(hours, int(bw["start"][:2]), int(bw["end"][:2]))
+    evs = evenings(hours)
     calm_wet = [h for h in hours if h["hour"] in (2, 3, 4, 5, 6) and None not in (h["temp_f"], h["dew_f"], h["wind_mph"])]
     return {"source": f"{ev['neighbours']['station']['name']}, hourly ASOS via Iowa Environmental Mesonet (measured, 26 km from the site)",
             "years": [years.start, years.stop - 1], "hours_read": len(hours), "nights_read": len(nights),
@@ -120,6 +142,10 @@ def hourly(ev: dict, years: range, md: list[tuple[int, int]], pause: float = 1.0
             "share_nights_gust_at_least_25": share([(n["max_gust_mph"] or 0) >= rules.GUSTY_MPH for n in nights]),
             "share_nights_rain_at_least_0.1": share([(n["rain_in"] or 0) >= rules.WET_IN for n in nights]),
             "median_max_wind_mph_burn_hours": round(statistics.median([n["max_wind_mph"] for n in nights])),
+            "evening_feels_f": {"median": round(statistics.median([e["evening_feels_f"] for e in evs])),
+                                "p10": pct([e["evening_feels_f"] for e in evs], 10)},
+            "overnight_low_f": {"median": round(statistics.median([e["overnight_low_f"] for e in evs])),
+                                "p10": pct([e["overnight_low_f"] for e in evs], 10)},
             "share_predawn_hours_dewy": share([(h["temp_f"] - h["dew_f"]) <= rules.DEW_SPREAD_F and h["wind_mph"] <= rules.CALM_MPH for h in calm_wet]),
             "caveat": ("Gusts are reported only when they occur, so a night with no gust report counts as under 25 mph. "
                        "The station's wind sensor is in open airport ground; a camp among trees usually feels less wind. "

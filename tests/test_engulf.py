@@ -5,7 +5,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from engulf import astro, climatology, event, forecast, ground, horoscope
+from engulf import astro, climatology, event, forecast, ground, horoscope, kit
 
 EV = event()
 TZ = ZoneInfo(EV["timezone"])
@@ -119,6 +119,34 @@ class Reading(unittest.TestCase):
         self.assertIn("climatology alone", horoscope.lead(date(2026, 10, 20), first))
         self.assertIn("ensembles only", horoscope.lead(date(2026, 10, 31), first))
         self.assertIn("National Weather Service", horoscope.lead(date(2026, 11, 8), first))
+
+
+class Kit(unittest.TestCase):
+    def test_wind_chill_only_where_it_applies(self):
+        self.assertEqual(kit.feels(60, 20), 60)
+        self.assertEqual(kit.feels(40, 2), 40)
+        self.assertEqual(round(kit.feels(40, 10)), 34)          # NWS chart: 40°F at 10 mph feels 34°F
+
+    def test_layers_get_warmer_as_it_gets_colder(self):
+        self.assertIn("t-shirt", kit.dress(80))
+        self.assertIn("fleece", kit.dress(50))
+        self.assertIn("winter", kit.dress(30))
+
+    def test_bag_rating_has_a_margin_and_rounds_down(self):
+        self.assertEqual(kit.sleep_rating(36), 25)
+        self.assertEqual(kit.sleep_rating(30), 20)
+
+    def test_meals_follow_the_day(self):
+        cold = kit.meals({"morning_f": 40, "high_f": 60, "evening_feels_f": 45}, False, False)
+        self.assertTrue(any("hot" in x for x in cold) and any("thermos" in x for x in cold))
+        burn = kit.meals({"morning_f": 55, "high_f": 78, "evening_feels_f": 60}, True, False)
+        self.assertTrue(any("6:30" in x for x in burn) and any("ice" in x for x in burn))
+        first = kit.meals({"morning_f": 40, "high_f": 70}, False, False, True, "5:06 pm")
+        self.assertFalse(any(x.startswith("Breakfast") for x in first))
+
+    def test_packing_plans_for_the_colder_of_forecast_and_past(self):
+        lines = kit.packing([{"overnight_p10_f": 45}], None, None, past_cold=35)
+        self.assertIn("25°F", lines[0])
 
 
 if __name__ == "__main__":

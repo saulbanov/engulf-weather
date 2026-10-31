@@ -14,9 +14,9 @@ All hours are local (America/Chicago). Missing is never zero: an hour a run does
 """
 from __future__ import annotations
 import json, statistics, subprocess, sys
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
-from . import ROOT, event, rules
+from . import ROOT, event, kit, rules
 from .fetch import Refused, get_json
 
 ENSEMBLE = "https://ensemble-api.open-meteo.com/v1/ensemble"
@@ -60,7 +60,11 @@ def summarise(times: list[str], mem: dict, ev: dict) -> dict:
                 continue                  # this run does not cover the whole day
             r = [m["precipitation"][i] or 0.0 for i in idx]
             night = [m["temperature_2m"][i] for i in hours_of(times, d, 0, 8)]
-            per.append({"high": max(t), "low": min(night), "rain": sum(r)})
+            eve = [kit.feels(m["temperature_2m"][i], m["wind_speed_10m"][i] or 0.0) for i in hours_of(times, d, 18, 23)]
+            nxt = (date.fromisoformat(d) + timedelta(days=1)).isoformat()
+            over = [m["temperature_2m"][i] for i in hours_of(times, d, 22, 23) + hours_of(times, nxt, 0, 8)]
+            over = None if None in over or len(over) < 11 else min(over)   # the night into the next morning
+            per.append({"high": max(t), "low": min(night), "rain": sum(r), "evening": min(eve), "overnight": over})
         days[d] = day_row(per) if per else {"runs": 0, "note": "beyond this model's reach today"}
     bw = ev["burn_window"]
     idx = hours_of(times, bw["date"], int(bw["start"][:2]), int(bw["end"][:2]))
@@ -84,7 +88,10 @@ def summarise(times: list[str], mem: dict, ev: dict) -> dict:
 
 
 def day_row(per: list[dict]) -> dict:
+    over = [p["overnight"] for p in per if p.get("overnight") is not None]
     return {"runs": len(per), "high_f": spread([p["high"] for p in per]), "low_f": spread([p["low"] for p in per]),
+            "evening_feels_f": spread([p["evening"] for p in per]),
+            "overnight_low_f": spread(over) if over else None,
             "share_rain_at_least_0.1": shr([p["rain"] >= rules.WET_IN for p in per]),
             "share_rain_at_least_0.5": shr([p["rain"] >= rules.SOAKING_IN for p in per]),
             "share_low_at_or_below_40": shr([p["low"] <= rules.COLD_NIGHT_F for p in per]),

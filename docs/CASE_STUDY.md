@@ -26,6 +26,7 @@ was built in one working session on 2026-10-31.
 - **The sources.** In Texas the tools read Camp Mabry, TWDB and the Edwards Aquifer Authority. Here they read McComb's airport station (Iowa Environmental Mesonet), PRISM through ACIS, Open-Meteo's ensemble API (ECMWF and GEFS together), the NWS grid for New Orleans/Baton Rouge (LIX), USGS Osyka, and the US Drought Monitor. Every one is free and needs no key.
 - **Drought as a fire question.** `hill-country-hydro` has a drought-index pilot (`kbdi-county`), but it reads from a drive on the Mac. The US Drought Monitor's county API replaced it. It turned up the most important fact of the build: on Oct. 27, all of Tangipahoa Parish was in moderate drought or worse, and 23% in severe, up from 82% and 7% a month earlier. That matters more for whether things burn than any wind forecast.
 - **The sky.** Sunset and moon phase, by arithmetic, checked against the US Naval Observatory.
+- **Advice people can act on.** A forecast answers "what will it be"; festival-goers ask "what do I bring". `kit.py` maps how cold it feels to layers, sizes a sleeping bag from the coldest likely night, and plans meals around the event's rules. That is the planner's L3 (activity windows) rebuilt for camping: Austin's planner says *when* to go out, this says *what to have with you*. The rules live in `rules.py` so they can be argued with.
 - **The voice.** The horoscope is new. It sits on top of the numbers and never replaces them.
 
 ## What got in the way

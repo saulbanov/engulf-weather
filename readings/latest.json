@@ -1,10 +1,29 @@
 {
  "meaning": "Engulf weather horoscope: readings for each day, from the numbers below them.",
  "written_on": "2026-10-31",
- "forecast_read_at": "2026-10-31T01:02-05:00",
+ "forecast_read_at": "2026-10-31T01:09-05:00",
  "lead": "12 days out: ensembles only. Read the shares as leanings, not plans.",
  "days": [
   {
+   "kit": {
+    "high_f": 70,
+    "morning_f": 50,
+    "evening_feels_f": 56,
+    "overnight_f": 51,
+    "high_p90_f": 77,
+    "evening_p10_f": 45,
+    "overnight_p10_f": 42,
+    "from": "the model runs",
+    "wear": [
+     "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
+     "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
+     "Overnight (low near 51\u00b0F): sleep in a dry base layer and socks."
+    ],
+    "eat": [
+     "Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.",
+     "Dinner: something easy and pre-made; sunset is 5:06 pm, and camp goes up faster in daylight."
+    ]
+   },
    "date": "2026-11-12",
    "sign": "The Gate",
    "about": "arrival, setting up camp, the roads in",
@@ -24,6 +43,25 @@
    "burn": null
   },
   {
+   "kit": {
+    "high_f": 70,
+    "morning_f": 51,
+    "evening_feels_f": 56,
+    "overnight_f": 50,
+    "high_p90_f": 78,
+    "evening_p10_f": 47,
+    "overnight_p10_f": 43,
+    "from": "the model runs",
+    "wear": [
+     "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
+     "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
+     "Overnight (low near 50\u00b0F): sleep in a dry base layer and socks."
+    ],
+    "eat": [
+     "Breakfast: no-cook is fine; mornings are mild.",
+     "Lunch: anything that travels; the afternoon won't spoil much."
+    ]
+   },
    "date": "2026-11-13",
    "sign": "The Wanderer",
    "about": "the long art day and the night after",
@@ -43,6 +81,26 @@
    "burn": null
   },
   {
+   "kit": {
+    "high_f": 72,
+    "morning_f": 51,
+    "evening_feels_f": 54,
+    "overnight_f": 46,
+    "high_p90_f": 76,
+    "evening_p10_f": 47,
+    "overnight_p10_f": 36,
+    "from": "the model runs",
+    "wear": [
+     "Afternoon (near 72\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
+     "After dark (feels near 54\u00b0F): a fleece or sweater under a light jacket.",
+     "Overnight (low near 46\u00b0F): sleep in a dry base layer and socks."
+    ],
+    "eat": [
+     "Breakfast: no-cook is fine; mornings are mild.",
+     "Lunch: anything that travels; the afternoon won't spoil much.",
+     "Dinner: a real meal by 6:30 pm. The temple burns around 8 and the effigy around 10, and you'll be standing a while."
+    ]
+   },
    "date": "2026-11-14",
    "sign": "The Effigy",
    "about": "the temple at 8 and the effigy at 10",
@@ -75,6 +133,24 @@
    }
   },
   {
+   "kit": {
+    "high_f": 66,
+    "morning_f": 46,
+    "evening_feels_f": 52,
+    "overnight_f": null,
+    "high_p90_f": 77,
+    "evening_p10_f": null,
+    "overnight_p10_f": null,
+    "from": "the model runs",
+    "wear": [
+     "Afternoon (near 66\u00b0F): long sleeves and a light layer."
+    ],
+    "eat": [
+     "Breakfast: something hot. Mornings near 46\u00b0F make coffee and oats worth it (a stove cleared with your camp; personal fires are not allowed).",
+     "Lunch: anything that travels; the afternoon won't spoil much.",
+     "Dinner: on the road. Eat the cooler down and pack out by 5 pm."
+    ]
+   },
    "date": "2026-11-15",
    "sign": "The Exodus",
    "about": "packing out, off the land by 5 pm",
@@ -135,5 +211,13 @@
   ],
   "burn_ban": "not checked: see tangipahoa.org; bans are issued and lifted at short notice"
  },
- "refused": []
+ "refused": [],
+ "packing": [
+  "Sleep: a bag rated 25\u00b0F or warmer, plus a pad (the cold comes up from the ground). The coldest likely night is about 35\u00b0F (in past years, 1 night in 10 went to 35\u00b0F or below). Generators are off 10 pm to 10 am, so no plug-in heat.",
+  "Burn night and evenings: a warm jacket, hat and something for your hands. Evenings can feel as cold as 45\u00b0F; in past years 1 evening in 10 felt 36\u00b0F or colder, so a hat and gloves earn their space.",
+  "Afternoons: a t-shirt, sun hat and sunscreen. Afternoons can reach 78\u00b0F, and shade is limited.",
+  "Rain: a rain shell and mud boots whatever the forecast. The event asks for both, and 23% of runs show rain on at least one day.",
+  "Dew: dry bags or a bin for clothes and electronics; in past years 34% of calm predawn hours came within 3\u00b0F of the dew point, which wets everything without rain.",
+  "Water: 1.5 gallons a person a day (the event's number); more if afternoons are warm."
+ ]
 }
