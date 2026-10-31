@@ -37,6 +37,22 @@ class Sky(unittest.TestCase):
         self.assertLess(abs(m["illuminated"] - 0.28), 0.06)
 
 
+class Outlook(unittest.TestCase):
+    def test_point_in_polygon_with_a_hole(self):
+        from engulf import outlook
+        square = [(0, 0), (10, 0), (10, 10), (0, 10)]
+        self.assertTrue(outlook.inside(5, 5, square))
+        self.assertFalse(outlook.inside(15, 5, square))
+        kml = b"""<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>8-14 Day Temperature Outlook - Created: 10/30/2026 - Valid: 11/07/2026 - 11/13/2026</name>
+        <Placemark><name>33.0% Chance of Above Normal Temperature</name><Polygon><outerBoundaryIs><LinearRing><coordinates>0,0 10,0 10,10 0,10 0,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+        <Placemark><name>50.0% Chance of Above Normal Temperature</name><Polygon><outerBoundaryIs><LinearRing><coordinates>2,2 4,2 4,4 2,4 2,2</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+        </Document></kml>"""
+        self.assertEqual(outlook.read_kml(kml, 3, 3)["chance"], 50.0)
+        self.assertEqual(outlook.read_kml(kml, 8, 8)["chance"], 33.0)
+        self.assertEqual(outlook.read_kml(kml, 20, 20)["lean"], "equal chances")
+        self.assertEqual(outlook.read_kml(kml, 8, 8)["period"], ["2026-11-07", "2026-11-13"])
+
+
 class Station(unittest.TestCase):
     def hour(self, d, h, wind, gust=None, rain=0.0):
         return {"date": d, "hour": h, "temp_f": 50.0, "dew_f": 45.0, "wind_mph": wind, "gust_mph": gust, "rain_in": rain}
@@ -127,6 +143,16 @@ class Reading(unittest.TestCase):
         burn = date(2026, 11, 14)
         self.assertIn("preliminary until about Nov 7", reading.banner(date(2026, 10, 31), burn))
         self.assertIn("firming up", reading.banner(date(2026, 11, 8), burn))
+
+    def test_lean_words(self):
+        self.assertEqual(reading.lean_words({"lean": "above", "chance": 33}, "temperature"), "slightly warmer than normal")
+        self.assertEqual(reading.lean_words({"lean": "below", "chance": 55}, "rain"), "likely drier than normal")
+        self.assertEqual(reading.lean_words({"lean": "near", "chance": 36}, "rain"), "rain about normal")
+        self.assertEqual(reading.lean_words({"lean": "equal chances", "chance": None}, "rain"), "no clear lean on rain")
+
+    def test_one_in(self):
+        self.assertEqual(reading.one_in(0.14), "1 in 7")
+        self.assertEqual(reading.one_in(0.1), "1 in 10")
 
     def test_lead_wording(self):
         first = date(2026, 11, 12)

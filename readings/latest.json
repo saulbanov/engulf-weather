@@ -4,6 +4,14 @@
  "forecast_read_at": "2026-10-31T01:09-05:00",
  "lead": "12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
  "banner": "This is preliminary until about Nov 7, when the hour-by-hour forecast for burn night comes in. It gets more accurate the closer we get to the burn.",
+ "summary": [
+  "Right now the forecasts point to afternoons around 70\u00b0, nights around 49\u00b0, and a chance of a shower or two.",
+  "Burn night looks like light wind (around 5 mph), probably dry, and about 54\u00b0 at the burns.",
+  "NOAA's longer-range outlook for Nov 7\u201313 leans slightly warmer than normal, with rain about normal. It gives odds for the whole stretch, not a forecast for any one day.",
+  "The last 30 days ran warm and dry: highs about 4\u00b0 above normal, and 1.9 of a usual 3.5 inches of rain at McComb. The parish is in drought, so the ground is dry and burn bans are possible.",
+  "In a normal Engulf week, afternoons run around 72\u00b0 and nights around 45\u00b0; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph.",
+  "When you'll know more: the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees."
+ ],
  "days": [
   {
    "kit": {

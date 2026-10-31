@@ -80,10 +80,86 @@ def any_rain(models: dict, ev: dict) -> float | None:
 ABOUT_PAGE = [
     "Forecasts: the European (ECMWF) and US (NOAA) weather services, plus the National Weather Service once burn night is within a week. "
     "Each service runs its forecast dozens of times with small changes; the chances here are how often those versions agree.",
+    "Longer range: NOAA's Climate Prediction Center outlook for 8 to 14 days ahead, which gives the odds of a warmer or colder, "
+    "wetter or drier stretch than normal. The last 30 days: McComb's airport against its 1991-2020 normals.",
     "Normal year: the same week of November over the past 30 years, at the site and at McComb, Mississippi, the nearest airport weather station.",
     "The advice follows fixed rules of thumb, the same every time. It isn't Engulf's official word: the fire safety team decides what burns.",
     "Not checked: burn bans, flooding on the site itself, and wind under the trees at camp.",
 ]
+
+
+def one_in(p: float) -> str:
+    """0.14 -> 'about 1 day in 7'-style counts, as '1 in 7'."""
+    return f"1 in {max(2, round(1 / p))}" if p > 0 else "almost never"
+
+
+def lean_words(o: dict, what: str) -> str:
+    """A CPC lean in words: 'slightly warmer than normal', 'about normal', 'no clear lean'."""
+    if not o or "lean" not in o:
+        return ""
+    if o["lean"] == "equal chances":
+        return f"no clear lean on {what}"
+    if o["lean"] == "near":
+        return f"{what} about normal"
+    word = {"temperature": ("warmer", "colder"), "rain": ("wetter", "drier")}[what][o["lean"] == "below"]
+    strength = "slightly " if o["chance"] < 40 else ("" if o["chance"] < 50 else "likely ")
+    return f"{strength}{word} than normal"
+
+
+def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: date) -> list[str]:
+    """The week in a few bullets: where forecasts stand, burn night, the long-range lean, the fall so far,
+    a normal year, and when it firms up. Every bullet is a template filled from the numbers."""
+    models, sd, bh = f["models"], clim["site_daily"], clim["burn_hours"]
+    out = []
+    reached = [d for d in ev["days"] if reach(models, d)]
+    if reached:
+        his = [median_of(models, d, "high_f") for d in reached]
+        nights = [x for x in (median_of(models, d, "overnight_low_f") for d in reached[:-1] or reached) if x is not None]
+        wet = max(pooled(models, d, "share_rain_at_least_0.1")[0] or 0 for d in reached)
+        rain = "little rain" if wet < 0.2 else ("a chance of a shower or two" if wet < 0.5 else "rain likely on at least one day")
+        out.append(f"Right now the forecasts point to afternoons around {round(sum(his) / len(his))}°, nights around "
+                   f"{round(sum(nights) / len(nights)) if nights else '?'}°, and {rain}.")
+    bd = ev["burn_window"]["date"]
+    w, br = pooled_burn(models, "share_wind_at_least_15")
+    if br:
+        bs = [m["burn"] for m in models.values() if m.get("burn", {}).get("runs")]
+        wind = round(sum(b["max_wind_mph"]["median"] for b in bs) / len(bs))
+        cold = round(sum(b["coldest_f"]["median"] for b in bs) / len(bs))
+        r, _ = pooled_burn(models, "share_rain_at_least_0.1")
+        ww = "light wind" if wind < 10 else ("a breeze" if wind < rules.WINDY_MPH else "wind")
+        out.append(f"Burn night looks like {ww} (around {wind} mph), {'probably dry' if (r or 0) < 0.2 else 'a chance of rain'}, "
+                   f"and about {cold}° at the burns.")
+    cpc = (outlook.get("outlooks") or {}).get("8-14 day") or {}
+    t, rn = cpc.get("temperature") or {}, cpc.get("rain") or {}
+    if t.get("period"):
+        d1, d2 = (datetime.fromisoformat(x) for x in t["period"])
+        a_, b_ = d1.strftime("%b %-d"), d2.strftime("%-d" if d1.month == d2.month else "%b %-d")
+        out.append(f"NOAA's longer-range outlook for {a_}–{b_} leans {lean_words(t, 'temperature')}, with {lean_words(rn, 'rain')}. "
+                   "It gives odds for the whole stretch, not a forecast for any one day.")
+    rc = ground.get("recent") or {}
+    if rc.get("highs_vs_normal_f") is not None and rc.get("normal_rain_in"):
+        d, share = rc["highs_vs_normal_f"], rc["rain_in"] / rc["normal_rain_in"]
+        temp = "warm" if d >= 1.5 else ("cool" if d <= -1.5 else "near normal")
+        wetw = "dry" if share < 0.75 else ("wet" if share > 1.25 else "about normal on rain")
+        hi_words = f"highs about {round(abs(d))}° {'above' if d > 0 else 'below'} normal" if abs(d) >= 1.5 else "highs near normal"
+        dr = (ground.get("drought") or {}).get("share_of_parish") or {}
+        out.append(f"The last 30 days ran {temp} and {wetw}: {hi_words}, and {rc['rain_in']:.1f} of a usual {rc['normal_rain_in']:.1f} inches of rain at McComb."
+                   + (" The parish is in drought, so the ground is dry and burn bans are possible." if dr.get("D1", 0) >= 0.5 else ""))
+    out.append(f"In a normal Engulf week, afternoons run around {sd['high_f']['median']}° and nights around {sd['low_f']['median']}°; "
+               f"it rains on about {one_in(sd['share_days_rain_at_least_0.1'])} days, frost comes about {one_in(sd['share_nights_at_or_below_32'])} nights, "
+               f"and wind at burn time rarely reaches {rules.WINDY_MPH} mph.")
+    burn = date.fromisoformat(bd)
+    when = []
+    ecmwf_burn = next((m.get("burn", {}).get("runs") for n, m in models.items() if n.startswith("ECMWF")), None)
+    if not ecmwf_burn:
+        when.append("the European forecast reaches burn night in the next day or two")
+    if today < burn - timedelta(days=7):
+        when.append(f"the hour-by-hour forecast for burn night starts around {(burn - timedelta(days=7)).strftime('%b %-d')}")
+    if today < burn - timedelta(days=3):
+        when.append(f"from about {(burn - timedelta(days=3)).strftime('%b %-d')}, three days out, forecasts are usually within a few degrees")
+    if when:
+        out.append("When you'll know more: " + "; ".join(when) + ".")
+    return out
 
 
 def river_words(share: float | None) -> str:
@@ -190,9 +266,12 @@ def build(today: date | None = None) -> dict:
     f = json.loads((ROOT / "data" / "forecast-latest.json").read_text())
     ground = json.loads((ROOT / "data" / "ground-latest.json").read_text())
     days = [day_reading(i, d, f, clim, ground, ev) for i, d in enumerate(ev["days"])]
+    op = ROOT / "data" / "outlook-latest.json"
+    outlook = json.loads(op.read_text()) if op.exists() else {}
     out = {"meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
            "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
            "banner": banner(today, date.fromisoformat(ev["burn_window"]["date"])),
+           "summary": summary(f, clim, ground, outlook, ev, today),
            "days": days, "drought": ground.get("drought"), "refused": f.get("refused", [])}
     (ROOT / "readings").mkdir(exist_ok=True)
     (ROOT / "readings" / "latest.json").write_text(json.dumps(out, indent=1) + "\n")
@@ -203,7 +282,7 @@ def build(today: date | None = None) -> dict:
 
 
 def render(r: dict, clim: dict) -> str:
-    L = [f"# Engulf weather, read {r['written_on']}", "", f"**{r['banner']}**", "",
+    L = [f"# Engulf weather, read {r['written_on']}", "", f"**{r['banner']}**", "", *[f"- {x}" for x in r["summary"]], "",
          f"_{r['lead']}_ Forecast read {r['forecast_read_at']}.", ""]
     dr = r.get("drought") or {}
     if dr.get("share_of_parish"):

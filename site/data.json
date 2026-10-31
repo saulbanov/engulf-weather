@@ -411,8 +411,18 @@
   },
   "meaning": "Drought and river state near Engulf's site, read on the date below.",
   "read_on": "2026-10-31",
+  "recent": {
+   "days_reported": 29,
+   "from": "2026-10-01",
+   "highs_vs_normal_f": 3.8,
+   "lows_vs_normal_f": 1.9,
+   "normal_rain_in": 3.53,
+   "rain_in": 1.92,
+   "source": "McComb, MS airport (ACIS), against its 1991-2020 normals",
+   "to": "2026-10-30"
+  },
   "river": {
-   "at": "2026-10-31T00:00:00.000-05:00",
+   "at": "2026-10-31T01:00:00.000-05:00",
    "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading.",
    "flow_cfs": 97.6,
    "median_same_weeks_cfs": 106.0,
@@ -606,6 +616,14 @@
   "lead": "12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
   "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
   "refused": [],
+  "summary": [
+   "Right now the forecasts point to afternoons around 70\u00b0, nights around 49\u00b0, and a chance of a shower or two.",
+   "Burn night looks like light wind (around 5 mph), probably dry, and about 54\u00b0 at the burns.",
+   "NOAA's longer-range outlook for Nov 7\u201313 leans slightly warmer than normal, with rain about normal. It gives odds for the whole stretch, not a forecast for any one day.",
+   "The last 30 days ran warm and dry: highs about 4\u00b0 above normal, and 1.9 of a usual 3.5 inches of rain at McComb. The parish is in drought, so the ground is dry and burn bans are possible.",
+   "In a normal Engulf week, afternoons run around 72\u00b0 and nights around 45\u00b0; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph.",
+   "When you'll know more: the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees."
+  ],
   "written_on": "2026-10-31"
  }
 }

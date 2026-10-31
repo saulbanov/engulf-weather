@@ -77,10 +77,30 @@ def river(today: date, keep_history: bool = False) -> dict:
             "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading."}
 
 
+def recent(today: date, days: int = 30) -> dict:
+    """The last `days` days at McComb against its 1991-2020 normals (ACIS): how warm and wet the fall has run."""
+    import json as _json, urllib.parse
+    from datetime import timedelta
+    end, start = today - timedelta(days=1), today - timedelta(days=days)
+    q = {"sid": "MCB", "sdate": start.isoformat(), "edate": end.isoformat(), "meta": "name",
+         "elems": [{"name": "maxt", "normal": "departure"}, {"name": "mint", "normal": "departure"},
+                   {"name": "pcpn"}, {"name": "pcpn", "normal": "1"}]}
+    rows = get_json("https://data.rcc-acis.org/StnData?params=" + urllib.parse.quote(_json.dumps(q, separators=(",", ":"))),
+                    "acis-station", "MCB-recent")["data"]
+    num = lambda x: None if x in ("M", "", None) else (0.0 if x == "T" else float(x))
+    hi = [num(r[1]) for r in rows if num(r[1]) is not None]
+    lo = [num(r[2]) for r in rows if num(r[2]) is not None]
+    wet = [(num(r[3]), num(r[4])) for r in rows if num(r[3]) is not None and num(r[4]) is not None]
+    return {"source": "McComb, MS airport (ACIS), against its 1991-2020 normals", "from": start.isoformat(), "to": end.isoformat(),
+            "days_reported": len(wet), "highs_vs_normal_f": round(sum(hi) / len(hi), 1) if hi else None,
+            "lows_vs_normal_f": round(sum(lo) / len(lo), 1) if lo else None,
+            "rain_in": round(sum(a for a, _ in wet), 2), "normal_rain_in": round(sum(b for _, b in wet), 2)}
+
+
 def build(today: date | None = None) -> dict:
     today = today or date.today()
     out = {"meaning": "Drought and river state near Engulf's site, read on the date below.", "read_on": today.isoformat()}
-    for k, f in (("drought", drought), ("river", river)):
+    for k, f in (("drought", drought), ("river", river), ("recent", recent)):
         try:
             out[k] = f(today)
         except Exception as e:          # a refusal is reported, never filled in

@@ -201,6 +201,7 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
 <p class=banner>{e(r.get('banner', ''))}</p>
 <header><h1>Engulf 2026 weather</h1>
 <p class=small>Kentwood, Louisiana · Thu Nov 12 to Sun Nov 15 · updated {e(updated)}, twice a day</p></header>
+<section class=summary><h2>The short version</h2>{bullets(r.get("summary", []))}</section>
 {glance(ev, f, clim, r)}
 <section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{fire}{nws_table(ev, f)}</section>
 <section class=method><h2>The details</h2>
@@ -228,7 +229,7 @@ ul{padding-left:1.2em;margin:.3em 0}li{margin:.2em 0}
 .scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}thead th{font-weight:600;color:var(--mute)}
 tbody th{font-weight:600;white-space:nowrap}footer{margin:2em 0 1em;color:var(--mute);font-size:.85rem}
-details{margin:.5em 0;border-top:1px solid var(--line);padding-top:.5em}details summary{cursor:pointer;font-weight:600}
+section.summary h2{margin-top:.6em}section.summary li{margin:.45em 0}details{margin:.5em 0;border-top:1px solid var(--line);padding-top:.5em}details summary{cursor:pointer;font-weight:600}
 .small{font-size:.9rem;color:var(--mute)}.deck{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;margin:0 -2px;-webkit-overflow-scrolling:touch}
 .card{flex:0 0 min(86%,420px);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;scroll-margin:16px}
 .top{display:flex;justify-content:space-between;align-items:baseline}.dname{font-weight:700;font-size:1.1rem}.about{color:var(--mute);font-size:.9rem;margin-bottom:6px}
