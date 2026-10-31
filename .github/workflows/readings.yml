@@ -1,44 +1,62 @@
-name: daily reading
+name: update the site
 
-# Every morning until the event ends: fetch the forecasts, drought and river, write the reading,
-# and commit what was fetched and written. Manual runs from the Actions tab work any day.
+# Twice a day until the event ends: fetch the forecasts, drought and river, write the reading and the
+# page, commit what was fetched and written, and publish site/ to GitHub Pages. The times follow
+# ECMWF's runs (00 and 12 UTC, on Open-Meteo about 7 hours later). A push to main republishes the page
+# from the saved data without fetching. Manual runs from the Actions tab work any day.
 on:
   schedule:
-    - cron: "17 12 * * *"   # 6:17 am CST
+    - cron: "17 9 * * *"    # 3:17 am Central
+    - cron: "17 21 * * *"   # 3:17 pm Central
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: site
+  cancel-in-progress: false
 
 jobs:
-  read:
+  update:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - name: Stop after the event
-        id: window
-        run: |
-          if [ "$(date -u +%Y%m%d)" -gt 20261116 ] && [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "run=false" >> "$GITHUB_OUTPUT"; echo "Engulf 2026 is over; nothing to read."
-          else
-            echo "run=true" >> "$GITHUB_OUTPUT"
-          fi
       - uses: actions/checkout@v4
-        if: steps.window.outputs.run == 'true'
       - uses: actions/setup-python@v5
-        if: steps.window.outputs.run == 'true'
         with:
           python-version: "3.12"
       - name: Test
-        if: steps.window.outputs.run == 'true'
         run: python3 -m unittest discover -s tests
-      - name: Read today
-        if: steps.window.outputs.run == 'true'
-        run: python3 run.py today
+      - name: Fetch and write (scheduled or manual runs, through Nov 16)
+        if: github.event_name != 'push'
+        run: |
+          if [ "$(date -u +%Y%m%d)" -gt 20261116 ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "Engulf 2026 is over; republishing the last page without fetching."
+            python3 run.py reading > /dev/null
+          else
+            python3 run.py today > /dev/null
+          fi
+      - name: Rebuild the page from saved data (push)
+        if: github.event_name == 'push'
+        run: python3 run.py reading > /dev/null
       - name: Commit
-        if: steps.window.outputs.run == 'true'
+        if: github.event_name != 'push'
         run: |
           git config user.name "engulf-weather bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data readings
-          git diff --cached --quiet || git commit -m "Reading $(TZ=America/Chicago date +%F)"
+          git add data readings site
+          git diff --cached --quiet || git commit -m "Update $(TZ=America/Chicago date '+%F %H:%M')"
           git push
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

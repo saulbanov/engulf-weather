@@ -2,7 +2,7 @@
 
 Weather for planning [Engulf](https://www.engulfburn.org/), the New Orleans regional burn, **November 12–15, 2026** near Kentwood, Louisiana. It also serves as a test: can tools built for Texas Hill Country water and Austin heat work for a different place and a different kind of question?
 
-**Today's reading: [`readings/latest.md`](readings/latest.md)**
+**The site: https://saulbanov.github.io/engulf-weather/** (updated twice a day through Nov 16). The same reading as text: [`readings/latest.md`](readings/latest.md); as data: [`site/data.json`](site/data.json).
 
 ## What it does that a weather app doesn't
 
@@ -36,7 +36,7 @@ python3 run.py reading       # rewrite the reading from data already saved
 python3 -m unittest discover -s tests
 ```
 
-A GitHub Action (`.github/workflows/readings.yml`) runs `today` each morning at 6:17 am Central through Nov. 16 and commits the result. It runs only once this is on the default branch.
+A GitHub Action (`.github/workflows/readings.yml`) runs `today` at 3:17 am and 3:17 pm Central through Nov. 16, about seven hours after each ECMWF run. It commits what it fetched and publishes `site/` to GitHub Pages. The page (`engulf/site.py`) is rendered only from the saved data files, so the same data always gives the same page. There is no JavaScript and nothing is written by hand or by a language model.
 
 If Open-Meteo refuses (its free limit counts calls per internet address), the forecast step falls back to ECMWF's own open data through `tools/ecmwf_point.py`. That fallback needs the GRIB decoder in `requirements-ecmwf.txt`.
 

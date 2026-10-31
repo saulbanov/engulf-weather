@@ -45,11 +45,13 @@
   "median_max_wind_mph_burn_hours": 6,
   "evening_feels_f": {
    "median": 52,
-   "p10": 36
+   "p10": 36,
+   "p90": 65
   },
   "overnight_low_f": {
    "median": 49,
-   "p10": 35
+   "p10": 35,
+   "p90": 61
   },
   "share_predawn_hours_dewy": 0.34,
   "caveat": "Gusts are reported only when they occur, so a night with no gust report counts as under 25 mph. The station's wind sensor is in open airport ground; a camp among trees usually feels less wind. Reports are hourly (routine METARs), so a short squall between reports can be missed."
@@ -91,6 +93,24 @@
    [
     -99,
     "full winter kit: base layers, insulated jacket, warm hat, gloves, wool socks"
+   ]
+  ],
+  "SLEEPWEAR": [
+   [
+    55,
+    "light, dry layers"
+   ],
+   [
+    45,
+    "a dry base layer and socks"
+   ],
+   [
+    35,
+    "a dry base layer, wool socks and a hat"
+   ],
+   [
+    -99,
+    "thermals, wool socks and a hat; a hot-water bottle in the bag helps"
    ]
   ],
   "SLEEP_MARGIN_F": 10,

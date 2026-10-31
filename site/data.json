@@ -1,0 +1,640 @@
+{
+ "climatology": {
+  "burn_hours": {
+   "burn_hours_local": [
+    "19:00",
+    "23:59"
+   ],
+   "caveat": "Gusts are reported only when they occur, so a night with no gust report counts as under 25 mph. The station's wind sensor is in open airport ground; a camp among trees usually feels less wind. Reports are hourly (routine METARs), so a short squall between reports can be missed.",
+   "evening_feels_f": {
+    "median": 52,
+    "p10": 36,
+    "p90": 65
+   },
+   "hours_read": 7111,
+   "median_max_wind_mph_burn_hours": 6,
+   "nights_read": 289,
+   "overnight_low_f": {
+    "median": 49,
+    "p10": 35,
+    "p90": 61
+   },
+   "share_nights_gust_at_least_25": 0.04,
+   "share_nights_rain_at_least_0.1": 0.06,
+   "share_nights_wind_at_least_15": 0.04,
+   "share_predawn_hours_dewy": 0.34,
+   "source": "McComb/Lewis Field, MS (ASOS), hourly ASOS via Iowa Environmental Mesonet (measured, 26 km from the site)",
+   "years": [
+    1996,
+    2025
+   ]
+  },
+  "meaning": "Mid-November at Engulf's site in past years: the baseline the readings compare forecasts with.",
+  "site_daily": {
+   "days_read": 300,
+   "high_f": {
+    "max": 86,
+    "median": 72,
+    "p10": 57,
+    "p90": 80
+   },
+   "low_f": {
+    "median": 45,
+    "min": 22,
+    "p10": 33,
+    "p90": 60
+   },
+   "share_days_at_least_82": 0.05,
+   "share_days_at_most_58": 0.13,
+   "share_days_rain_at_least_0.1": 0.14,
+   "share_days_rain_at_least_0.5": 0.07,
+   "share_nights_at_or_below_32": 0.1,
+   "share_nights_at_or_below_40": 0.36,
+   "source": "PRISM 4 km daily via ACIS GridData grid 21 (modelled from stations)",
+   "years": [
+    1996,
+    2025
+   ]
+  },
+  "thresholds": {
+   "CALM_MPH": 4,
+   "CHILLY_DAY_F": 58,
+   "COLD_NIGHT_F": 40,
+   "COOLER_WARM_F": 75,
+   "DEW_SPREAD_F": 3,
+   "FROST_F": 32,
+   "GUSTY_MPH": 25,
+   "HOT_BREAKFAST_F": 50,
+   "LAYERS": [
+    [
+     78,
+     "a t-shirt, sun hat and sunscreen"
+    ],
+    [
+     68,
+     "a t-shirt, with a long-sleeve shirt handy"
+    ],
+    [
+     58,
+     "long sleeves and a light layer"
+    ],
+    [
+     48,
+     "a fleece or sweater under a light jacket"
+    ],
+    [
+     38,
+     "a warm jacket, hat and something for your hands"
+    ],
+    [
+     28,
+     "winter layers: insulated jacket, thermal base layer, hat, gloves"
+    ],
+    [
+     -99,
+     "full winter kit: base layers, insulated jacket, warm hat, gloves, wool socks"
+    ]
+   ],
+   "SLEEPWEAR": [
+    [
+     55,
+     "light, dry layers"
+    ],
+    [
+     45,
+     "a dry base layer and socks"
+    ],
+    [
+     35,
+     "a dry base layer, wool socks and a hat"
+    ],
+    [
+     -99,
+     "thermals, wool socks and a hat; a hot-water bottle in the bag helps"
+    ]
+   ],
+   "SLEEP_MARGIN_F": 10,
+   "SOAKING_IN": 0.5,
+   "WARM_DAY_F": 82,
+   "WARM_DRINK_F": 50,
+   "WET_IN": 0.1,
+   "WINDY_MPH": 15
+  },
+  "window": "11-09 to 11-18 each year (the event's days \u00b13)"
+ },
+ "event": {
+  "burn_window": {
+   "date": "2026-11-14",
+   "end": "23:59",
+   "meaning": "The hours read for the burns: an hour before the temple to midnight, since both times are approximate.",
+   "start": "19:00"
+  },
+  "burns": [
+   {
+    "date": "2026-11-14",
+    "name": "Temple",
+    "note": "8pm(ish)",
+    "source": "Engulf Survival Guide 2026",
+    "time": "20:00"
+   },
+   {
+    "date": "2026-11-14",
+    "name": "Effigy",
+    "note": "10pm(ish)",
+    "source": "Engulf Survival Guide 2026",
+    "time": "22:00"
+   }
+  ],
+  "days": [
+   "2026-11-12",
+   "2026-11-13",
+   "2026-11-14",
+   "2026-11-15"
+  ],
+  "name": "Engulf",
+  "site": {
+   "address": "75477 Gregot Rd, Kentwood, LA 70444",
+   "address_source": "https://www.engulfburn.org/event-info",
+   "coordinates_source": "US Census Bureau geocoder, address match, 2026-10-31",
+   "lat": 30.9543,
+   "lon": -90.4193
+  },
+  "year": 2026
+ },
+ "forecast": {
+  "meaning": "Forecasts for Engulf's days and burn hours, as read on the date below; shares are of model runs.",
+  "models": {
+   "ECMWF ENS": {
+    "burn": {
+     "note": "the burn hours are beyond this model's reach today",
+     "runs": 0
+    },
+    "days": {
+     "2026-11-12": {
+      "evening_feels_f": {
+       "median": 55,
+       "p10": 48,
+       "p90": 65
+      },
+      "high_f": {
+       "median": 68,
+       "p10": 63,
+       "p90": 74
+      },
+      "low_f": {
+       "median": 47,
+       "p10": 44,
+       "p90": 58
+      },
+      "overnight_low_f": {
+       "median": 50,
+       "p10": 44,
+       "p90": 61
+      },
+      "runs": 51,
+      "share_low_at_or_below_32": 0.0,
+      "share_low_at_or_below_40": 0.0,
+      "share_rain_at_least_0.1": 0.1,
+      "share_rain_at_least_0.5": 0.02
+     },
+     "2026-11-13": {
+      "evening_feels_f": {
+       "median": 56,
+       "p10": 47,
+       "p90": 66
+      },
+      "high_f": {
+       "median": 68,
+       "p10": 63,
+       "p90": 74
+      },
+      "low_f": {
+       "median": 50,
+       "p10": 44,
+       "p90": 61
+      },
+      "overnight_low_f": {
+       "median": 50,
+       "p10": 43,
+       "p90": 65
+      },
+      "runs": 51,
+      "share_low_at_or_below_32": 0.0,
+      "share_low_at_or_below_40": 0.02,
+      "share_rain_at_least_0.1": 0.12,
+      "share_rain_at_least_0.5": 0.1
+     },
+     "2026-11-14": {
+      "note": "beyond this model's reach today",
+      "runs": 0
+     },
+     "2026-11-15": {
+      "note": "beyond this model's reach today",
+      "runs": 0
+     }
+    }
+   },
+   "NOAA GEFS": {
+    "burn": {
+     "coldest_f": {
+      "median": 54,
+      "p10": 47,
+      "p90": 62
+     },
+     "max_wind_mph": {
+      "median": 5,
+      "p10": 3,
+      "p90": 8
+     },
+     "runs": 31,
+     "share_gust_at_least_25": 0.1,
+     "share_rain_at_least_0.1": 0.1,
+     "share_wind_at_least_15": 0.0
+    },
+    "days": {
+     "2026-11-12": {
+      "evening_feels_f": {
+       "median": 58,
+       "p10": 45,
+       "p90": 63
+      },
+      "high_f": {
+       "median": 72,
+       "p10": 66,
+       "p90": 77
+      },
+      "low_f": {
+       "median": 52,
+       "p10": 46,
+       "p90": 57
+      },
+      "overnight_low_f": {
+       "median": 52,
+       "p10": 42,
+       "p90": 63
+      },
+      "runs": 31,
+      "share_low_at_or_below_32": 0.0,
+      "share_low_at_or_below_40": 0.03,
+      "share_rain_at_least_0.1": 0.0,
+      "share_rain_at_least_0.5": 0.0
+     },
+     "2026-11-13": {
+      "evening_feels_f": {
+       "median": 56,
+       "p10": 48,
+       "p90": 65
+      },
+      "high_f": {
+       "median": 73,
+       "p10": 63,
+       "p90": 78
+      },
+      "low_f": {
+       "median": 52,
+       "p10": 42,
+       "p90": 63
+      },
+      "overnight_low_f": {
+       "median": 51,
+       "p10": 43,
+       "p90": 60
+      },
+      "runs": 31,
+      "share_low_at_or_below_32": 0.0,
+      "share_low_at_or_below_40": 0.06,
+      "share_rain_at_least_0.1": 0.16,
+      "share_rain_at_least_0.5": 0.0
+     },
+     "2026-11-14": {
+      "evening_feels_f": {
+       "median": 54,
+       "p10": 47,
+       "p90": 62
+      },
+      "high_f": {
+       "median": 72,
+       "p10": 60,
+       "p90": 76
+      },
+      "low_f": {
+       "median": 51,
+       "p10": 43,
+       "p90": 60
+      },
+      "overnight_low_f": {
+       "median": 46,
+       "p10": 36,
+       "p90": 54
+      },
+      "runs": 31,
+      "share_low_at_or_below_32": 0.0,
+      "share_low_at_or_below_40": 0.06,
+      "share_rain_at_least_0.1": 0.19,
+      "share_rain_at_least_0.5": 0.03
+     },
+     "2026-11-15": {
+      "evening_feels_f": {
+       "median": 52,
+       "p10": 41,
+       "p90": 62
+      },
+      "high_f": {
+       "median": 66,
+       "p10": 60,
+       "p90": 77
+      },
+      "low_f": {
+       "median": 46,
+       "p10": 36,
+       "p90": 54
+      },
+      "overnight_low_f": null,
+      "runs": 31,
+      "share_low_at_or_below_32": 0.0,
+      "share_low_at_or_below_40": 0.26,
+      "share_rain_at_least_0.1": 0.23,
+      "share_rain_at_least_0.5": 0.1
+     }
+    }
+   }
+  },
+  "nws": {
+   "hours": [],
+   "hours_in_event": 0,
+   "issued": "2026-10-31T04:21:03+00:00",
+   "source": "National Weather Service hourly forecast, LIX grid 53,132"
+  },
+  "read_at": "2026-10-31T01:09-05:00",
+  "refused": []
+ },
+ "ground": {
+  "drought": {
+   "burn_ban": "not checked: see tangipahoa.org; bans are issued and lifted at short notice",
+   "map_date": "2026-10-27",
+   "parish": "Tangipahoa Parish",
+   "share_of_parish": {
+    "D0": 1.0,
+    "D1": 1.0,
+    "D2": 0.23,
+    "D3": 0.0,
+    "D4": 0.0
+   },
+   "source": "US Drought Monitor, county statistics (percent of area, category or worse)",
+   "weeks": [
+    {
+     "D1_or_worse": 0.82,
+     "D2_or_worse": 0.07,
+     "map_date": "2026-09-29"
+    },
+    {
+     "D1_or_worse": 0.82,
+     "D2_or_worse": 0.03,
+     "map_date": "2026-10-06"
+    },
+    {
+     "D1_or_worse": 0.87,
+     "D2_or_worse": 0.03,
+     "map_date": "2026-10-13"
+    },
+    {
+     "D1_or_worse": 1.0,
+     "D2_or_worse": 0.22,
+     "map_date": "2026-10-20"
+    },
+    {
+     "D1_or_worse": 1.0,
+     "D2_or_worse": 0.23,
+     "map_date": "2026-10-27"
+    }
+   ]
+  },
+  "meaning": "Drought and river state near Engulf's site, read on the date below.",
+  "read_on": "2026-10-31",
+  "river": {
+   "at": "2026-10-31T00:00:00.000-05:00",
+   "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading.",
+   "flow_cfs": 97.6,
+   "median_same_weeks_cfs": 106.0,
+   "record": "daily means 1996\u20132026",
+   "same_weeks_values": 450,
+   "share_of_same_weeks_at_or_below": 0.36,
+   "source": "Tangipahoa River at Osyka, MS (USGS 07375280)"
+  }
+ },
+ "reading": {
+  "days": [
+   {
+    "about": "arrival and setup; gates 10 am to 10 pm",
+    "burn": null,
+    "date": "2026-11-12",
+    "high_f": 70,
+    "kit": {
+     "eat": [
+      "Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.",
+      "Dinner: something easy and pre-made; sunset is 5:06 pm, and camp goes up faster in daylight."
+     ],
+     "evening_feels_f": 56,
+     "evening_p10_f": 45,
+     "from": "the model runs",
+     "high_f": 70,
+     "high_p90_f": 77,
+     "morning_f": 50,
+     "overnight_f": 51,
+     "overnight_p10_f": 42,
+     "wear": [
+      "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
+      "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
+      "Overnight (low near 51\u00b0F): sleep in a dry base layer and socks."
+     ]
+    },
+    "lines": [
+     "82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70\u00b0F (the week's usual is 72\u00b0F); morning low near 50\u00b0F (usual 45\u00b0F).",
+     "Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).",
+     "A night at 40\u00b0F or colder: fewer than 1 run in 10."
+    ],
+    "low_f": 50,
+    "runs": 82,
+    "share_low_at_or_below_40": 0.01,
+    "share_rain_at_least_0.1": 0.06,
+    "sunrise": "6:25 am",
+    "sunset": "5:06 pm"
+   },
+   {
+    "about": "the full day on site",
+    "burn": null,
+    "date": "2026-11-13",
+    "high_f": 70,
+    "kit": {
+     "eat": [
+      "Breakfast: no-cook is fine; mornings are mild.",
+      "Lunch: anything that travels; the afternoon won't spoil much."
+     ],
+     "evening_feels_f": 56,
+     "evening_p10_f": 47,
+     "from": "the model runs",
+     "high_f": 70,
+     "high_p90_f": 78,
+     "morning_f": 51,
+     "overnight_f": 50,
+     "overnight_p10_f": 43,
+     "wear": [
+      "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
+      "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
+      "Overnight (low near 50\u00b0F): sleep in a dry base layer and socks."
+     ]
+    },
+    "lines": [
+     "82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70\u00b0F (the week's usual is 72\u00b0F); morning low near 51\u00b0F (usual 45\u00b0F).",
+     "Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).",
+     "A night at 40\u00b0F or colder: fewer than 1 run in 10."
+    ],
+    "low_f": 51,
+    "runs": 82,
+    "share_low_at_or_below_40": 0.04,
+    "share_rain_at_least_0.1": 0.14,
+    "sunrise": "6:26 am",
+    "sunset": "5:06 pm"
+   },
+   {
+    "about": "burn night: temple around 8 pm, effigy around 10 pm",
+    "burn": {
+     "moon": {
+      "age_days": 5.3,
+      "illuminated": 0.28,
+      "phase": "waxing crescent"
+     },
+     "runs": 31,
+     "share_gust_at_least_25": 0.1,
+     "share_rain_at_least_0.1": 0.1,
+     "share_wind_at_least_15": 0.0
+    },
+    "date": "2026-11-14",
+    "high_f": 72,
+    "kit": {
+     "eat": [
+      "Breakfast: no-cook is fine; mornings are mild.",
+      "Lunch: anything that travels; the afternoon won't spoil much.",
+      "Dinner: a real meal by 6:30 pm. The temple burns around 8 and the effigy around 10, and you'll be standing a while."
+     ],
+     "evening_feels_f": 54,
+     "evening_p10_f": 47,
+     "from": "the model runs",
+     "high_f": 72,
+     "high_p90_f": 76,
+     "morning_f": 51,
+     "overnight_f": 46,
+     "overnight_p10_f": 36,
+     "wear": [
+      "Afternoon (near 72\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
+      "After dark (feels near 54\u00b0F): a fleece or sweater under a light jacket.",
+      "Overnight (low near 46\u00b0F): sleep in a dry base layer and socks."
+     ]
+    },
+    "lines": [
+     "31 runs from NOAA GEFS. Afternoon near 72\u00b0F (the week's usual is 72\u00b0F); morning low near 51\u00b0F (usual 45\u00b0F).",
+     "Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).",
+     "A night at 40\u00b0F or colder: about 1 run in 10.",
+     "Burn hours (7 pm to midnight), 31 runs: wind of 15 mph or more, no run shows it; gusts of 25 mph or more, about 1 run in 10; rain, about 1 run in 10.",
+     "Thirty years at McComb: burn-hour wind reached 15 mph on 4% of mid-November nights; the usual peak is 6 mph.",
+     "Moon: waxing crescent, 28% lit, so a dark sky around the burns."
+    ],
+    "low_f": 51,
+    "runs": 31,
+    "share_low_at_or_below_40": 0.06,
+    "share_rain_at_least_0.1": 0.19,
+    "sunrise": "6:27 am",
+    "sunset": "5:05 pm"
+   },
+   {
+    "about": "exodus: off the land by 5 pm",
+    "burn": null,
+    "date": "2026-11-15",
+    "high_f": 66,
+    "kit": {
+     "eat": [
+      "Breakfast: something hot. Mornings near 46\u00b0F make coffee and oats worth it (a stove cleared with your camp; personal fires are not allowed).",
+      "Lunch: anything that travels; the afternoon won't spoil much.",
+      "Dinner: on the road. Eat the cooler down and pack out by 5 pm."
+     ],
+     "evening_feels_f": 52,
+     "evening_p10_f": null,
+     "from": "the model runs",
+     "high_f": 66,
+     "high_p90_f": 77,
+     "morning_f": 46,
+     "overnight_f": null,
+     "overnight_p10_f": null,
+     "wear": [
+      "Afternoon (near 66\u00b0F): long sleeves and a light layer."
+     ]
+    },
+    "lines": [
+     "31 runs from NOAA GEFS. Afternoon near 66\u00b0F (the week's usual is 72\u00b0F); morning low near 46\u00b0F (usual 45\u00b0F).",
+     "Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).",
+     "A night at 40\u00b0F or colder: about 3 runs in 10.",
+     "The Tangipahoa at Osyka runs 97.6 cfs, at or above 36% of past readings for these weeks."
+    ],
+    "low_f": 46,
+    "runs": 31,
+    "share_low_at_or_below_40": 0.26,
+    "share_rain_at_least_0.1": 0.23,
+    "sunrise": "6:28 am",
+    "sunset": "5:04 pm"
+   }
+  ],
+  "drought": {
+   "burn_ban": "not checked: see tangipahoa.org; bans are issued and lifted at short notice",
+   "map_date": "2026-10-27",
+   "parish": "Tangipahoa Parish",
+   "share_of_parish": {
+    "D0": 1.0,
+    "D1": 1.0,
+    "D2": 0.23,
+    "D3": 0.0,
+    "D4": 0.0
+   },
+   "source": "US Drought Monitor, county statistics (percent of area, category or worse)",
+   "weeks": [
+    {
+     "D1_or_worse": 0.82,
+     "D2_or_worse": 0.07,
+     "map_date": "2026-09-29"
+    },
+    {
+     "D1_or_worse": 0.82,
+     "D2_or_worse": 0.03,
+     "map_date": "2026-10-06"
+    },
+    {
+     "D1_or_worse": 0.87,
+     "D2_or_worse": 0.03,
+     "map_date": "2026-10-13"
+    },
+    {
+     "D1_or_worse": 1.0,
+     "D2_or_worse": 0.22,
+     "map_date": "2026-10-20"
+    },
+    {
+     "D1_or_worse": 1.0,
+     "D2_or_worse": 0.23,
+     "map_date": "2026-10-27"
+    }
+   ]
+  },
+  "forecast_read_at": "2026-10-31T01:09-05:00",
+  "lead": "12 days out: ensembles only. Read the shares as leanings, not plans.",
+  "meaning": "Engulf weather reading: each day's forecast against past years, and what to wear, pack and eat.",
+  "packing": [
+   "Sleep: a bag rated 25\u00b0F or warmer, plus a pad (the cold comes up from the ground). The coldest likely night is about 35\u00b0F (in past years, 1 night in 10 went to 35\u00b0F or below). Generators are off 10 pm to 10 am, so no plug-in heat.",
+   "Burn night and evenings: a warm jacket, hat and something for your hands. Evenings can feel as cold as 45\u00b0F; in past years 1 evening in 10 felt 36\u00b0F or colder, so a hat and gloves earn their space.",
+   "Afternoons: a t-shirt, sun hat and sunscreen. Afternoons can reach 78\u00b0F, and shade is limited.",
+   "Rain: a rain shell and mud boots whatever the forecast. The event asks for both, and 23% of runs show rain on at least one day.",
+   "Dew: dry bags or a bin for clothes and electronics; in past years 34% of calm predawn hours came within 3\u00b0F of the dew point, which wets everything without rain.",
+   "Water: 1.5 gallons a person a day (the event's number); more if afternoons are warm."
+  ],
+  "refused": [],
+  "written_on": "2026-10-31"
+ }
+}

@@ -143,9 +143,9 @@ def hourly(ev: dict, years: range, md: list[tuple[int, int]], pause: float = 1.0
             "share_nights_rain_at_least_0.1": share([(n["rain_in"] or 0) >= rules.WET_IN for n in nights]),
             "median_max_wind_mph_burn_hours": round(statistics.median([n["max_wind_mph"] for n in nights])),
             "evening_feels_f": {"median": round(statistics.median([e["evening_feels_f"] for e in evs])),
-                                "p10": pct([e["evening_feels_f"] for e in evs], 10)},
+                                "p10": pct([e["evening_feels_f"] for e in evs], 10), "p90": pct([e["evening_feels_f"] for e in evs], 90)},
             "overnight_low_f": {"median": round(statistics.median([e["overnight_low_f"] for e in evs])),
-                                "p10": pct([e["overnight_low_f"] for e in evs], 10)},
+                                "p10": pct([e["overnight_low_f"] for e in evs], 10), "p90": pct([e["overnight_low_f"] for e in evs], 90)},
             "share_predawn_hours_dewy": share([(h["temp_f"] - h["dew_f"]) <= rules.DEW_SPREAD_F and h["wind_mph"] <= rules.CALM_MPH for h in calm_wet]),
             "caveat": ("Gusts are reported only when they occur, so a night with no gust report counts as under 25 mph. "
                        "The station's wind sensor is in open airport ground; a camp among trees usually feels less wind. "

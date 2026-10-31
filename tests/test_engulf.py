@@ -5,7 +5,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from engulf import astro, climatology, event, forecast, ground, reading, kit
+from engulf import astro, climatology, event, forecast, ground, reading, kit, site
 
 EV = event()
 TZ = ZoneInfo(EV["timezone"])
@@ -142,6 +142,30 @@ class Kit(unittest.TestCase):
     def test_packing_plans_for_the_colder_of_forecast_and_past(self):
         lines = kit.packing([{"overnight_p10_f": 45}], None, None, past_cold=35)
         self.assertIn("25°F", lines[0])
+
+
+class Site(unittest.TestCase):
+    def load(self):
+        import json
+        from engulf import ROOT
+        return [json.loads((ROOT / p).read_text()) for p in
+                ("data/forecast-latest.json", "data/ground-latest.json", "data/climatology.json", "readings/latest.json")]
+
+    def test_same_data_gives_the_same_page(self):
+        f, g, c, r = self.load()
+        self.assertEqual(site.render(EV, f, g, c, r), site.render(EV, f, g, c, r))
+
+    def test_page_is_self_contained(self):
+        html = site.render(EV, *self.load())
+        self.assertNotIn("<script", html)
+        self.assertNotIn("src=\"http", html)
+        self.assertIn("Burn night", html)
+        self.assertIn("not Engulf's", html)
+
+    def test_band_formatting(self):
+        self.assertEqual(site.rng({"median": 5}), "5°F")
+        self.assertEqual(site.rng(None), "—")
+        self.assertIn("(3–8)", site.rng({"median": 5, "p10": 3, "p90": 8}, " mph"))
 
 
 if __name__ == "__main__":

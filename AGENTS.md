@@ -23,6 +23,12 @@ reusing the Austin and Hill Country tools elsewhere; keep `docs/CASE_STUDY.md` c
 - Event facts come from engulfburn.org and the Engulf Survival Guide; `config/event.json` names the source
   beside each. Recheck the burn times there before the event; they are marked "(ish)".
 
+## The site
+
+`engulf/site.py` renders `site/index.html` and `site/data.json` from the four saved JSON files and nothing
+else: no clock, no network, no JavaScript. Keep it that way; a test checks that the same data gives the same
+page. The workflow publishes `site/` to GitHub Pages (repo Settings → Pages → Source: GitHub Actions).
+
 ## Tests
 
 `python3 -m unittest discover -s tests` (no network). The sun and moon tests are pinned to the US Naval
