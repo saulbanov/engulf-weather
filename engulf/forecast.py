@@ -76,14 +76,16 @@ def summarise(times: list[str], mem: dict, ev: dict) -> dict:
         g = [m.get("wind_gusts_10m", [None] * len(times))[i] for i in idx]
         per.append({"wind": max(w), "gust": max([x for x in g if x is not None], default=None),
                     "rain": sum(m["precipitation"][i] or 0.0 for i in idx),
-                    "temp": min(m["temperature_2m"][i] for i in idx)})
+                    "temp": min(m["temperature_2m"][i] for i in idx),
+                    "feels": min(kit.feels(m["temperature_2m"][i], m["wind_speed_10m"][i]) for i in idx)})
     burn = {"runs": 0, "note": "the burn hours are beyond this model's reach today"} if not per else {
         "runs": len(per),
         "max_wind_mph": spread([p["wind"] for p in per]),
         "share_wind_at_least_15": shr([p["wind"] >= rules.WINDY_MPH for p in per]),
         "share_gust_at_least_25": shr([(p["gust"] or 0) >= rules.GUSTY_MPH for p in per]),
         "share_rain_at_least_0.1": shr([p["rain"] >= rules.WET_IN for p in per]),
-        "coldest_f": spread([p["temp"] for p in per])}
+        "coldest_f": spread([p["temp"] for p in per]),
+        "coldest_feels_f": spread([p["feels"] for p in per])}
     return {"days": days, "burn": burn}
 
 
@@ -138,21 +140,40 @@ def ecmwf_direct(ev: dict) -> dict:
     return json.loads(p.stdout)
 
 
+def carry(prev: dict, key: str, label: str | None = None) -> dict | None:
+    """The previous run's block for a source that refused this time, marked with when it was actually read."""
+    block = (prev.get("models") or {}).get(label) if label else prev.get(key)
+    if not block:
+        return None
+    return {**block, "stale_from": block.get("stale_from") or prev.get("read_at")}
+
+
 def build(now: datetime | None = None) -> dict:
+    """Read every source; a source that refuses keeps its last good forecast (marked stale) instead of vanishing."""
     ev = event()
+    path = ROOT / "data" / "forecast-latest.json"
+    prev = json.loads(path.read_text()) if path.exists() else {}
     out = {"meaning": "Forecasts for Engulf's days and burn hours, as read on the date below; shares are of model runs.",
-           "read_at": (now or datetime.now(ZoneInfo(ev["timezone"]))).isoformat(timespec="minutes"), "models": {}, "nws": None, "refused": []}
+           "read_at": (now or datetime.now(ZoneInfo(ev["timezone"]))).isoformat(timespec="minutes"), "models": {}, "nws": None,
+           "refused": [], "stale": {}}
     for model, label in MODELS.items():
         try:
             raw = ensemble(ev, model)
             out["models"][label] = summarise(raw["hourly"]["time"], members(raw), ev)
         except Refused as e:
             out["refused"].append(str(e)[:300])
+            old = carry(prev, "models", label)
+            if old:
+                out["models"][label], out["stale"][label] = old, old["stale_from"]
     if not out["models"]:
-        out["models"]["ECMWF ENS (direct)"] = {"direct": ecmwf_direct(ev)}
+        direct = ecmwf_direct(ev)                     # daily only; recorded for the record, not read by the page
+        out["direct"] = direct
     try:
         out["nws"] = nws(ev)
     except Refused as e:
         out["refused"].append(str(e)[:300])
+        old = carry(prev, "nws")
+        if old:
+            out["nws"], out["stale"]["NWS"] = old, old["stale_from"]
     (ROOT / "data" / "forecast-latest.json").write_text(json.dumps(out, indent=1) + "\n")
     return out

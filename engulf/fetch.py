@@ -22,8 +22,20 @@ def stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
-def get(url: str, source: str, name: str, keep: bool = True, tries: int = 3, accept: str = "application/json") -> bytes:
-    """GET `url`; keep the bytes as data/captures/<source>/<stamp>-<name>.gz unless keep is False."""
+def seen(sha: str) -> bool:
+    """Whether bytes with this hash are already kept as a capture."""
+    if not MANIFEST.exists():
+        return False
+    for line in MANIFEST.read_text().splitlines():
+        r = json.loads(line)
+        if r.get("sha256") == sha and r.get("capture") and (ROOT / r["capture"]).exists():
+            return True
+    return False
+
+
+def get(url: str, source: str, name: str, keep: bool | str = True, tries: int = 3, accept: str = "application/json") -> bytes:
+    """GET `url`; keep the bytes as data/captures/<source>/<stamp>-<name>.gz. keep=False records only the hash;
+    keep="new" keeps the bytes unless an identical capture is already kept (for large files that change daily)."""
     status, body, err = None, b"", ""
     for i in range(tries):
         try:
@@ -41,7 +53,9 @@ def get(url: str, source: str, name: str, keep: bool = True, tries: int = 3, acc
             time.sleep(2 ** (i + 1))
     row = {"retrieved_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "source": source,
            "url": url, "status": status, "bytes": len(body), "sha256": hashlib.sha256(body).hexdigest()}
-    if keep and body:
+    if keep == "new" and body and seen(row["sha256"]):
+        row["capture_of_same_bytes"] = True
+    elif keep and body:
         path = CAPTURES / source / f"{stamp()}-{name}.gz"
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(gzip.compress(body, mtime=0))

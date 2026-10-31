@@ -73,6 +73,8 @@ class Blend(unittest.TestCase):
         self.assertEqual(e["inputs"]["normal_rain_factor"], 1.0)                     # "near normal" rain: no nudge
         none = blend.estimate("2026-11-15", date(2026, 10, 20), None, normal, outlook)
         self.assertEqual((none["high_f"], none["inputs"]["forecast_weight"]), (72, 0.0))   # outside the outlook's dates
+        part = blend.estimate("2026-11-14", date(2026, 11, 10), {**fc, "overnight_f": None}, normal, outlook)
+        self.assertEqual(part["inputs"]["normal_only"], ["overnight_f"])
         close = blend.estimate("2026-11-14", date(2026, 11, 10), fc, normal, outlook)
         self.assertEqual(close["high_f"], 68)
 
@@ -117,6 +119,14 @@ class Forecast(unittest.TestCase):
         self.assertEqual(s["days"]["2026-11-13"]["runs"], 3)
         self.assertEqual(s["days"]["2026-11-14"]["runs"], 0)
         self.assertEqual(s["burn"]["runs"], 0)
+
+    def test_a_refused_source_keeps_its_last_forecast(self):
+        prev = {"read_at": "2026-10-31T01:09-05:00", "models": {"NOAA GEFS": {"days": {}, "burn": {"runs": 31}}}, "nws": {"hours": []}}
+        old = forecast.carry(prev, "models", "NOAA GEFS")
+        self.assertEqual((old["burn"]["runs"], old["stale_from"]), (31, "2026-10-31T01:09-05:00"))
+        again = forecast.carry({"read_at": "later", "models": {"NOAA GEFS": old}}, "models", "NOAA GEFS")
+        self.assertEqual(again["stale_from"], "2026-10-31T01:09-05:00")     # keeps the original read time
+        self.assertIsNone(forecast.carry({}, "models", "NOAA GEFS"))
 
     def test_burn_shares(self):
         times, mem = fake_ensemble(4, wind=18.0, rain=0.05)
@@ -193,7 +203,14 @@ class Reading(unittest.TestCase):
         first = date(2026, 11, 12)
         self.assertIn("normal year", reading.lead(date(2026, 10, 20), first))
         self.assertIn("best guesses", reading.lead(date(2026, 10, 31), first))
-        self.assertIn("burn night is now in", reading.lead(date(2026, 11, 8), first))
+        self.assertIn("starts around Nov 7", reading.lead(date(2026, 11, 5), first, date(2026, 11, 14)))
+        self.assertIn("burn night is now in", reading.lead(date(2026, 11, 8), first, date(2026, 11, 14)))
+
+    def test_drought_words_follow_the_map(self):
+        dry = {"map_date": "2026-10-27", "share_of_parish": {"D0": 1, "D1": 1, "D2": 0.23, "D3": 0, "D4": 0}}
+        wet = {"map_date": "2026-10-27", "share_of_parish": {"D0": 0, "D1": 0, "D2": 0, "D3": 0, "D4": 0}}
+        self.assertIn("ground is dry", reading.drought_words(dry))
+        self.assertNotIn("dry", reading.drought_words(wet).split("Burn")[0].lower().replace("drought", ""))
 
 
 class Kit(unittest.TestCase):
@@ -243,6 +260,13 @@ class Site(unittest.TestCase):
         html = re.sub(r"<[^>]+>", " ", site.render(EV, *self.load())).lower()
         for word in ("ensemble", "model runs", "median", "climatology", "cfs", "leaning", "p10"):
             self.assertNotIn(word, html, word)
+
+    def test_missing_recent_numbers_do_not_crash(self):
+        f, g, c, r = self.load()
+        g = {**g, "recent": {"from": "2026-10-01", "to": "2026-10-30", "highs_vs_normal_f": 2.0, "lows_vs_normal_f": None,
+                             "rain_in": None, "normal_rain_in": None}}
+        html = site.render(EV, f, g, c, r)
+        self.assertIn("rain not reported", html)
 
     def test_band_formatting(self):
         self.assertEqual(site.rng({"median": 5}), "5°F")

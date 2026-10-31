@@ -86,7 +86,9 @@ ABOUT_PAGE = [
     "Each service runs its forecast dozens of times with small changes; the chances here are how often those versions agree.",
     "Longer range: NOAA's Climate Prediction Center outlook for 8 to 14 days ahead, which gives the odds of a warmer or colder, "
     "wetter or drier stretch than normal. The last 30 days: McComb's airport against its 1991-2020 normals.",
-    "Normal year: the same week of November over the past 30 years, at the site and at McComb, Mississippi, the nearest airport weather station.",
+    "Normal year: the same week of November over 1996-2025. Highs, lows and rain at the site are estimates from PRISM, a map built "
+    "from nearby weather stations; wind and evening temperatures were measured at McComb, Mississippi, the nearest airport station, 26 km north.",
+    "Every download is kept, with its address, time and a fingerprint (hash), in the project's data/captures folder and data/manifest.jsonl.",
     "The advice follows fixed rules of thumb, the same every time. It isn't Engulf's official word: the fire safety team decides what burns.",
     "Not checked: burn bans, flooding on the site itself, and wind under the trees at camp.",
 ]
@@ -204,6 +206,9 @@ def drought_words(dr: dict) -> str:
     when = datetime.fromisoformat(dr["map_date"]).strftime("%b %-d")
     severe = round(s["D2"] * 100)
     share = "all" if s["D1"] >= 0.995 else f"{round(s['D1'] * 100)}%"
+    if s["D1"] < 0.005:
+        return (f"**Drought:** as of {when}, none of Tangipahoa Parish is in drought (US Drought Monitor). "
+                "Burn bans are still possible; the parish posts them at tangipahoa.org.")
     return (f"**The ground is dry.** As of {when}, {share} of Tangipahoa Parish "
             f"is in drought{f', and about {severe}% is in severe drought' if severe else ''} (US Drought Monitor). Dry spells are when "
             "parishes ban burning, and Engulf's rules say a ban can limit fire at the event. This page doesn't check for bans; "
@@ -230,12 +235,14 @@ def banner(today: date, burn: date) -> str:
     return "Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn."
 
 
-def lead(today: date, first: date) -> str:
+def lead(today: date, first: date, burn: date | None = None) -> str:
     n = (first - today).days
     if n > 15:
         return f"{n} days away. That's too far ahead for forecasts, so this shows a normal year."
     if n > 7:
         return f"{n} days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day."
+    if burn and (burn - today).days > 7:
+        return f"{n} days away. Forecasts are getting firmer; the hour-by-hour forecast for burn night starts around {(burn - timedelta(days=7)).strftime('%b %-d')}."
     return f"{n} days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in."
 
 
@@ -291,11 +298,11 @@ def build(today: date | None = None) -> dict:
     outlook = json.loads(op.read_text()) if op.exists() else {}
     days = [day_reading(i, d, f, clim, ground, ev, today, outlook) for i, d in enumerate(ev["days"])]
     out = {"meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
-           "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
+           "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0]), date.fromisoformat(ev["burn_window"]["date"])),
            "banner": banner(today, date.fromisoformat(ev["burn_window"]["date"])),
            "summary": summary(f, clim, ground, outlook, ev, today, days),
            "why": why(days, ground, outlook, today),
-           "days": days, "drought": ground.get("drought"), "refused": f.get("refused", [])}
+           "days": days, "drought": ground.get("drought"), "refused": f.get("refused", []), "stale": f.get("stale", {})}
     (ROOT / "readings").mkdir(exist_ok=True)
     (ROOT / "readings" / "latest.json").write_text(json.dumps(out, indent=1) + "\n")
     md = render(out, clim)
@@ -313,6 +320,9 @@ def render(r: dict, clim: dict) -> str:
               f"_Sunrise {d['sunrise']}, sunset {d['sunset']}._", ""] + [f"- {x}" for x in d["lines"]] + [""]
         L += ["**What it means:**", ""] + [f"- {x}" for x in d["kit"]["means"]] + [""]
     L += ["## Where this comes from", "", *[f"- {x}" for x in ABOUT_PAGE], ""]
-    if r.get("refused"):
-        L += ["**Some sources didn't answer this time:** " + "; ".join(r["refused"]), ""]
+    if (r.get("drought") or {}).get("share_of_parish"):
+        L += ["## Drought", "", drought_words(r["drought"]), ""]
+    if r.get("stale"):
+        L += ["_Some forecasts couldn't be updated this time; the page uses the last ones we got, from "
+              + min(r["stale"].values()) + "._", ""]
     return "\n".join(L)
