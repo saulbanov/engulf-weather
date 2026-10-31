@@ -23,6 +23,12 @@ reusing the Austin and Hill Country tools elsewhere; keep `docs/CASE_STUDY.md` c
 - Event facts come from engulfburn.org and the Engulf Survival Guide; `config/event.json` names the source
   beside each. Recheck the burn times there before the event; they are marked "(ish)".
 
+## Merging (Saul, 2026-10-31)
+
+Claude merges its own pull requests in this repo once `python3 -m unittest discover -s tests` passes, then
+checks that the published page updated. Changes still go through a branch and a pull request, so each one
+stays visible and can be reverted.
+
 ## The site
 
 `engulf/site.py` renders `site/index.html` and `site/data.json` from the four saved JSON files and nothing
