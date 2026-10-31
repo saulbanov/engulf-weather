@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from html import escape
-from . import ROOT, event, kit, reading, rules
+from . import ROOT, event, reading, rules
 
 OUT = ROOT / "site"
 REPO = "https://github.com/saulbanov/engulf-weather"
@@ -141,7 +141,7 @@ def rain_word(p: float | None) -> str:
 
 
 def glance(ev: dict, f: dict, clim: dict, r: dict) -> str:
-    """One swipeable card per day: summary, high and low, rain, dark-by time, then what to wear and eat."""
+    """One swipeable card per day: summary, high and low, rain, dark-by time, then what it means."""
     sd = clim["site_daily"]
     cards, n = "", len(ev["days"])
     for i, (d, rd) in enumerate(zip(ev["days"], r["days"]), 1):
@@ -160,7 +160,7 @@ def glance(ev: dict, f: dict, clim: dict, r: dict) -> str:
                   f"<div class=sum>{e(feel_word(hi))}, {e(rain_word(wet))}</div>"
                   f"<div class=temps><b>{hi}°</b> / {lo}°</div>"
                   f"<div class=small>Rain: {e(chance(wet))} · dark by {e(rd['sunset'])}</div>{src}"
-                  f"<h4>Wear</h4>{bullets(k['wear'])}" + (f"<h4>Eat</h4>{bullets(k['eat'])}" if k["eat"] else "") + "</article>")
+                  f"<h4>What it means</h4>{bullets(k['means'])}</article>")
     jump = " ".join(f"<a href='#day{i}'>{e(datetime.fromisoformat(d).strftime('%a'))}</a>" for i, d in enumerate(ev["days"], 1))
     return f"<p class=small>Swipe through the days → &nbsp; {jump}</p><div class=deck>{cards}</div>"
 
@@ -184,12 +184,6 @@ def burn_sentence(f: dict, clim: dict, r: dict) -> str:
 def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
     dr, rv = ground.get("drought") or {}, ground.get("river") or {}
     updated = datetime.fromisoformat(f["read_at"]).strftime("%a %b %-d, %-I:%M %p Central")
-    sun = r["days"][2]["sunset"]
-    rise, set_ = r["days"][2]["sunrise"], r["days"][2]["sunset"]
-    dark = round(24 - (datetime.strptime(set_, "%I:%M %p") - datetime.strptime(rise, "%I:%M %p")).seconds / 3600)
-    items = kit.checklist([d["kit"] for d in r["days"]], reading.any_rain(f["models"], ev),
-                          clim["burn_hours"].get("share_predawn_hours_dewy"), sun, dark)
-    check = "<ul class=check>" + "".join(f"<li><b>{e(a)}</b><br><span class=small>{e(b)}</span></li>" for a, b in items) + "</ul>"
     fire = ""
     if dr.get("share_of_parish"):
         fire = ("<p class=small><b>Fire note:</b> the parish is in drought. Dry spells are when parishes ban burning, and Engulf's rules "
@@ -202,14 +196,13 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
     return f"""<!doctype html>
 <html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>Engulf 2026 weather</title>
-<meta name=description content="Forecast and packing list for Engulf 2026, Kentwood LA, Nov 12–15.">
+<meta name=description content="Forecast for Engulf 2026, and what it means,, Kentwood LA, Nov 12–15.">
 <style>{CSS}</style></head><body><main>
 <p class=banner>{e(r.get('banner', ''))}</p>
 <header><h1>Engulf 2026 weather</h1>
 <p class=small>Kentwood, Louisiana · Thu Nov 12 to Sun Nov 15 · updated {e(updated)}, twice a day</p></header>
 {glance(ev, f, clim, r)}
 <section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{fire}{nws_table(ev, f)}</section>
-<section><h2>Pack</h2>{check}</section>
 <section class=method><h2>The details</h2>
 <details><summary>Burn night, by the numbers</summary>{burn_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p></details>
 <details><summary>Every day, by the numbers</summary>{days_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range.</p></details>

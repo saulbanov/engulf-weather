@@ -1,5 +1,5 @@
 {
- "meaning": "Engulf weather reading: each day's forecast against past years, and what to wear, pack and eat.",
+ "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
  "written_on": "2026-10-31",
  "forecast_read_at": "2026-10-31T01:09-05:00",
  "lead": "12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
@@ -15,14 +15,10 @@
     "evening_p10_f": 45,
     "overnight_p10_f": 42,
     "from": "the forecast",
-    "wear": [
-     "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
-     "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
-     "Overnight (low near 51\u00b0F): sleep in a dry base layer and socks."
-    ],
-    "eat": [
-     "Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.",
-     "Dinner: something easy and pre-made. It's dark by 5:06 pm, so get camp up first."
+    "means": [
+     "70\u00b0 in the afternoon, about 56\u00b0 after dark once the wind is counted, and near 51\u00b0 by morning.",
+     "Gates open at 10 am, which leaves about 7 hours of daylight to set up.",
+     "Calm nights here often bring heavy dew: anything left out gets wet without rain."
     ]
    },
    "date": "2026-11-12",
@@ -51,12 +47,9 @@
     "evening_p10_f": 47,
     "overnight_p10_f": 43,
     "from": "the forecast",
-    "wear": [
-     "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
-     "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
-     "Overnight (low near 50\u00b0F): sleep in a dry base layer and socks."
-    ],
-    "eat": []
+    "means": [
+     "70\u00b0 in the afternoon, about 56\u00b0 after dark once the wind is counted, and near 50\u00b0 by morning."
+    ]
    },
    "date": "2026-11-13",
    "about": "the full day on site",
@@ -84,13 +77,8 @@
     "evening_p10_f": 47,
     "overnight_p10_f": 36,
     "from": "the forecast",
-    "wear": [
-     "Afternoon (near 72\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
-     "After dark (feels near 54\u00b0F): a fleece or sweater under a light jacket.",
-     "Overnight (low near 46\u00b0F): sleep in a dry base layer and socks."
-    ],
-    "eat": [
-     "Dinner: a real meal by 6:30 pm. You'll be standing out from the temple burn at 8 through the effigy at 10."
+    "means": [
+     "A big swing: 72\u00b0 in the afternoon, about 54\u00b0 after dark once the wind is counted, and near 46\u00b0 by morning."
     ]
    },
    "date": "2026-11-14",
@@ -132,12 +120,8 @@
     "evening_p10_f": null,
     "overnight_p10_f": null,
     "from": "the forecast",
-    "wear": [
-     "Afternoon (near 66\u00b0F): long sleeves and a light layer."
-    ],
-    "eat": [
-     "Breakfast: something hot. Mornings near 46\u00b0F make coffee and oats worth it (a stove cleared with your camp; personal fires are not allowed).",
-     "Eat the cooler down; you have to be off the land by 5 pm."
+    "means": [
+     "Around 66\u00b0 for packing up; everyone has to be off the land by 5 pm."
     ]
    },
    "date": "2026-11-15",
@@ -198,13 +182,5 @@
   ],
   "burn_ban": "not checked: see tangipahoa.org; bans are issued and lifted at short notice"
  },
- "refused": [],
- "packing": [
-  "Sleep: a bag rated 25\u00b0F or warmer, plus a sleeping pad (cold comes up from the ground). Nights could drop to about 36\u00b0F. Generators are off 10 pm to 10 am, so no plug-in heaters.",
-  "Burn night and evenings: a warm jacket, hat and something for your hands. With the wind, evenings could feel as cold as 45\u00b0F.",
-  "Afternoons: a t-shirt, sun hat and sunscreen. It could reach 78\u00b0F, and there isn't much shade.",
-  "Rain: a rain jacket and mud boots, whatever the forecast says. The event asks for both, and there's about a 2 in 10 chance of rain on at least one day.",
-  "Dew: dry bags or a plastic bin for clothes and electronics. On calm nights here, heavy dew soaks anything left out, even when it doesn't rain.",
-  "Water: 1.5 gallons per person per day (the event's figure), more if it's warm."
- ]
+ "refused": []
 }

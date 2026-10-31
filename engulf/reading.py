@@ -1,5 +1,5 @@
-"""The daily reading: for each festival day, what the model runs show against what the same week has
-done in 30 past years, then what to wear and eat; for the weekend, what to pack.
+"""The daily reading: for each festival day, what the forecasts show against what the same week has
+done in 30 past years, and what that means for the day.
 
 Every line comes from a number in data/. Words like "safe" or "dangerous" are never used (data
 rule 8); the burn crew decides.
@@ -44,8 +44,8 @@ def median_of(models: dict, day: str, key: str, stat: str = "median") -> int | N
     return {"median": round(sum(vals) / len(vals)), "p10": min(vals), "p90": max(vals)}[stat]
 
 
-def wear_eat(i: int, day: str, models: dict, clim: dict, ev: dict) -> dict:
-    """Clothes for three parts of the day and a meal plan; the climatology stands in where no run reaches."""
+def numbers(i: int, day: str, models: dict, clim: dict, ev: dict) -> dict:
+    """The day's key temperatures and what they mean; a normal year stands in where no forecast reaches."""
     sd, bh = clim["site_daily"], clim["burn_hours"]
     reached = bool(reach(models, day))
     k = {"high_f": median_of(models, day, "high_f") if reached else sd["high_f"]["median"],
@@ -59,14 +59,10 @@ def wear_eat(i: int, day: str, models: dict, clim: dict, ev: dict) -> dict:
     last = i == len(ev["days"]) - 1
     if last:
         k["overnight_f"] = k["overnight_p10_f"] = k["evening_p10_f"] = None
-    wear = [f"Afternoon (near {k['high_f']}°F): {kit.dress(k['high_f'])}."]
-    if not last:
-        wear.append(f"After dark (feels near {k['evening_feels_f']}°F): {kit.dress(k['evening_feels_f'])}.")
-        if k["overnight_f"] is not None:
-            wear.append(f"Overnight (low near {k['overnight_f']}°F): sleep in {kit.sleepwear(k['overnight_f'])}.")
-    k["wear"] = wear
-    sunset = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])[1].strftime("%-I:%M pm")
-    k["eat"] = kit.meals(k, day == ev["burn_window"]["date"], last, i == 0, sunset)
+    rise, set_ = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])
+    after_gates = (set_.hour + set_.minute / 60) - 10
+    k["means"] = kit.meaning(k, pooled(models, day, "share_rain_at_least_0.1")[0] if reached else sd["share_days_rain_at_least_0.1"],
+                             first=i == 0, last=last, daylight_after_gates=after_gates, dewy=bh.get("share_predawn_hours_dewy"))
     return k
 
 
@@ -182,7 +178,7 @@ def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -
         if rv.get("flow_cfs") is not None:
             lines.append(f"The nearby Tangipahoa River is {river_words(rv['share_of_same_weeks_at_or_below'])} for this time of year.")
     rise, set_ = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])
-    return {"kit": wear_eat(i, day, models, clim, ev), "date": day, "about": about, "runs": runs, "lines": lines,
+    return {"kit": numbers(i, day, models, clim, ev), "date": day, "about": about, "runs": runs, "lines": lines,
             "sunrise": rise.strftime("%-I:%M am"), "sunset": set_.strftime("%-I:%M pm"),
             "high_f": hi, "low_f": lo, "share_rain_at_least_0.1": wet, "share_low_at_or_below_40": cold, "burn": burn}
 
@@ -194,12 +190,10 @@ def build(today: date | None = None) -> dict:
     f = json.loads((ROOT / "data" / "forecast-latest.json").read_text())
     ground = json.loads((ROOT / "data" / "ground-latest.json").read_text())
     days = [day_reading(i, d, f, clim, ground, ev) for i, d in enumerate(ev["days"])]
-    out = {"meaning": "Engulf weather reading: each day's forecast against past years, and what to wear, pack and eat.",
+    out = {"meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
            "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
            "banner": banner(today, date.fromisoformat(ev["burn_window"]["date"])),
-           "days": days, "drought": ground.get("drought"), "refused": f.get("refused", []),
-           "packing": kit.packing([d["kit"] for d in days], any_rain(f["models"], ev), clim["burn_hours"].get("share_predawn_hours_dewy"),
-                                 clim["burn_hours"]["overnight_low_f"]["p10"], clim["burn_hours"]["evening_feels_f"]["p10"])}
+           "days": days, "drought": ground.get("drought"), "refused": f.get("refused", [])}
     (ROOT / "readings").mkdir(exist_ok=True)
     (ROOT / "readings" / "latest.json").write_text(json.dumps(out, indent=1) + "\n")
     md = render(out, clim)
@@ -215,13 +209,10 @@ def render(r: dict, clim: dict) -> str:
     if dr.get("share_of_parish"):
         s = dr["share_of_parish"]
         L += [drought_words(dr), ""]
-    L += ["## Pack for the weekend", "", "_Packed for a colder-than-expected weekend. A layer you didn't need beats one you didn't bring._", ""]
-    L += [f"- {x}" for x in r["packing"]] + [""]
     for d in r["days"]:
         L += [f"## {datetime.fromisoformat(d['date']).strftime('%A %b %-d')}: {d['about']}",
               f"_Sunrise {d['sunrise']}, sunset {d['sunset']}._", ""] + [f"- {x}" for x in d["lines"]] + [""]
-        L += ["**Wear:**", ""] + [f"- {x}" for x in d["kit"]["wear"]] + [""]
-        L += ["**Eat:**", ""] + [f"- {x}" for x in d["kit"]["eat"]] + [""]
+        L += ["**What it means:**", ""] + [f"- {x}" for x in d["kit"]["means"]] + [""]
     L += ["## Where this comes from", "", *[f"- {x}" for x in ABOUT_PAGE], ""]
     if r.get("refused"):
         L += ["**Some sources didn't answer this time:** " + "; ".join(r["refused"]), ""]

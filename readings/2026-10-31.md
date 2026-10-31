@@ -6,17 +6,6 @@ _12 days away. Forecasts this far ahead are rough, so treat these as best guesse
 
 **The ground is dry.** As of Oct 27, all of Tangipahoa Parish is in drought, and about 23% is in severe drought (US Drought Monitor). Dry spells are when parishes ban burning, and Engulf's rules say a ban can limit fire at the event. This page doesn't check for bans; the parish posts them at tangipahoa.org.
 
-## Pack for the weekend
-
-_Packed for a colder-than-expected weekend. A layer you didn't need beats one you didn't bring._
-
-- Sleep: a bag rated 25°F or warmer, plus a sleeping pad (cold comes up from the ground). Nights could drop to about 36°F. Generators are off 10 pm to 10 am, so no plug-in heaters.
-- Burn night and evenings: a warm jacket, hat and something for your hands. With the wind, evenings could feel as cold as 45°F.
-- Afternoons: a t-shirt, sun hat and sunscreen. It could reach 78°F, and there isn't much shade.
-- Rain: a rain jacket and mud boots, whatever the forecast says. The event asks for both, and there's about a 2 in 10 chance of rain on at least one day.
-- Dew: dry bags or a plastic bin for clothes and electronics. On calm nights here, heavy dew soaks anything left out, even when it doesn't rain.
-- Water: 1.5 gallons per person per day (the event's figure), more if it's warm.
-
 ## Thursday Nov 12: arrival and setup; gates 10 am to 10 pm
 _Sunrise 6:25 am, sunset 5:06 pm._
 
@@ -24,16 +13,11 @@ _Sunrise 6:25 am, sunset 5:06 pm._
 - Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.
 - Chance of a night at 40°F or colder: unlikely (under 1 in 10).
 
-**Wear:**
+**What it means:**
 
-- Afternoon (near 70°F): a t-shirt, with a long-sleeve shirt handy.
-- After dark (feels near 56°F): a fleece or sweater under a light jacket.
-- Overnight (low near 51°F): sleep in a dry base layer and socks.
-
-**Eat:**
-
-- Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.
-- Dinner: something easy and pre-made. It's dark by 5:06 pm, so get camp up first.
+- 70° in the afternoon, about 56° after dark once the wind is counted, and near 51° by morning.
+- Gates open at 10 am, which leaves about 7 hours of daylight to set up.
+- Calm nights here often bring heavy dew: anything left out gets wet without rain.
 
 ## Friday Nov 13: the full day on site
 _Sunrise 6:26 am, sunset 5:06 pm._
@@ -42,14 +26,9 @@ _Sunrise 6:26 am, sunset 5:06 pm._
 - Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.
 - Chance of a night at 40°F or colder: unlikely (under 1 in 10).
 
-**Wear:**
+**What it means:**
 
-- Afternoon (near 70°F): a t-shirt, with a long-sleeve shirt handy.
-- After dark (feels near 56°F): a fleece or sweater under a light jacket.
-- Overnight (low near 50°F): sleep in a dry base layer and socks.
-
-**Eat:**
-
+- 70° in the afternoon, about 56° after dark once the wind is counted, and near 50° by morning.
 
 ## Saturday Nov 14: burn night: temple around 8 pm, effigy around 10 pm
 _Sunrise 6:27 am, sunset 5:05 pm._
@@ -61,15 +40,9 @@ _Sunrise 6:27 am, sunset 5:05 pm._
 - Over the past 30 years, wind on mid-November nights here usually tops out around 6 mph; it reached 15 mph on about 1 night in 25.
 - Moon: a thin crescent, 28% lit. A dark sky for the burns.
 
-**Wear:**
+**What it means:**
 
-- Afternoon (near 72°F): a t-shirt, with a long-sleeve shirt handy.
-- After dark (feels near 54°F): a fleece or sweater under a light jacket.
-- Overnight (low near 46°F): sleep in a dry base layer and socks.
-
-**Eat:**
-
-- Dinner: a real meal by 6:30 pm. You'll be standing out from the temple burn at 8 through the effigy at 10.
+- A big swing: 72° in the afternoon, about 54° after dark once the wind is counted, and near 46° by morning.
 
 ## Sunday Nov 15: exodus: off the land by 5 pm
 _Sunrise 6:28 am, sunset 5:04 pm._
@@ -79,14 +52,9 @@ _Sunrise 6:28 am, sunset 5:04 pm._
 - Chance of a night at 40°F or colder: about 3 in 10.
 - The nearby Tangipahoa River is about normal for this time of year.
 
-**Wear:**
+**What it means:**
 
-- Afternoon (near 66°F): long sleeves and a light layer.
-
-**Eat:**
-
-- Breakfast: something hot. Mornings near 46°F make coffee and oats worth it (a stove cleared with your camp; personal fires are not allowed).
-- Eat the cooler down; you have to be off the land by 5 pm.
+- Around 66° for packing up; everyone has to be off the land by 5 pm.
 
 ## Where this comes from
 

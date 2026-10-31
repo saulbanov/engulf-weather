@@ -106,8 +106,7 @@ class Reading(unittest.TestCase):
         from engulf import ROOT
         f, g, c = (json.loads((ROOT / p).read_text()) for p in ("data/forecast-latest.json", "data/ground-latest.json", "data/climatology.json"))
         days = [reading.day_reading(i, d, f, c, g, EV) for i, d in enumerate(EV["days"])]
-        text = " ".join(x for d in days for x in d["lines"] + d["kit"]["wear"] + d["kit"]["eat"]).lower()
-        text += " " + " ".join(kit.packing([d["kit"] for d in days], 0.2, 0.3, 35, 36)).lower()
+        text = " ".join(x for d in days for x in d["lines"] + d["kit"]["means"]).lower()
         for word in ("ensemble", "runs", "median", "percentile", "climatology", "cfs", "model", "leaning", "p10", "share"):
             self.assertNotIn(word, text, word)
 
@@ -142,27 +141,18 @@ class Kit(unittest.TestCase):
         self.assertEqual(kit.feels(40, 2), 40)
         self.assertEqual(round(kit.feels(40, 10)), 34)          # NWS chart: 40°F at 10 mph feels 34°F
 
-    def test_layers_get_warmer_as_it_gets_colder(self):
-        self.assertIn("t-shirt", kit.dress(80))
-        self.assertIn("fleece", kit.dress(50))
-        self.assertIn("winter", kit.dress(30))
-
-    def test_bag_rating_has_a_margin_and_rounds_down(self):
-        self.assertEqual(kit.sleep_rating(36), 25)
-        self.assertEqual(kit.sleep_rating(30), 20)
-
-    def test_meals_follow_the_day(self):
-        cold = kit.meals({"morning_f": 40, "high_f": 60, "evening_feels_f": 45}, False, False)
-        self.assertTrue(any("hot" in x for x in cold) and any("thermos" in x for x in cold))
-        burn = kit.meals({"morning_f": 55, "high_f": 78, "evening_feels_f": 60}, True, False)
-        self.assertTrue(any("6:30" in x for x in burn) and any("ice" in x for x in burn))
-        first = kit.meals({"morning_f": 40, "high_f": 70}, False, False, True, "5:06 pm")
-        self.assertFalse(any(x.startswith("Breakfast") for x in first))
-
-    def test_packing_uses_the_forecast_and_falls_back_to_a_normal_year(self):
-        self.assertIn("35°F", kit.packing([{"overnight_p10_f": 45}], None, None, past_cold=35)[0])
-        self.assertIn("25°F", kit.packing([], None, None, past_cold=35)[0])
-
+    def test_meaning_lines(self):
+        cold = kit.meaning({"high_f": 72, "evening_feels_f": 50, "overnight_f": 38, "overnight_p10_f": 30}, 0.4,
+                           first=True, last=False, daylight_after_gates=7.1, dewy=0.34)
+        text = " ".join(cold)
+        for bit in ("A big swing", "cold night", "Frost", "7 hours of daylight", "dew", "mud"):
+            self.assertIn(bit, text)
+        mild = kit.meaning({"high_f": 70, "evening_feels_f": 60, "overnight_f": 55, "overnight_p10_f": 50}, 0.1,
+                           first=False, last=False, daylight_after_gates=7, dewy=0.34)
+        self.assertEqual(len(mild), 1)
+        last = kit.meaning({"high_f": 66, "evening_feels_f": 52, "overnight_f": None}, 0.5,
+                           first=False, last=True, daylight_after_gates=7, dewy=None)
+        self.assertTrue(any("off the land by 5 pm" in x for x in last) and any("muddy" in x for x in last))
 
 class Site(unittest.TestCase):
     def load(self):
