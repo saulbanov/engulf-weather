@@ -1,0 +1,52 @@
+# Engulf weather horoscope, written 2026-10-31
+
+_12 days out: ensembles only. Read the shares as leanings, not plans._ Forecast read 2026-10-31T01:02-05:00.
+
+**The ground:** on the US Drought Monitor's 2026-10-27 map, 100% of Tangipahoa Parish is in moderate drought or worse and 23% in severe. Dry parishes issue burn bans; Engulf's flame-effect policy says a ban can restrict fire at the event. Burn ban status: not checked: see tangipahoa.org; bans are issued and lifted at short notice.
+
+## The Gate — Thursday Nov 12  ★★★★★
+_arrival, setting up camp, the roads in. Sunrise 6:25 am, sunset 5:06 pm._
+
+The sky is on your side.
+
+- 82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70°F (the week's usual is 72°F); morning low near 50°F (usual 45°F).
+- Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).
+- A night at 40°F or colder: fewer than 1 run in 10.
+
+## The Wanderer — Friday Nov 13  ★★★★★
+_the long art day and the night after. Sunrise 6:26 am, sunset 5:06 pm._
+
+The sky is on your side.
+
+- 82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70°F (the week's usual is 72°F); morning low near 51°F (usual 45°F).
+- Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).
+- A night at 40°F or colder: fewer than 1 run in 10.
+
+## The Effigy — Saturday Nov 14  ★★★★☆
+_the temple at 8 and the effigy at 10. Sunrise 6:27 am, sunset 5:05 pm._
+
+Mostly kind skies; keep one eye up.
+
+- 31 runs from NOAA GEFS. Afternoon near 72°F (the week's usual is 72°F); morning low near 51°F (usual 45°F).
+- Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).
+- A night at 40°F or colder: about 1 run in 10.
+- Burn hours (7 pm to midnight), 31 runs: wind of 15 mph or more, no run shows it; gusts of 25 mph or more, about 1 run in 10; rain, about 1 run in 10.
+- Thirty years at McComb: burn-hour wind reached 15 mph on 4% of mid-November nights; the usual peak is 6 mph.
+- The moon is a waxing crescent, 28% lit: the fire will be the brightest thing in the sky.
+
+## The Exodus — Sunday Nov 15  ★★★★☆
+_packing out, off the land by 5 pm. Sunrise 6:28 am, sunset 5:04 pm._
+
+Mostly kind skies; keep one eye up.
+
+- 31 runs from NOAA GEFS. Afternoon near 66°F (the week's usual is 72°F); morning low near 46°F (usual 45°F).
+- Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).
+- A night at 40°F or colder: about 3 runs in 10.
+- The Tangipahoa at Osyka runs 97.6 cfs, at or above 36% of past readings for these weeks.
+
+## How to read this
+
+- Shares are of model runs: ECMWF's 51-run ensemble and NOAA's 31-run GEFS, pooled where both reach the day. They are leanings, not promises; past about a week no single forecast is better than the spread.
+- "Usual" and "past years" mean 11-09 to 11-18 each year (the event's days ±3), 1996–2025: highs, lows and rain from PRISM's 4 km grid (modelled); burn-hour wind from McComb's airport station 26 km north (measured).
+- Stars are arithmetic, not judgement: five, less a weight for each flagged thing times the share of runs showing it. The thresholds are in `engulf/rules.py`; they are planning lines, not Engulf policy. The Fire Art Response Team and burn leads decide what burns.
+- Data: `data/forecast-latest.json`, `data/climatology.json`, `data/ground-latest.json`; every download is kept in `data/captures/` and listed in `data/manifest.jsonl`.

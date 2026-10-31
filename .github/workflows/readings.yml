@@ -1,0 +1,44 @@
+name: daily reading
+
+# Every morning until the event ends: fetch the forecasts, drought and river, write the horoscope,
+# and commit what was fetched and written. Manual runs from the Actions tab work any day.
+on:
+  schedule:
+    - cron: "17 12 * * *"   # 6:17 am CST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stop after the event
+        id: window
+        run: |
+          if [ "$(date -u +%Y%m%d)" -gt 20261116 ] && [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"; echo "Engulf 2026 is over; nothing to read."
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/checkout@v4
+        if: steps.window.outputs.run == 'true'
+      - uses: actions/setup-python@v5
+        if: steps.window.outputs.run == 'true'
+        with:
+          python-version: "3.12"
+      - name: Test
+        if: steps.window.outputs.run == 'true'
+        run: python3 -m unittest discover -s tests
+      - name: Read today
+        if: steps.window.outputs.run == 'true'
+        run: python3 run.py today
+      - name: Commit
+        if: steps.window.outputs.run == 'true'
+        run: |
+          git config user.name "engulf-weather bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data readings
+          git diff --cached --quiet || git commit -m "Reading $(TZ=America/Chicago date +%F)"
+          git push

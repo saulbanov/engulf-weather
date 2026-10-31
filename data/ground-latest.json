@@ -1,0 +1,54 @@
+{
+ "meaning": "Drought and river state near Engulf's site, read on the date below.",
+ "read_on": "2026-10-31",
+ "drought": {
+  "source": "US Drought Monitor, county statistics (percent of area, category or worse)",
+  "parish": "Tangipahoa Parish",
+  "map_date": "2026-10-27",
+  "share_of_parish": {
+   "D0": 1.0,
+   "D1": 1.0,
+   "D2": 0.23,
+   "D3": 0.0,
+   "D4": 0.0
+  },
+  "weeks": [
+   {
+    "map_date": "2026-09-29",
+    "D1_or_worse": 0.82,
+    "D2_or_worse": 0.07
+   },
+   {
+    "map_date": "2026-10-06",
+    "D1_or_worse": 0.82,
+    "D2_or_worse": 0.03
+   },
+   {
+    "map_date": "2026-10-13",
+    "D1_or_worse": 0.87,
+    "D2_or_worse": 0.03
+   },
+   {
+    "map_date": "2026-10-20",
+    "D1_or_worse": 1.0,
+    "D2_or_worse": 0.22
+   },
+   {
+    "map_date": "2026-10-27",
+    "D1_or_worse": 1.0,
+    "D2_or_worse": 0.23
+   }
+  ],
+  "burn_ban": "not checked: see tangipahoa.org; bans are issued and lifted at short notice"
+ },
+ "river": {
+  "source": "Tangipahoa River at Osyka, MS (USGS 07375280)",
+  "flow_cfs": 97.6,
+  "at": "2026-10-31T00:00:00.000-05:00",
+  "record": "daily means 1996\u20132026",
+  "same_weeks_values": 450,
+  "share_of_same_weeks_at_or_below": 0.36,
+  "median_same_weeks_cfs": 106.0,
+  "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading."
+ }
+}
