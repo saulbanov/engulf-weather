@@ -423,6 +423,7 @@
   }
  },
  "reading": {
+  "banner": "This is preliminary until about Nov 7, when the hour-by-hour forecast for burn night comes in. It gets more accurate the closer we get to the burn.",
   "days": [
    {
     "about": "arrival and setup; gates 10 am to 10 pm",

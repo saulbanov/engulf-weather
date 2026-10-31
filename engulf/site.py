@@ -147,6 +147,7 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
 <title>Engulf 2026 weather</title>
 <meta name=description content="Forecast and what to wear, pack and eat for Engulf 2026, Kentwood LA, Nov 12–15.">
 <style>{CSS}</style></head><body><main>
+<p class=banner>{e(r.get('banner', ''))}</p>
 <header><h1>Engulf 2026 weather</h1>
 <p>Kentwood, Louisiana · Thursday Nov 12 to Sunday Nov 15 · temple burn around 8 pm and effigy around 10 pm Saturday</p>
 <p class=updated>Updated {e(updated)}. {e(r['lead'])}</p></header>
@@ -180,6 +181,7 @@ ul{padding-left:1.2em;margin:.3em 0}li{margin:.2em 0}
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}thead th{font-weight:600;color:var(--mute)}
 tbody th{font-weight:600;white-space:nowrap}footer{margin:2em 0 1em;color:var(--mute);font-size:.85rem}
 details summary{cursor:pointer;color:var(--mute)}
+.banner{margin:0 0 12px;padding:10px 14px;border-radius:6px;background:var(--fg);color:var(--bg);font-weight:600}
 """
 
 

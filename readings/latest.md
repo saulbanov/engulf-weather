@@ -1,5 +1,7 @@
 # Engulf weather, read 2026-10-31
 
+**This is preliminary until about Nov 7, when the hour-by-hour forecast for burn night comes in. It gets more accurate the closer we get to the burn.**
+
 _12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day._ Forecast read 2026-10-31T01:09-05:00.
 
 **The ground is dry.** As of Oct 27, all of Tangipahoa Parish is in drought, and about 23% is in severe drought (US Drought Monitor). Dry spells are when parishes ban burning, and Engulf's rules say a ban can limit fire at the event. This page doesn't check for bans; the parish posts them at tangipahoa.org.

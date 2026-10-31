@@ -6,7 +6,7 @@ rule 8); the burn crew decides.
 """
 from __future__ import annotations
 import json
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
 from . import ROOT, event, astro, kit, rules
 
@@ -125,6 +125,15 @@ def odds(p: float | None) -> str:
     return "almost certain" if n >= 10 else f"about {n} in 10"
 
 
+def banner(today: date, burn: date) -> str:
+    """The one line at the top: preliminary until the hour-by-hour forecast reaches burn night, a week out."""
+    firm = burn - timedelta(days=7)
+    if today < firm:
+        return (f"This is preliminary until about {firm.strftime('%b %-d')}, when the hour-by-hour forecast for burn night comes in. "
+                "It gets more accurate the closer we get to the burn.")
+    return "Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn."
+
+
 def lead(today: date, first: date) -> str:
     n = (first - today).days
     if n > 15:
@@ -187,6 +196,7 @@ def build(today: date | None = None) -> dict:
     days = [day_reading(i, d, f, clim, ground, ev) for i, d in enumerate(ev["days"])]
     out = {"meaning": "Engulf weather reading: each day's forecast against past years, and what to wear, pack and eat.",
            "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
+           "banner": banner(today, date.fromisoformat(ev["burn_window"]["date"])),
            "days": days, "drought": ground.get("drought"), "refused": f.get("refused", []),
            "packing": kit.packing([d["kit"] for d in days], any_rain(f["models"], ev), clim["burn_hours"].get("share_predawn_hours_dewy"),
                                  clim["burn_hours"]["overnight_low_f"]["p10"], clim["burn_hours"]["evening_feels_f"]["p10"])}
@@ -199,7 +209,7 @@ def build(today: date | None = None) -> dict:
 
 
 def render(r: dict, clim: dict) -> str:
-    L = [f"# Engulf weather, read {r['written_on']}", "",
+    L = [f"# Engulf weather, read {r['written_on']}", "", f"**{r['banner']}**", "",
          f"_{r['lead']}_ Forecast read {r['forecast_read_at']}.", ""]
     dr = r.get("drought") or {}
     if dr.get("share_of_parish"):

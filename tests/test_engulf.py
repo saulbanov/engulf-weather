@@ -124,6 +124,11 @@ class Reading(unittest.TestCase):
                   "C": {"days": {"d": {"runs": 0}}}}
         self.assertEqual(reading.pooled(models, "d", "x"), (0.38, 80))
 
+    def test_banner_names_the_date_then_changes(self):
+        burn = date(2026, 11, 14)
+        self.assertIn("preliminary until about Nov 7", reading.banner(date(2026, 10, 31), burn))
+        self.assertIn("firming up", reading.banner(date(2026, 11, 8), burn))
+
     def test_lead_wording(self):
         first = date(2026, 11, 12)
         self.assertIn("normal year", reading.lead(date(2026, 10, 20), first))
