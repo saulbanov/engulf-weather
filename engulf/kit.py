@@ -52,24 +52,48 @@ def meals(day: dict, is_burn_day: bool, is_last_day: bool, is_first_day: bool = 
     low, high, eve = day.get("morning_f"), day.get("high_f"), day.get("evening_feels_f")
     if is_first_day:
         out.append("Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.")
-        out.append(f"Dinner: something easy and pre-made; sunset is {sunset}, and camp goes up faster in daylight.")
+        out.append(f"Dinner: something easy and pre-made. It's dark by {sunset}, so get camp up first.")
     elif low is not None and low <= rules.HOT_BREAKFAST_F:
         out.append(f"Breakfast: something hot. Mornings near {low}°F make coffee and oats worth it "
                    "(a stove cleared with your camp; personal fires are not allowed).")
-    elif low is not None:
-        out.append("Breakfast: no-cook is fine; mornings are mild.")
     if is_first_day:
         pass
     elif high is not None and high >= rules.COOLER_WARM_F:
         out.append(f"Lunch: no-cook and cold. Near {high}°F a shaded cooler still loses ice; ice is sold noon to 4 pm, cash.")
-    elif high is not None:
-        out.append("Lunch: anything that travels; the afternoon won't spoil much.")
     if is_burn_day:
-        out.append("Dinner: a real meal by 6:30 pm. The temple burns around 8 and the effigy around 10, and you'll be standing a while.")
+        out.append("Dinner: a real meal by 6:30 pm. You'll be standing out from the temple burn at 8 through the effigy at 10.")
     elif is_last_day:
-        out.append("Dinner: on the road. Eat the cooler down and pack out by 5 pm.")
+        out.append("Eat the cooler down; you have to be off the land by 5 pm.")
     if eve is not None and eve <= rules.WARM_DRINK_F and not is_last_day:
         out.append(f"Evening: a thermos of something hot. It will feel like {eve}°F after dark.")
+    return out
+
+
+def checklist(days: list[dict], any_wet: float | None, dewy: float | None, sunset: str, dark_hours: int) -> list[tuple[str, str]]:
+    """The packing list as (item, why) pairs, in the order a camper loads the car. Same data, same list."""
+    lows = [d["overnight_p10_f"] for d in days if d.get("overnight_p10_f") is not None]
+    eves = [d["evening_p10_f"] for d in days if d.get("evening_p10_f") is not None]
+    highs = [d["high_p90_f"] for d in days if d.get("high_p90_f") is not None]
+    out = []
+    if lows:
+        c = min(lows)
+        out.append((f"Sleeping bag rated {sleep_rating(c)}°F or warmer, and a sleeping pad",
+                    f"Nights could drop to about {round(c)}°F. Generators are off 10 pm to 10 am, so no plug-in heaters."))
+    out.append(("Headlamp, plus lights for your camp, tent lines and bike",
+                f"It's dark by {sunset}: about {dark_hours} hours of darkness a night."))
+    if eves:
+        e = min(eves)
+        out.append((dress(e)[0].upper() + dress(e)[1:], f"For evenings and the burns. With the wind it could feel like {round(e)}°F."))
+    out.append(("Rain jacket and mud boots", "The event asks for both whatever the forecast"
+                + (f"; there's about a {round(any_wet * 10)} in 10 chance of rain on at least one day." if any_wet and round(any_wet * 10) else ".")))
+    if highs and max(highs) >= rules.COOLER_WARM_F:
+        out.append(("Sun hat and sunscreen", f"Afternoons could reach {round(max(highs))}°F, and there isn't much shade."))
+    if dewy:
+        out.append(("Dry bags or a plastic bin", "Heavy dew on calm nights soaks anything left out, even without rain."))
+    if eves and min(eves) <= rules.WARM_DRINK_F:
+        out.append(("Thermos", "Something hot for standing out at the burns."))
+    out.append(("4½ gallons of water per person", "The event's figure: 1.5 gallons a day for three days. Nothing is sold on site."))
+    out.append(("Cash for ice", "Ice is the only thing sold: noon to 4 pm, Thursday to Saturday."))
     return out
 
 

@@ -33,7 +33,7 @@ _Sunrise 6:25 am, sunset 5:06 pm._
 **Eat:**
 
 - Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.
-- Dinner: something easy and pre-made; sunset is 5:06 pm, and camp goes up faster in daylight.
+- Dinner: something easy and pre-made. It's dark by 5:06 pm, so get camp up first.
 
 ## Friday Nov 13: the full day on site
 _Sunrise 6:26 am, sunset 5:06 pm._
@@ -50,8 +50,6 @@ _Sunrise 6:26 am, sunset 5:06 pm._
 
 **Eat:**
 
-- Breakfast: no-cook is fine; mornings are mild.
-- Lunch: anything that travels; the afternoon won't spoil much.
 
 ## Saturday Nov 14: burn night: temple around 8 pm, effigy around 10 pm
 _Sunrise 6:27 am, sunset 5:05 pm._
@@ -71,9 +69,7 @@ _Sunrise 6:27 am, sunset 5:05 pm._
 
 **Eat:**
 
-- Breakfast: no-cook is fine; mornings are mild.
-- Lunch: anything that travels; the afternoon won't spoil much.
-- Dinner: a real meal by 6:30 pm. The temple burns around 8 and the effigy around 10, and you'll be standing a while.
+- Dinner: a real meal by 6:30 pm. You'll be standing out from the temple burn at 8 through the effigy at 10.
 
 ## Sunday Nov 15: exodus: off the land by 5 pm
 _Sunrise 6:28 am, sunset 5:04 pm._
@@ -90,8 +86,7 @@ _Sunrise 6:28 am, sunset 5:04 pm._
 **Eat:**
 
 - Breakfast: something hot. Mornings near 46°F make coffee and oats worth it (a stove cleared with your camp; personal fires are not allowed).
-- Lunch: anything that travels; the afternoon won't spoil much.
-- Dinner: on the road. Eat the cooler down and pack out by 5 pm.
+- Eat the cooler down; you have to be off the land by 5 pm.
 
 ## Where this comes from
 

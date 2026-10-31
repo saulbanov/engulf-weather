@@ -22,7 +22,7 @@
     ],
     "eat": [
      "Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.",
-     "Dinner: something easy and pre-made; sunset is 5:06 pm, and camp goes up faster in daylight."
+     "Dinner: something easy and pre-made. It's dark by 5:06 pm, so get camp up first."
     ]
    },
    "date": "2026-11-12",
@@ -56,10 +56,7 @@
      "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
      "Overnight (low near 50\u00b0F): sleep in a dry base layer and socks."
     ],
-    "eat": [
-     "Breakfast: no-cook is fine; mornings are mild.",
-     "Lunch: anything that travels; the afternoon won't spoil much."
-    ]
+    "eat": []
    },
    "date": "2026-11-13",
    "about": "the full day on site",
@@ -93,9 +90,7 @@
      "Overnight (low near 46\u00b0F): sleep in a dry base layer and socks."
     ],
     "eat": [
-     "Breakfast: no-cook is fine; mornings are mild.",
-     "Lunch: anything that travels; the afternoon won't spoil much.",
-     "Dinner: a real meal by 6:30 pm. The temple burns around 8 and the effigy around 10, and you'll be standing a while."
+     "Dinner: a real meal by 6:30 pm. You'll be standing out from the temple burn at 8 through the effigy at 10."
     ]
    },
    "date": "2026-11-14",
@@ -142,8 +137,7 @@
     ],
     "eat": [
      "Breakfast: something hot. Mornings near 46\u00b0F make coffee and oats worth it (a stove cleared with your camp; personal fires are not allowed).",
-     "Lunch: anything that travels; the afternoon won't spoil much.",
-     "Dinner: on the road. Eat the cooler down and pack out by 5 pm."
+     "Eat the cooler down; you have to be off the land by 5 pm."
     ]
    },
    "date": "2026-11-15",

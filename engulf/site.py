@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from html import escape
-from . import ROOT, event, reading, rules
+from . import ROOT, event, kit, reading, rules
 
 OUT = ROOT / "site"
 REPO = "https://github.com/saulbanov/engulf-weather"
@@ -126,42 +126,98 @@ def md_bold(x: str) -> str:
     return "".join(f"<b>{t}</b>" if i % 2 else t for i, t in enumerate(parts))
 
 
+def feel_word(high: int | None) -> str:
+    if high is None:
+        return ""
+    for floor, w in ((80, "Hot"), (70, "Warm"), (60, "Mild"), (50, "Cool"), (-99, "Cold")):
+        if high >= floor:
+            return w
+
+
+def rain_word(p: float | None) -> str:
+    if p is None:
+        return ""
+    return "mostly dry" if p < 0.2 else ("some chance of rain" if p < 0.5 else "rain likely")
+
+
+def glance(ev: dict, f: dict, clim: dict, r: dict) -> str:
+    """One card per day: a two-word summary, high and low, chance of rain, sunset."""
+    sd = clim["site_daily"]
+    cards = ""
+    for d, rd in zip(ev["days"], r["days"]):
+        xs = [m["days"][d] for m in f["models"].values() if m.get("days", {}).get(d, {}).get("runs")]
+        if xs:
+            hi = pooled_spread([x["high_f"] for x in xs])["median"]
+            lo = pooled_spread([x["low_f"] for x in xs])["median"]
+            wet = pooled_share([(x["share_rain_at_least_0.1"], x["runs"]) for x in xs])
+            src = ""
+        else:
+            hi, lo, wet, src = sd["high_f"]["median"], sd["low_f"]["median"], sd["share_days_rain_at_least_0.1"], "<span class=note>normal year; too far out</span>"
+        cards += (f"<div class=card><div class=dname>{e(datetime.fromisoformat(d).strftime('%a %b %-d'))}</div>"
+                  f"<div class=sum>{e(feel_word(hi))}, {e(rain_word(wet))}</div>"
+                  f"<div class=temps><b>{hi}°</b> / {lo}°</div>"
+                  f"<div class=small>Rain: {e(chance(wet))}<br>Dark by {e(rd['sunset'])}</div>{src}</div>")
+    return f"<div class=glance>{cards}</div>"
+
+
+def burn_sentence(f: dict, clim: dict, r: dict) -> str:
+    bs = [m["burn"] for m in f["models"].values() if m.get("burn", {}).get("runs")]
+    moon = next((d["burn"]["moon"] for d in r["days"] if d.get("burn")), None)
+    sky = f" A thin crescent moon ({pct(moon['illuminated'])} lit), so a dark sky." if moon else ""
+    if not bs:
+        bh = clim["burn_hours"]
+        return (f"Too far out for a forecast yet. In a normal year, wind on these nights tops out around "
+                f"{bh['median_max_wind_mph_burn_hours']} mph and it rarely rains.{sky}")
+    wind = pooled_spread([b["max_wind_mph"] for b in bs])["median"]
+    rain = pooled_share([(b["share_rain_at_least_0.1"], b["runs"]) for b in bs])
+    cold = pooled_spread([b["coldest_f"] for b in bs])["median"]
+    w = "Light wind" if wind < 10 else ("Breezy" if wind < rules.WINDY_MPH else "Windy")
+    return (f"<b>{w}</b> (around {wind} mph), <b>{e(rain_word(rain))}</b> ({e(chance(rain))} chance of rain), "
+            f"and about <b>{cold}°F</b> by midnight, colder when you're standing still.{sky}")
+
+
 def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
     dr, rv = ground.get("drought") or {}, ground.get("river") or {}
     updated = datetime.fromisoformat(f["read_at"]).strftime("%a %b %-d, %-I:%M %p Central")
-    drought = f"<section class=alert><p>{md_bold(reading.drought_words(dr))}</p></section>" if dr.get("share_of_parish") else ""
-    river = ""
-    if rv.get("share_of_same_weeks_at_or_below") is not None:
-        river = (f"<p>The Tangipahoa River near the site is <b>{e(reading.river_words(rv['share_of_same_weeks_at_or_below']))}</b> "
-                 "for this time of year (US Geological Survey gauge at Osyka, Mississippi). The event warns that heavy rain can flood "
-                 "the site's roads, so leave room in your Sunday plans if a storm shows up.</p>")
+    sun = r["days"][2]["sunset"]
+    rise, set_ = r["days"][2]["sunrise"], r["days"][2]["sunset"]
+    dark = round(24 - (datetime.strptime(set_, "%I:%M %p") - datetime.strptime(rise, "%I:%M %p")).seconds / 3600)
+    items = kit.checklist([d["kit"] for d in r["days"]], reading.any_rain(f["models"], ev),
+                          clim["burn_hours"].get("share_predawn_hours_dewy"), sun, dark)
+    check = "<ul class=check>" + "".join(f"<li><b>{e(a)}</b><br><span class=small>{e(b)}</span></li>" for a, b in items) + "</ul>"
+    fire = ""
+    if dr.get("share_of_parish"):
+        fire = ("<p class=small><b>Fire note:</b> the parish is in drought. Dry spells are when parishes ban burning, and Engulf's rules "
+                "say a ban can limit fire at the event. This page doesn't track bans; check tangipahoa.org.</p>")
     days = ""
     for d in r["days"]:
         k = d["kit"]
-        days += (f"<section class=day><h3>{e(day_name(d['date']))} · {e(d['about'])}</h3>"
-                 f"<p class=note>Sunrise {e(d['sunrise'])} · sunset {e(d['sunset'])}</p>{bullets(d['lines'])}"
-                 f"<div class=cols><div><h4>Wear</h4>{bullets(k['wear'])}</div><div><h4>Eat</h4>{bullets(k['eat'])}</div></div></section>")
+        notes = k["wear"] + k["eat"]
+        days += (f"<section class=day><h3>{e(day_name(d['date']))} · {e(d['about'])}</h3>{bullets(notes)}</section>")
+    river = ""
+    if rv.get("share_of_same_weeks_at_or_below") is not None:
+        river = (f"<p>The Tangipahoa River near the site is {e(reading.river_words(rv['share_of_same_weeks_at_or_below']))} for this "
+                 "time of year. The event warns heavy rain can flood the site's roads.</p>")
     refused = f"<p class=note>Some sources didn't answer this update: {e('; '.join(f['refused']))}</p>" if f.get("refused") else ""
     return f"""<!doctype html>
 <html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>Engulf 2026 weather</title>
-<meta name=description content="Forecast and what to wear, pack and eat for Engulf 2026, Kentwood LA, Nov 12–15.">
+<meta name=description content="Forecast and packing list for Engulf 2026, Kentwood LA, Nov 12–15.">
 <style>{CSS}</style></head><body><main>
 <p class=banner>{e(r.get('banner', ''))}</p>
 <header><h1>Engulf 2026 weather</h1>
-<p>Kentwood, Louisiana · Thursday Nov 12 to Sunday Nov 15 · temple burn around 8 pm and effigy around 10 pm Saturday</p>
-<p class=updated>Updated {e(updated)}. {e(r['lead'])}</p></header>
-{drought}
-<section><h2>Pack for the weekend</h2>{bullets(r['packing'])}</section>
-<section><h2>Burn night: Saturday, 7 pm to midnight</h2>{burn_table(ev, f, clim)}
-<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p>{nws_table(ev, f)}</section>
-<section><h2>Day by day</h2>{days_table(ev, f, clim)}
-<p class=note>Numbers in brackets are the likely range. "Evening, with wind" is how cold it feels after dark.</p></section>
-{days}
-<section><h2>River</h2>{river or "<p>Not available this update.</p>"}</section>
-<section class=method><h2>Where this comes from</h2>{bullets(reading.ABOUT_PAGE)}
-<p class=note>All the numbers and code are public: <a href="{REPO}">github.com/saulbanov/engulf-weather</a>.</p>{refused}</section>
-<footer>Data: ECMWF, NOAA and the National Weather Service, PRISM, Iowa Environmental Mesonet, US Geological Survey, US Drought Monitor. Event details: engulfburn.org. Not an official Engulf page.</footer>
+<p class=small>Kentwood, Louisiana · Thu Nov 12 to Sun Nov 15 · updated {e(updated)}, twice a day</p></header>
+{glance(ev, f, clim, r)}
+<section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{fire}{nws_table(ev, f)}</section>
+<section><h2>Pack</h2>{check}</section>
+<section><h2>Day by day</h2>{days}</section>
+<section class=method><h2>The details</h2>
+<details><summary>Burn night, by the numbers</summary>{burn_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p></details>
+<details><summary>Every day, by the numbers</summary>{days_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range.</p></details>
+<details><summary>Drought and river</summary>{"<p>" + md_bold(reading.drought_words(dr)) + "</p>" if dr.get("share_of_parish") else ""}{river}</details>
+<details><summary>Where this comes from</summary>{bullets(reading.ABOUT_PAGE)}<p class=note>Numbers and code: <a href="{REPO}">github.com/saulbanov/engulf-weather</a>.</p></details>
+{refused}</section>
+<footer>Not an official Engulf page. Data: ECMWF, NOAA and the National Weather Service, PRISM, Iowa Environmental Mesonet, US Geological Survey, US Drought Monitor. Event details: engulfburn.org.</footer>
 </main></body></html>
 """
 
@@ -180,7 +236,13 @@ ul{padding-left:1.2em;margin:.3em 0}li{margin:.2em 0}
 .scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:.92rem;font-variant-numeric:tabular-nums}
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}thead th{font-weight:600;color:var(--mute)}
 tbody th{font-weight:600;white-space:nowrap}footer{margin:2em 0 1em;color:var(--mute);font-size:.85rem}
-details summary{cursor:pointer;color:var(--mute)}
+details{margin:.5em 0;border-top:1px solid var(--line);padding-top:.5em}details summary{cursor:pointer;font-weight:600}
+.small{font-size:.9rem;color:var(--mute)}.glance{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+@media (max-width:640px){.glance{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px}.dname{font-weight:700}
+.sum{color:var(--accent);font-weight:600;margin:2px 0}.temps{font-size:1.5rem}.check{list-style:none;padding:0}
+.check li{padding:8px 0 8px 30px;border-bottom:1px solid var(--line);position:relative}
+.check li:before{content:"";position:absolute;left:2px;top:11px;width:16px;height:16px;border:2px solid var(--mute);border-radius:3px}
 .banner{margin:0 0 12px;padding:10px 14px;border-radius:6px;background:var(--fg);color:var(--bg);font-weight:600}
 """
 
