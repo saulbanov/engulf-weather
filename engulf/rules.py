@@ -31,6 +31,16 @@ SWING_F = 25             # afternoon-to-morning drop at or above this is called 
 MUD_CHANCE = 0.3         # a day this likely to see 0.1 in of rain gets the mud line
 DEWY_SHARE = 0.25        # share of calm predawn hours near the dew point that earns the dew line
 
+# Blending the forecast with a normal year (engulf/blend.py). The forecast is taken as is up to a week
+# out; beyond that its weight falls to half at 15 days, the far edge of the European forecast. A normal
+# year is nudged by NOAA's 8-14 day outlook where it covers the day: degrees for temperature, a
+# multiplier on the chance of rain. Round numbers chosen here, not fitted; change one and rerun.
+FORECAST_FULL_DAYS = 7
+FORECAST_FAR_DAYS = 15
+FORECAST_FAR_WEIGHT = 0.5
+OUTLOOK_TEMP_SHIFT_F = {"slight": 1.5, "moderate": 3.0, "strong": 4.0}
+OUTLOOK_RAIN_FACTOR = {"slight": 1.15, "moderate": 1.3, "strong": 1.5}
+
 # Dew and fog: when the air cools to within this many °F of its dew point on a calm night,
 # tents and gear get wet without rain.
 DEW_SPREAD_F = 3

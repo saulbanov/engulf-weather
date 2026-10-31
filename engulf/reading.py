@@ -8,7 +8,7 @@ from __future__ import annotations
 import json
 from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo
-from . import ROOT, event, astro, kit, rules
+from . import ROOT, event, astro, blend, kit, rules
 
 ABOUT = {0: "arrival and setup; gates 10 am to 10 pm",
          1: "the full day on site",
@@ -44,14 +44,18 @@ def median_of(models: dict, day: str, key: str, stat: str = "median") -> int | N
     return {"median": round(sum(vals) / len(vals)), "p10": min(vals), "p90": max(vals)}[stat]
 
 
-def numbers(i: int, day: str, models: dict, clim: dict, ev: dict) -> dict:
-    """The day's key temperatures and what they mean; a normal year stands in where no forecast reaches."""
+def numbers(i: int, day: str, models: dict, clim: dict, ev: dict, today: date | None = None, outlook: dict | None = None) -> dict:
+    """The day's key numbers: the forecast blended with a normal year and NOAA's lean (blend.py), and what they mean."""
     sd, bh = clim["site_daily"], clim["burn_hours"]
     reached = bool(reach(models, day))
-    k = {"high_f": median_of(models, day, "high_f") if reached else sd["high_f"]["median"],
-         "morning_f": median_of(models, day, "low_f") if reached else sd["low_f"]["median"],
-         "evening_feels_f": median_of(models, day, "evening_feels_f") if reached else bh["evening_feels_f"]["median"],
-         "overnight_f": median_of(models, day, "overnight_low_f") if reached else bh["overnight_low_f"]["median"],
+    normal = {"high_f": sd["high_f"]["median"], "morning_f": sd["low_f"]["median"], "evening_feels_f": bh["evening_feels_f"]["median"],
+              "overnight_f": bh["overnight_low_f"]["median"], "wet": sd["share_days_rain_at_least_0.1"]}
+    fc = None if not reached else {
+        "high_f": median_of(models, day, "high_f"), "morning_f": median_of(models, day, "low_f"),
+        "evening_feels_f": median_of(models, day, "evening_feels_f"), "overnight_f": median_of(models, day, "overnight_low_f"),
+        "wet": pooled(models, day, "share_rain_at_least_0.1")[0]}
+    est = blend.estimate(day, today or date.today(), fc, normal, outlook or {})
+    k = {**{x: est[x] for x in ("high_f", "morning_f", "evening_feels_f", "overnight_f", "wet")}, "inputs": est["inputs"],
          "high_p90_f": median_of(models, day, "high_f", "p90") if reached else sd["high_f"]["p90"],
          "evening_p10_f": median_of(models, day, "evening_feels_f", "p10") if reached else bh["evening_feels_f"]["p10"],
          "overnight_p10_f": median_of(models, day, "overnight_low_f", "p10") if reached else bh["overnight_low_f"]["p10"],
@@ -61,7 +65,7 @@ def numbers(i: int, day: str, models: dict, clim: dict, ev: dict) -> dict:
         k["overnight_f"] = k["overnight_p10_f"] = k["evening_p10_f"] = None
     rise, set_ = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])
     after_gates = (set_.hour + set_.minute / 60) - 10
-    k["means"] = kit.meaning(k, pooled(models, day, "share_rain_at_least_0.1")[0] if reached else sd["share_days_rain_at_least_0.1"],
+    k["means"] = kit.meaning(k, k["wet"],
                              first=i == 0, last=last, daylight_after_gates=after_gates, dewy=bh.get("share_predawn_hours_dewy"))
     return k
 
@@ -106,19 +110,17 @@ def lean_words(o: dict, what: str) -> str:
     return f"{strength}{word} than normal"
 
 
-def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: date) -> list[str]:
-    """The week in a few bullets: where forecasts stand, burn night, the long-range lean, the fall so far,
-    a normal year, and when it firms up. Every bullet is a template filled from the numbers."""
+def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: date, days: list[dict]) -> list[str]:
+    """The week in a few bullets, filled from templates: the estimate, burn night, the ground, a normal year,
+    and when it firms up. The estimate already blends the forecast, a normal year and NOAA's lean (blend.py)."""
     models, sd, bh = f["models"], clim["site_daily"], clim["burn_hours"]
     out = []
-    reached = [d for d in ev["days"] if reach(models, d)]
-    if reached:
-        his = [median_of(models, d, "high_f") for d in reached]
-        nights = [x for x in (median_of(models, d, "overnight_low_f") for d in reached[:-1] or reached) if x is not None]
-        wet = max(pooled(models, d, "share_rain_at_least_0.1")[0] or 0 for d in reached)
-        rain = "little rain" if wet < 0.2 else ("a chance of a shower or two" if wet < 0.5 else "rain likely on at least one day")
-        out.append(f"Right now the forecasts point to afternoons around {round(sum(his) / len(his))}°, nights around "
-                   f"{round(sum(nights) / len(nights)) if nights else '?'}°, and {rain}.")
+    his = [d["kit"]["high_f"] for d in days]
+    nights = [d["kit"]["overnight_f"] for d in days if d["kit"].get("overnight_f") is not None]
+    wet = max(d["kit"]["wet"] for d in days)
+    rain = "little rain" if wet < 0.2 else ("a chance of a shower or two" if wet < 0.5 else "rain likely on at least one day")
+    out.append(f"Expect afternoons around {round(sum(his) / len(his))}°, nights around "
+               f"{round(sum(nights) / len(nights)) if nights else sd['low_f']['median']}°, and {rain}.")
     bd = ev["burn_window"]["date"]
     w, br = pooled_burn(models, "share_wind_at_least_15")
     if br:
@@ -129,22 +131,13 @@ def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: d
         ww = "light wind" if wind < 10 else ("a breeze" if wind < rules.WINDY_MPH else "wind")
         out.append(f"Burn night looks like {ww} (around {wind} mph), {'probably dry' if (r or 0) < 0.2 else 'a chance of rain'}, "
                    f"and about {cold}° at the burns.")
-    cpc = (outlook.get("outlooks") or {}).get("8-14 day") or {}
-    t, rn = cpc.get("temperature") or {}, cpc.get("rain") or {}
-    if t.get("period"):
-        d1, d2 = (datetime.fromisoformat(x) for x in t["period"])
-        a_, b_ = d1.strftime("%b %-d"), d2.strftime("%-d" if d1.month == d2.month else "%b %-d")
-        out.append(f"NOAA's longer-range outlook for {a_}–{b_} leans {lean_words(t, 'temperature')}, with {lean_words(rn, 'rain')}. "
-                   "It gives odds for the whole stretch, not a forecast for any one day.")
-    rc = ground.get("recent") or {}
-    if rc.get("highs_vs_normal_f") is not None and rc.get("normal_rain_in"):
-        d, share = rc["highs_vs_normal_f"], rc["rain_in"] / rc["normal_rain_in"]
-        temp = "warm" if d >= 1.5 else ("cool" if d <= -1.5 else "near normal")
-        wetw = "dry" if share < 0.75 else ("wet" if share > 1.25 else "about normal on rain")
-        hi_words = f"highs about {round(abs(d))}° {'above' if d > 0 else 'below'} normal" if abs(d) >= 1.5 else "highs near normal"
-        dr = (ground.get("drought") or {}).get("share_of_parish") or {}
-        out.append(f"The last 30 days ran {temp} and {wetw}: {hi_words}, and {rc['rain_in']:.1f} of a usual {rc['normal_rain_in']:.1f} inches of rain at McComb."
-                   + (" The parish is in drought, so the ground is dry and burn bans are possible." if dr.get("D1", 0) >= 0.5 else ""))
+    rc, dr = ground.get("recent") or {}, (ground.get("drought") or {}).get("share_of_parish") or {}
+    dry_fall = rc.get("normal_rain_in") and rc["rain_in"] / rc["normal_rain_in"] < 0.75
+    if dr.get("D1", 0) >= 0.5 or dry_fall:
+        out.append("The ground is dry: " + ("October ran warm and dry, and " if dry_fall and (rc.get("highs_vs_normal_f") or 0) >= 1.5
+                   else ("October ran dry, and " if dry_fall else ""))
+                   + ("the parish is in drought. " if dr.get("D1", 0) >= 0.5 else "")
+                   + "Burn bans are possible.")
     out.append(f"In a normal Engulf week, afternoons run around {sd['high_f']['median']}° and nights around {sd['low_f']['median']}°; "
                f"it rains on about {one_in(sd['share_days_rain_at_least_0.1'])} days, frost comes about {one_in(sd['share_nights_at_or_below_32'])} nights, "
                f"and wind at burn time rarely reaches {rules.WINDY_MPH} mph.")
@@ -215,9 +208,11 @@ def lead(today: date, first: date) -> str:
     return f"{n} days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in."
 
 
-def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -> dict:
+def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict, today: date | None = None,
+                outlook: dict | None = None) -> dict:
     models = f["models"]
     about = ABOUT[i]
+    k = numbers(i, day, models, clim, ev, today, outlook)
     wet, runs = pooled(models, day, "share_rain_at_least_0.1")
     soak, _ = pooled(models, day, "share_rain_at_least_0.5")
     cold, _ = pooled(models, day, "share_low_at_or_below_40")
@@ -225,13 +220,9 @@ def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -
     hi, lo = median_of(models, day, "high_f"), median_of(models, day, "low_f")
     sd, bh = clim["site_daily"], clim["burn_hours"]
     lines = []
-    if runs == 0:
-        lines.append(f"Forecasts don't reach this day yet. In a normal year it rains on about "
-                     f"{round(sd['share_days_rain_at_least_0.1'] * 10)} of these days in 10, and about "
-                     f"{round(sd['share_nights_at_or_below_40'] * 10)} nights in 10 drop to 40°F or below.")
-    else:
-        lines.append(f"Afternoon around {hi}°F (normal: {sd['high_f']['median']}°F). Early morning around {lo}°F (normal: {sd['low_f']['median']}°F).")
-        lines.append(f"Chance of rain: {odds(wet)}. In a normal year it rains on about {round(sd['share_days_rain_at_least_0.1'] * 10)} of these days in 10.")
+    lines.append(f"Afternoon around {k['high_f']}°F (normal: {sd['high_f']['median']}°F). Early morning around {k['morning_f']}°F (normal: {sd['low_f']['median']}°F).")
+    lines.append(f"Chance of rain: {odds(k['wet'])}. In a normal year it rains on about {round(sd['share_days_rain_at_least_0.1'] * 10)} of these days in 10.")
+    if runs:
         if cold:
             lines.append(f"Chance of a night at 40°F or colder: {odds(cold)}." + (f" Chance of frost: {odds(frost)}." if frost else ""))
     burn = None
@@ -254,9 +245,9 @@ def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -
         if rv.get("flow_cfs") is not None:
             lines.append(f"The nearby Tangipahoa River is {river_words(rv['share_of_same_weeks_at_or_below'])} for this time of year.")
     rise, set_ = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])
-    return {"kit": numbers(i, day, models, clim, ev), "date": day, "about": about, "runs": runs, "lines": lines,
+    return {"kit": k, "date": day, "about": about, "runs": runs, "lines": lines,
             "sunrise": rise.strftime("%-I:%M am"), "sunset": set_.strftime("%-I:%M pm"),
-            "high_f": hi, "low_f": lo, "share_rain_at_least_0.1": wet, "share_low_at_or_below_40": cold, "burn": burn}
+            "high_f": k["high_f"], "low_f": k["morning_f"], "share_rain_at_least_0.1": k["wet"], "share_low_at_or_below_40": cold, "burn": burn}
 
 
 def build(today: date | None = None) -> dict:
@@ -265,13 +256,13 @@ def build(today: date | None = None) -> dict:
     clim = json.loads((ROOT / "data" / "climatology.json").read_text())
     f = json.loads((ROOT / "data" / "forecast-latest.json").read_text())
     ground = json.loads((ROOT / "data" / "ground-latest.json").read_text())
-    days = [day_reading(i, d, f, clim, ground, ev) for i, d in enumerate(ev["days"])]
     op = ROOT / "data" / "outlook-latest.json"
     outlook = json.loads(op.read_text()) if op.exists() else {}
+    days = [day_reading(i, d, f, clim, ground, ev, today, outlook) for i, d in enumerate(ev["days"])]
     out = {"meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
            "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
            "banner": banner(today, date.fromisoformat(ev["burn_window"]["date"])),
-           "summary": summary(f, clim, ground, outlook, ev, today),
+           "summary": summary(f, clim, ground, outlook, ev, today, days),
            "days": days, "drought": ground.get("drought"), "refused": f.get("refused", [])}
     (ROOT / "readings").mkdir(exist_ok=True)
     (ROOT / "readings" / "latest.json").write_text(json.dumps(out, indent=1) + "\n")

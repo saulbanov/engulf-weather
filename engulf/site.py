@@ -145,16 +145,10 @@ def glance(ev: dict, f: dict, clim: dict, r: dict) -> str:
     sd = clim["site_daily"]
     cards, n = "", len(ev["days"])
     for i, (d, rd) in enumerate(zip(ev["days"], r["days"]), 1):
-        xs = [m["days"][d] for m in f["models"].values() if m.get("days", {}).get(d, {}).get("runs")]
-        if xs:
-            hi = pooled_spread([x["high_f"] for x in xs])["median"]
-            lo = pooled_spread([x["low_f"] for x in xs])["median"]
-            wet = pooled_share([(x["share_rain_at_least_0.1"], x["runs"]) for x in xs])
-            src = ""
-        else:
-            hi, lo, wet = sd["high_f"]["median"], sd["low_f"]["median"], sd["share_days_rain_at_least_0.1"]
-            src = "<p class=small>Too far out to forecast; this is a normal year.</p>"
         k = rd["kit"]
+        hi, lo, wet = k["high_f"], k["morning_f"], k["wet"]
+        w = k["inputs"]["forecast_weight"]
+        src = "" if w else "<p class=small>Too far out to forecast; this is a normal year.</p>"
         cards += (f"<article class=card id=day{i}><div class=top><span class=dname>{e(datetime.fromisoformat(d).strftime('%A %b %-d'))}</span>"
                   f"<span class=small>{i} of {n}</span></div><div class=about>{e(rd['about'])}</div>"
                   f"<div class=sum>{e(feel_word(hi))}, {e(rain_word(wet))}</div>"
@@ -181,7 +175,34 @@ def burn_sentence(f: dict, clim: dict, r: dict) -> str:
             f"and about <b>{cold}°F</b> by midnight, colder when you're standing still.{sky}")
 
 
-def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
+def how_built(ev: dict, r: dict, ground: dict, outlook: dict) -> str:
+    rows = []
+    for d in r["days"]:
+        i = d["kit"]["inputs"]
+        words = {("temperature", "above"): "warmer", ("temperature", "below"): "colder", ("rain", "above"): "wetter", ("rain", "below"): "drier"}
+        lean = ", ".join(f"{words[(k, v.split()[0])]} {v.split()[1]}" for k, v in i["outlook"].items()) or "no lean, or outside its dates"
+        rows.append([e(day_name(d["date"])), str(i["days_ahead"]), f"{round(i['forecast_weight'] * 100)}%", e(lean),
+                     f"{d['kit']['high_f']}° / {d['kit']['morning_f']}°", e(chance(d["kit"]["wet"]))])
+    o = ((outlook.get("outlooks") or {}).get("8-14 day") or {})
+    t, rn = o.get("temperature") or {}, o.get("rain") or {}
+    cpc = ""
+    if t.get("period"):
+        cpc = (f"<p>NOAA's 8-14 day outlook ({e(t['period'][0])} to {e(t['period'][1])}) at the site: temperature "
+               f"{e(reading.lean_words(t, 'temperature'))}; {e(reading.lean_words(rn, 'rain'))}.</p>")
+    rc = ground.get("recent") or {}
+    recent = ""
+    if rc.get("highs_vs_normal_f") is not None:
+        recent = (f"<p>Last 30 days at McComb ({e(rc['from'])} to {e(rc['to'])}): highs {rc['highs_vs_normal_f']:+.1f}° and lows "
+                  f"{rc['lows_vs_normal_f']:+.1f}° against normal; {rc['rain_in']:.2f} of a normal {rc['normal_rain_in']:.2f} inches of rain. "
+                  "Used for the dry-ground line, not the temperatures.</p>")
+    return ("<p>Each day's numbers blend the forecast with a normal year for that date. Up to a week out the forecast counts "
+            "fully; further out it counts less, down to half at two weeks. A normal year is nudged warmer, colder, wetter or drier "
+            "when NOAA's outlook leans that way for the day.</p>"
+            + table(["Day", "Days ahead", "Forecast weight", "NOAA lean", "High / low", "Rain"], rows) + cpc + recent)
+
+
+def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict, outlook: dict | None = None) -> str:
+    outlook = outlook or {}
     dr, rv = ground.get("drought") or {}, ground.get("river") or {}
     updated = datetime.fromisoformat(f["read_at"]).strftime("%a %b %-d, %-I:%M %p Central")
     fire = ""
@@ -207,6 +228,7 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
 <section class=method><h2>The details</h2>
 <details><summary>Burn night, by the numbers</summary>{burn_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p></details>
 <details><summary>Every day, by the numbers</summary>{days_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range.</p></details>
+<details><summary>How this estimate is built</summary>{how_built(ev, r, ground, outlook)}</details>
 <details><summary>Drought and river</summary>{"<p>" + md_bold(reading.drought_words(dr)) + "</p>" if dr.get("share_of_parish") else ""}{river}</details>
 <details><summary>Where this comes from</summary>{bullets(reading.ABOUT_PAGE)}<p class=note>Numbers and code: <a href="{REPO}">github.com/saulbanov/engulf-weather</a>.</p></details>
 {refused}</section>
@@ -244,8 +266,9 @@ def build() -> None:
     ev = event()
     load = lambda p: json.loads((ROOT / p).read_text())
     f, ground, clim, r = load("data/forecast-latest.json"), load("data/ground-latest.json"), load("data/climatology.json"), load("readings/latest.json")
+    outlook = load("data/outlook-latest.json") if (ROOT / "data" / "outlook-latest.json").exists() else {}
     OUT.mkdir(exist_ok=True)
-    (OUT / "index.html").write_text(render(ev, f, ground, clim, r))
+    (OUT / "index.html").write_text(render(ev, f, ground, clim, r, outlook))
     data = {"event": {k: ev[k] for k in ("name", "year", "days", "burns", "burn_window", "site")},
-            "reading": r, "forecast": f, "ground": ground, "climatology": clim}
+            "reading": r, "forecast": f, "ground": ground, "outlook": outlook, "climatology": clim}
     (OUT / "data.json").write_text(json.dumps(data, indent=1, sort_keys=True) + "\n")

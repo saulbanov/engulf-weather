@@ -53,6 +53,30 @@ class Outlook(unittest.TestCase):
         self.assertEqual(outlook.read_kml(kml, 8, 8)["period"], ["2026-11-07", "2026-11-13"])
 
 
+class Blend(unittest.TestCase):
+    def test_forecast_weight_by_lead(self):
+        from engulf import blend
+        self.assertEqual(blend.forecast_weight(3), 1.0)
+        self.assertEqual(blend.forecast_weight(7), 1.0)
+        self.assertEqual(blend.forecast_weight(11), 0.75)
+        self.assertEqual(blend.forecast_weight(15), 0.5)
+        self.assertEqual(blend.forecast_weight(20), 0.5)
+
+    def test_estimate_blends_and_nudges(self):
+        from engulf import blend
+        normal = {"high_f": 72, "morning_f": 45, "evening_feels_f": 52, "overnight_f": 49, "wet": 0.14}
+        fc = {"high_f": 68, "morning_f": 50, "evening_feels_f": 56, "overnight_f": 50, "wet": 0.1}
+        outlook = {"outlooks": {"8-14 day": {"temperature": {"period": ["2026-11-07", "2026-11-13"], "lean": "above", "chance": 33.0},
+                                             "rain": {"period": ["2026-11-07", "2026-11-13"], "lean": "near", "chance": 36.0}}}}
+        e = blend.estimate("2026-11-12", date(2026, 11, 1), fc, normal, outlook)   # 11 days out: 75% forecast
+        self.assertEqual(e["high_f"], round(0.75 * 68 + 0.25 * 73.5))               # normal nudged +1.5° for a slight warm lean
+        self.assertEqual(e["inputs"]["normal_rain_factor"], 1.0)                     # "near normal" rain: no nudge
+        none = blend.estimate("2026-11-15", date(2026, 10, 20), None, normal, outlook)
+        self.assertEqual((none["high_f"], none["inputs"]["forecast_weight"]), (72, 0.0))   # outside the outlook's dates
+        close = blend.estimate("2026-11-14", date(2026, 11, 10), fc, normal, outlook)
+        self.assertEqual(close["high_f"], 68)
+
+
 class Station(unittest.TestCase):
     def hour(self, d, h, wind, gust=None, rain=0.0):
         return {"date": d, "hour": h, "temp_f": 50.0, "dew_f": 45.0, "wind_mph": wind, "gust_mph": gust, "rain_in": rain}
