@@ -96,13 +96,28 @@ class Ground(unittest.TestCase):
 
 
 class Reading(unittest.TestCase):
+    def test_river_words(self):
+        self.assertEqual(reading.river_words(0.05), "very low")
+        self.assertEqual(reading.river_words(0.36), "about normal")
+        self.assertEqual(reading.river_words(0.95), "very high")
+
+    def test_no_jargon_in_reader_text(self):
+        import json
+        from engulf import ROOT
+        f, g, c = (json.loads((ROOT / p).read_text()) for p in ("data/forecast-latest.json", "data/ground-latest.json", "data/climatology.json"))
+        days = [reading.day_reading(i, d, f, c, g, EV) for i, d in enumerate(EV["days"])]
+        text = " ".join(x for d in days for x in d["lines"] + d["kit"]["wear"] + d["kit"]["eat"]).lower()
+        text += " " + " ".join(kit.packing([d["kit"] for d in days], 0.2, 0.3, 35, 36)).lower()
+        for word in ("ensemble", "runs", "median", "percentile", "climatology", "cfs", "model", "leaning", "p10", "share"):
+            self.assertNotIn(word, text, word)
+
     def test_odds_words(self):
-        self.assertEqual(reading.odds(None), "not yet in any model's reach")
-        self.assertEqual(reading.odds(0), "no run shows it")
-        self.assertEqual(reading.odds(0.04), "fewer than 1 run in 10")
-        self.assertEqual(reading.odds(0.1), "about 1 run in 10")
-        self.assertEqual(reading.odds(0.33), "about 3 runs in 10")
-        self.assertEqual(reading.odds(0.97), "nearly every run")
+        self.assertEqual(reading.odds(None), "too far out to say")
+        self.assertEqual(reading.odds(0), "very unlikely")
+        self.assertEqual(reading.odds(0.04), "unlikely (under 1 in 10)")
+        self.assertEqual(reading.odds(0.1), "about 1 in 10")
+        self.assertEqual(reading.odds(0.33), "about 3 in 10")
+        self.assertEqual(reading.odds(0.97), "almost certain")
 
     def test_pooling_weights_by_run_count(self):
         models = {"A": {"days": {"d": {"runs": 50, "x": 0.0}}}, "B": {"days": {"d": {"runs": 30, "x": 1.0}}},
@@ -111,9 +126,9 @@ class Reading(unittest.TestCase):
 
     def test_lead_wording(self):
         first = date(2026, 11, 12)
-        self.assertIn("climatology alone", reading.lead(date(2026, 10, 20), first))
-        self.assertIn("ensembles only", reading.lead(date(2026, 10, 31), first))
-        self.assertIn("National Weather Service", reading.lead(date(2026, 11, 8), first))
+        self.assertIn("normal year", reading.lead(date(2026, 10, 20), first))
+        self.assertIn("best guesses", reading.lead(date(2026, 10, 31), first))
+        self.assertIn("burn night is now in", reading.lead(date(2026, 11, 8), first))
 
 
 class Kit(unittest.TestCase):
@@ -139,9 +154,9 @@ class Kit(unittest.TestCase):
         first = kit.meals({"morning_f": 40, "high_f": 70}, False, False, True, "5:06 pm")
         self.assertFalse(any(x.startswith("Breakfast") for x in first))
 
-    def test_packing_plans_for_the_colder_of_forecast_and_past(self):
-        lines = kit.packing([{"overnight_p10_f": 45}], None, None, past_cold=35)
-        self.assertIn("25°F", lines[0])
+    def test_packing_uses_the_forecast_and_falls_back_to_a_normal_year(self):
+        self.assertIn("35°F", kit.packing([{"overnight_p10_f": 45}], None, None, past_cold=35)[0])
+        self.assertIn("25°F", kit.packing([], None, None, past_cold=35)[0])
 
 
 class Site(unittest.TestCase):
@@ -160,7 +175,13 @@ class Site(unittest.TestCase):
         self.assertNotIn("<script", html)
         self.assertNotIn("src=\"http", html)
         self.assertIn("Burn night", html)
-        self.assertIn("not Engulf's", html)
+        self.assertIn("Not an official Engulf page", html)
+
+    def test_page_has_no_jargon(self):
+        import re
+        html = re.sub(r"<[^>]+>", " ", site.render(EV, *self.load())).lower()
+        for word in ("ensemble", "model runs", "median", "climatology", "cfs", "leaning", "p10"):
+            self.assertNotIn(word, html, word)
 
     def test_band_formatting(self):
         self.assertEqual(site.rng({"median": 5}), "5°F")

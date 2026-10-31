@@ -9,7 +9,7 @@ from __future__ import annotations
 import json
 from datetime import datetime
 from html import escape
-from . import ROOT, event, rules
+from . import ROOT, event, reading, rules
 
 OUT = ROOT / "site"
 REPO = "https://github.com/saulbanov/engulf-weather"
@@ -24,12 +24,41 @@ def pct(p: float | None) -> str:
 
 
 def rng(s: dict | None, unit: str = "°F") -> str:
-    """Median with the band holding 8 runs in 10, e.g. '72°F (60–76)'."""
+    """A middle value with its likely range, e.g. '72°F (60–76)'."""
     if not s:
         return "—"
     if "p10" not in s:
         return f"{s['median']}{unit}"
     return f"{s['median']}{unit} <span class=band>({s['p10']}–{s['p90']})</span>"
+
+
+def chance(p: float | None) -> str:
+    """A chance in words a reader can use: '1 in 10', 'unlikely'."""
+    if p is None:
+        return "—"
+    if p == 0:
+        return "very unlikely"
+    n = round(p * 10)
+    if n == 0:
+        return "under 1 in 10"
+    return "almost certain" if n >= 10 else f"{n} in 10"
+
+
+def pooled_spread(parts: list[dict]) -> dict | None:
+    """Several forecasts' middle-and-range blocks as one: average middle, widest range."""
+    parts = [x for x in parts if x]
+    if not parts:
+        return None
+    out = {"median": round(sum(x["median"] for x in parts) / len(parts))}
+    if all("p10" in x for x in parts):
+        out.update(p10=min(x["p10"] for x in parts), p90=max(x["p90"] for x in parts))
+    return out
+
+
+def pooled_share(parts: list[tuple[float, int]]) -> float | None:
+    parts = [(v, n) for v, n in parts if n]
+    total = sum(n for _, n in parts)
+    return round(sum(v * n for v, n in parts) / total, 2) if total else None
 
 
 def day_name(d: str) -> str:
@@ -45,37 +74,35 @@ def table(head: list[str], rows: list[list[str]], cls: str = "") -> str:
 def days_table(ev: dict, f: dict, clim: dict) -> str:
     sd, bh = clim["site_daily"], clim["burn_hours"]
     rows = []
-    for name, m in f["models"].items():
-        for d in ev["days"]:
-            x = m.get("days", {}).get(d, {})
-            if not x.get("runs"):
-                rows.append([f"{day_name(d)}", e(name), "not in reach yet", "", "", "", "", ""])
-                continue
-            rows.append([day_name(d), f"{e(name)} <span class=band>{x['runs']} runs</span>", rng(x["high_f"]), rng(x["low_f"]),
-                         rng(x.get("evening_feels_f")), rng(x.get("overnight_low_f")),
-                         pct(x["share_rain_at_least_0.1"]), pct(x.get("share_low_at_or_below_40"))])
-    rows.sort(key=lambda r: r[0][4:])
-    rows.append(["Usual", "30 years, Nov 9–18", rng(sd["high_f"]), rng(sd["low_f"]), rng(bh["evening_feels_f"]),
-                 rng(bh["overnight_low_f"]), pct(sd["share_days_rain_at_least_0.1"]), pct(sd["share_nights_at_or_below_40"])])
-    return table(["Day", "Source", "High", "Morning low", "After dark, feels like", "Overnight low",
-                  f"Rain ≥{rules.WET_IN} in", f"Night ≤{rules.COLD_NIGHT_F}°F"], rows, "days")
+    for d in ev["days"]:
+        xs = [m["days"][d] for m in f["models"].values() if m.get("days", {}).get(d, {}).get("runs")]
+        if not xs:
+            rows.append([day_name(d), "too far out", "", "", "", "", ""])
+            continue
+        g = lambda k: pooled_spread([x.get(k) for x in xs])
+        c = lambda k: chance(pooled_share([(x[k], x["runs"]) for x in xs if k in x]))
+        rows.append([day_name(d), rng(g("high_f")), rng(g("low_f")), rng(g("evening_feels_f")), rng(g("overnight_low_f")),
+                     c("share_rain_at_least_0.1"), c("share_low_at_or_below_40")])
+    rows.append(["Normal year", rng(sd["high_f"]), rng(sd["low_f"]), rng(bh["evening_feels_f"]), rng(bh["overnight_low_f"]),
+                 chance(sd["share_days_rain_at_least_0.1"]), chance(sd["share_nights_at_or_below_40"])])
+    return table(["Day", "Afternoon", "Early morning", "Evening, with wind", "Overnight low", "Chance of rain",
+                  f"Chance of a night {rules.COLD_NIGHT_F}°F or colder"], rows, "days")
 
 
 def burn_table(ev: dict, f: dict, clim: dict) -> str:
     bh = clim["burn_hours"]
+    bs = [m["burn"] for m in f["models"].values() if m.get("burn", {}).get("runs")]
     rows = []
-    for name, m in f["models"].items():
-        b = m.get("burn", {})
-        if not b.get("runs"):
-            rows.append([e(name), "not in reach yet", "", "", "", ""])
-            continue
-        rows.append([f"{e(name)} <span class=band>{b['runs']} runs</span>", rng(b["max_wind_mph"], " mph"),
-                     pct(b["share_wind_at_least_15"]), pct(b["share_gust_at_least_25"]), pct(b["share_rain_at_least_0.1"]),
-                     rng(b["coldest_f"])])
-    rows.append(["McComb, 30 years", f"{bh['median_max_wind_mph_burn_hours']} mph", pct(bh["share_nights_wind_at_least_15"]),
-                 pct(bh["share_nights_gust_at_least_25"]), pct(bh["share_nights_rain_at_least_0.1"]), rng(bh["evening_feels_f"])])
-    return table(["Source", "Peak wind", f"Wind ≥{rules.WINDY_MPH} mph", f"Gusts ≥{rules.GUSTY_MPH} mph",
-                  f"Rain ≥{rules.WET_IN} in", "Coldest"], rows)
+    if bs:
+        share = lambda k: chance(pooled_share([(b[k], b["runs"]) for b in bs]))
+        rows.append(["Forecast", rng(pooled_spread([b["max_wind_mph"] for b in bs]), " mph"), share("share_wind_at_least_15"),
+                     share("share_gust_at_least_25"), share("share_rain_at_least_0.1"), rng(pooled_spread([b["coldest_f"] for b in bs]))])
+    else:
+        rows.append(["Forecast", "too far out", "", "", "", ""])
+    rows.append(["Normal year", f"{bh['median_max_wind_mph_burn_hours']} mph", chance(bh["share_nights_wind_at_least_15"]),
+                 chance(bh["share_nights_gust_at_least_25"]), chance(bh["share_nights_rain_at_least_0.1"]), rng(bh["evening_feels_f"])])
+    return table(["", "Strongest wind", f"Chance of wind {rules.WINDY_MPH}+ mph", f"Chance of gusts {rules.GUSTY_MPH}+ mph",
+                  "Chance of rain", "Coldest, with wind"], rows)
 
 
 def nws_table(ev: dict, f: dict) -> str:
@@ -83,67 +110,57 @@ def nws_table(ev: dict, f: dict) -> str:
     bw = ev["burn_window"]
     hours = [h for h in n.get("hours", []) if h["time"][:10] == bw["date"] and bw["start"][:2] <= h["time"][11:13]]
     if not hours:
-        return ("<p class=note>The National Weather Service's hourly forecast reaches 7 days ahead; it will cover burn night from "
-                "about Nov 7.</p>")
+        return "<p class=note>An hour-by-hour forecast for burn night appears here about a week before, around Nov 7.</p>"
     rows = [[datetime.fromisoformat(h["time"].replace(" ", "T")).strftime("%-I %p"), f"{h['temp_f']}°F", e(h["wind"]),
              "—" if h["rain_chance"] is None else f"{h['rain_chance']}%", e(h["sky"])] for h in hours]
-    return f"<p class=note>{e(n['source'])}, issued {e(n['issued'])}.</p>" + table(["Hour", "Temp", "Wind", "Rain chance", "Sky"], rows)
+    return "<h3>Hour by hour (National Weather Service)</h3>" + table(["Time", "Temperature", "Wind", "Chance of rain", "Sky"], rows)
 
 
 def bullets(xs: list[str]) -> str:
     return "<ul>" + "".join(f"<li>{e(x)}</li>" for x in xs) + "</ul>"
 
 
+def md_bold(x: str) -> str:
+    """The reading's one markdown mark (**bold**) as HTML, after escaping."""
+    parts = e(x).split("**")
+    return "".join(f"<b>{t}</b>" if i % 2 else t for i, t in enumerate(parts))
+
+
 def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
     dr, rv = ground.get("drought") or {}, ground.get("river") or {}
     updated = datetime.fromisoformat(f["read_at"]).strftime("%a %b %-d, %-I:%M %p Central")
-    drought = ""
-    if dr.get("share_of_parish"):
-        s = dr["share_of_parish"]
-        drought = (f"<section class=alert><h2>Drought</h2><p><b>{pct(s['D1'])}</b> of Tangipahoa Parish is in moderate drought or worse, "
-                   f"<b>{pct(s['D2'])}</b> in severe (US Drought Monitor, {e(dr['map_date'])}). Dry parishes issue burn bans, and Engulf's "
-                   "flame-effect policy says a ban can restrict fire at the event. <b>Burn-ban status is not checked here</b>: see "
-                   "<a href='https://tangipahoa.org'>tangipahoa.org</a>.</p></section>")
+    drought = f"<section class=alert><p>{md_bold(reading.drought_words(dr))}</p></section>" if dr.get("share_of_parish") else ""
     river = ""
-    if rv.get("flow_cfs") is not None:
-        river = (f"<p>{e(rv['source'])}: <b>{rv['flow_cfs']:g} cfs</b> at {e(rv['at'][:16].replace('T', ' '))}, at or above "
-                 f"{pct(rv['share_of_same_weeks_at_or_below'])} of daily means for the same weeks, {e(rv['record'])} "
-                 f"(median {rv['median_same_weeks_cfs']:g} cfs). Provisional.</p>")
+    if rv.get("share_of_same_weeks_at_or_below") is not None:
+        river = (f"<p>The Tangipahoa River near the site is <b>{e(reading.river_words(rv['share_of_same_weeks_at_or_below']))}</b> "
+                 "for this time of year (US Geological Survey gauge at Osyka, Mississippi). The event warns that heavy rain can flood "
+                 "the site's roads, so leave room in your Sunday plans if a storm shows up.</p>")
     days = ""
     for d in r["days"]:
         k = d["kit"]
         days += (f"<section class=day><h3>{e(day_name(d['date']))} · {e(d['about'])}</h3>"
-                 f"<p class=note>Sunrise {e(d['sunrise'])} · sunset {e(d['sunset'])} · clothes from {e(k['from'])}</p>"
+                 f"<p class=note>Sunrise {e(d['sunrise'])} · sunset {e(d['sunset'])}</p>{bullets(d['lines'])}"
                  f"<div class=cols><div><h4>Wear</h4>{bullets(k['wear'])}</div><div><h4>Eat</h4>{bullets(k['eat'])}</div></div></section>")
-    moon = next((d["burn"]["moon"] for d in r["days"] if d.get("burn")), None)
-    th = table(["Threshold", "Value"], [[e(k.replace("_", " ").lower()), e(v)] for k, v in sorted(
-        {k: getattr(rules, k) for k in dir(rules) if k.isupper() and not isinstance(getattr(rules, k), list)}.items())])
-    refused = f"<p class=note>Sources that refused this run: {e('; '.join(f['refused']))}</p>" if f.get("refused") else ""
+    refused = f"<p class=note>Some sources didn't answer this update: {e('; '.join(f['refused']))}</p>" if f.get("refused") else ""
     return f"""<!doctype html>
 <html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>Engulf 2026 weather</title>
-<meta name=description content="Forecast, 30-year baseline and what to wear, pack and eat for Engulf 2026, Kentwood LA, Nov 12–15.">
+<meta name=description content="Forecast and what to wear, pack and eat for Engulf 2026, Kentwood LA, Nov 12–15.">
 <style>{CSS}</style></head><body><main>
 <header><h1>Engulf 2026 weather</h1>
-<p>Kentwood, Louisiana · Thursday Nov 12 to Sunday Nov 15 · temple burns around 8 pm and effigy around 10 pm Saturday</p>
-<p class=updated>Updated {e(updated)} · {e(r['lead'])}</p></header>
+<p>Kentwood, Louisiana · Thursday Nov 12 to Sunday Nov 15 · temple burn around 8 pm and effigy around 10 pm Saturday</p>
+<p class=updated>Updated {e(updated)}. {e(r['lead'])}</p></header>
 {drought}
-<section><h2>Pack for the weekend</h2><p class=note>Planned for the cold end of the forecast runs and of the 30-year record.</p>{bullets(r['packing'])}</section>
-<section><h2>Burn night: Saturday 7 pm to midnight</h2>{burn_table(ev, f, clim)}
-<p class=note>Share of model runs showing each thing. Peak wind is the strongest hour; the band holds 8 runs in 10.
-{f"Moon: {e(moon['phase'])}, {pct(moon['illuminated'])} lit." if moon else ""}</p>{nws_table(ev, f)}</section>
+<section><h2>Pack for the weekend</h2>{bullets(r['packing'])}</section>
+<section><h2>Burn night: Saturday, 7 pm to midnight</h2>{burn_table(ev, f, clim)}
+<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p>{nws_table(ev, f)}</section>
 <section><h2>Day by day</h2>{days_table(ev, f, clim)}
-<p class=note>Medians across runs; the band in brackets holds 8 runs in 10. "Usual" is the same week in 1996–2025.</p></section>
+<p class=note>Numbers in brackets are the likely range. "Evening, with wind" is how cold it feels after dark.</p></section>
 {days}
-<section><h2>River</h2>{river or "<p>Not read this run.</p>"}</section>
-<section class=method><h2>How this is made</h2>
-<ul><li>Forecasts: ECMWF's 51-run ensemble and NOAA's 31-run GEFS (via Open-Meteo), and the National Weather Service hourly forecast. Shares are of runs, not promises; past a week, the spread is the honest forecast.</li>
-<li>Usual: PRISM 4 km daily highs, lows and rain at the site (modelled), and McComb, MS airport hourly wind and temperature 26 km north (measured), Nov 9–18, 1996–2025.</li>
-<li>Advice comes from fixed thresholds, not judgement. The Fire Art Response Team and burn leads decide what burns; this page is not Engulf's.</li>
-<li>Not checked: burn bans, the site's own drainage, wind among the trees at camp.</li>
-<li>Every download is kept and hashed: <a href="{REPO}/tree/main/data">data</a> · <a href="data.json">this page as JSON</a> · <a href="{REPO}">code</a>.</li></ul>
-<details><summary>Thresholds</summary>{th}</details>{refused}</section>
-<footer>Data: ECMWF (CC BY 4.0), NOAA/NWS, PRISM via ACIS, Iowa Environmental Mesonet, USGS, US Drought Monitor. Event details: engulfburn.org.</footer>
+<section><h2>River</h2>{river or "<p>Not available this update.</p>"}</section>
+<section class=method><h2>Where this comes from</h2>{bullets(reading.ABOUT_PAGE)}
+<p class=note>All the numbers and code are public: <a href="{REPO}">github.com/saulbanov/engulf-weather</a>.</p>{refused}</section>
+<footer>Data: ECMWF, NOAA and the National Weather Service, PRISM, Iowa Environmental Mesonet, US Geological Survey, US Drought Monitor. Event details: engulfburn.org. Not an official Engulf page.</footer>
 </main></body></html>
 """
 

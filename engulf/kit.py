@@ -75,27 +75,25 @@ def meals(day: dict, is_burn_day: bool, is_last_day: bool, is_first_day: bool = 
 
 def packing(days: list[dict], any_wet: float | None, dewy: float | None, past_cold: float | None = None,
             past_cold_evening: float | None = None) -> list[str]:
-    """The list for the whole weekend, planned for the cold end of the runs."""
+    """The list for the whole weekend, planned for the cold end of the forecast (or of a normal year, for days it doesn't reach)."""
     lows = [d["overnight_p10_f"] for d in days if d.get("overnight_p10_f") is not None]
     eves = [d["evening_p10_f"] for d in days if d.get("evening_p10_f") is not None]
     highs = [d["high_p90_f"] for d in days if d.get("high_p90_f") is not None]
     out = []
     if lows or past_cold is not None:
-        c = min(lows + ([past_cold] if past_cold is not None else []))
-        out.append(f"Sleep: a bag rated {sleep_rating(c)}°F or warmer, plus a pad (the cold comes up from the ground). "
-                   f"The coldest likely night is about {round(c)}°F"
-                   + (f" (in past years, 1 night in 10 went to {round(past_cold)}°F or below)" if past_cold is not None else "")
-                   + ". Generators are off 10 pm to 10 am, so no plug-in heat.")
+        c = min(lows) if lows else past_cold          # a day no forecast reaches already carries the normal year's cold end
+        out.append(f"Sleep: a bag rated {sleep_rating(c)}°F or warmer, plus a sleeping pad (cold comes up from the ground). "
+                   f"Nights could drop to about {round(c)}°F. Generators are off 10 pm to 10 am, so no plug-in heaters.")
     if eves:
-        out.append(f"Burn night and evenings: {dress(min(eves))}. Evenings can feel as cold as {round(min(eves))}°F"
-                   + (f"; in past years 1 evening in 10 felt {round(past_cold_evening)}°F or colder, so a hat and gloves earn their space"
-                      if past_cold_evening is not None and past_cold_evening < min(eves) - 5 else "") + ".")
+        cold_eve = min(eves)
+        out.append(f"Burn night and evenings: {dress(cold_eve)}. With the wind, evenings could feel as cold as {round(cold_eve)}°F.")
     if highs:
-        out.append(f"Afternoons: {dress(max(highs))}. Afternoons can reach {round(max(highs))}°F, and shade is limited.")
-    out.append("Rain: a rain shell and mud boots whatever the forecast. The event asks for both, "
-               + (f"and {round(any_wet * 100)}% of runs show rain on at least one day." if any_wet else "and the forecast shows rain unlikely, for now."))
+        out.append(f"Afternoons: {dress(max(highs))}. It could reach {round(max(highs))}°F, and there isn't much shade.")
+    out.append("Rain: a rain jacket and mud boots, whatever the forecast says. The event asks for both"
+               + (f", and there's about a {round(any_wet * 10)} in 10 chance of rain on at least one day." if any_wet and round(any_wet * 10)
+                  else ", even though rain looks unlikely for now."))
     if dewy:
-        out.append(f"Dew: dry bags or a bin for clothes and electronics; in past years {round(dewy * 100)}% of calm predawn hours "
-                   "came within 3°F of the dew point, which wets everything without rain.")
-    out.append("Water: 1.5 gallons a person a day (the event's number); more if afternoons are warm.")
+        out.append("Dew: dry bags or a plastic bin for clothes and electronics. On calm nights here, heavy dew soaks anything left out, "
+                   "even when it doesn't rain.")
+    out.append("Water: 1.5 gallons per person per day (the event's figure), more if it's warm.")
     return out
