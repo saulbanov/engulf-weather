@@ -141,10 +141,10 @@ def rain_word(p: float | None) -> str:
 
 
 def glance(ev: dict, f: dict, clim: dict, r: dict) -> str:
-    """One card per day: a two-word summary, high and low, chance of rain, sunset."""
+    """One swipeable card per day: summary, high and low, rain, dark-by time, then what to wear and eat."""
     sd = clim["site_daily"]
-    cards = ""
-    for d, rd in zip(ev["days"], r["days"]):
+    cards, n = "", len(ev["days"])
+    for i, (d, rd) in enumerate(zip(ev["days"], r["days"]), 1):
         xs = [m["days"][d] for m in f["models"].values() if m.get("days", {}).get(d, {}).get("runs")]
         if xs:
             hi = pooled_spread([x["high_f"] for x in xs])["median"]
@@ -152,12 +152,17 @@ def glance(ev: dict, f: dict, clim: dict, r: dict) -> str:
             wet = pooled_share([(x["share_rain_at_least_0.1"], x["runs"]) for x in xs])
             src = ""
         else:
-            hi, lo, wet, src = sd["high_f"]["median"], sd["low_f"]["median"], sd["share_days_rain_at_least_0.1"], "<span class=note>normal year; too far out</span>"
-        cards += (f"<div class=card><div class=dname>{e(datetime.fromisoformat(d).strftime('%a %b %-d'))}</div>"
+            hi, lo, wet = sd["high_f"]["median"], sd["low_f"]["median"], sd["share_days_rain_at_least_0.1"]
+            src = "<p class=small>Too far out to forecast; this is a normal year.</p>"
+        k = rd["kit"]
+        cards += (f"<article class=card id=day{i}><div class=top><span class=dname>{e(datetime.fromisoformat(d).strftime('%A %b %-d'))}</span>"
+                  f"<span class=small>{i} of {n}</span></div><div class=about>{e(rd['about'])}</div>"
                   f"<div class=sum>{e(feel_word(hi))}, {e(rain_word(wet))}</div>"
                   f"<div class=temps><b>{hi}°</b> / {lo}°</div>"
-                  f"<div class=small>Rain: {e(chance(wet))}<br>Dark by {e(rd['sunset'])}</div>{src}</div>")
-    return f"<div class=glance>{cards}</div>"
+                  f"<div class=small>Rain: {e(chance(wet))} · dark by {e(rd['sunset'])}</div>{src}"
+                  f"<h4>Wear</h4>{bullets(k['wear'])}" + (f"<h4>Eat</h4>{bullets(k['eat'])}" if k["eat"] else "") + "</article>")
+    jump = " ".join(f"<a href='#day{i}'>{e(datetime.fromisoformat(d).strftime('%a'))}</a>" for i, d in enumerate(ev["days"], 1))
+    return f"<p class=small>Swipe through the days → &nbsp; {jump}</p><div class=deck>{cards}</div>"
 
 
 def burn_sentence(f: dict, clim: dict, r: dict) -> str:
@@ -189,11 +194,6 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
     if dr.get("share_of_parish"):
         fire = ("<p class=small><b>Fire note:</b> the parish is in drought. Dry spells are when parishes ban burning, and Engulf's rules "
                 "say a ban can limit fire at the event. This page doesn't track bans; check tangipahoa.org.</p>")
-    days = ""
-    for d in r["days"]:
-        k = d["kit"]
-        notes = k["wear"] + k["eat"]
-        days += (f"<section class=day><h3>{e(day_name(d['date']))} · {e(d['about'])}</h3>{bullets(notes)}</section>")
     river = ""
     if rv.get("share_of_same_weeks_at_or_below") is not None:
         river = (f"<p>The Tangipahoa River near the site is {e(reading.river_words(rv['share_of_same_weeks_at_or_below']))} for this "
@@ -210,7 +210,6 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict) -> str:
 {glance(ev, f, clim, r)}
 <section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{fire}{nws_table(ev, f)}</section>
 <section><h2>Pack</h2>{check}</section>
-<section><h2>Day by day</h2>{days}</section>
 <section class=method><h2>The details</h2>
 <details><summary>Burn night, by the numbers</summary>{burn_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p></details>
 <details><summary>Every day, by the numbers</summary>{days_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range.</p></details>
@@ -237,9 +236,9 @@ ul{padding-left:1.2em;margin:.3em 0}li{margin:.2em 0}
 th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}thead th{font-weight:600;color:var(--mute)}
 tbody th{font-weight:600;white-space:nowrap}footer{margin:2em 0 1em;color:var(--mute);font-size:.85rem}
 details{margin:.5em 0;border-top:1px solid var(--line);padding-top:.5em}details summary{cursor:pointer;font-weight:600}
-.small{font-size:.9rem;color:var(--mute)}.glance{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
-@media (max-width:640px){.glance{grid-template-columns:1fr 1fr}}
-.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px}.dname{font-weight:700}
+.small{font-size:.9rem;color:var(--mute)}.deck{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 2px 12px;margin:0 -2px;-webkit-overflow-scrolling:touch}
+.card{flex:0 0 min(86%,420px);scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;scroll-margin:16px}
+.top{display:flex;justify-content:space-between;align-items:baseline}.dname{font-weight:700;font-size:1.1rem}.about{color:var(--mute);font-size:.9rem;margin-bottom:6px}
 .sum{color:var(--accent);font-weight:600;margin:2px 0}.temps{font-size:1.5rem}.check{list-style:none;padding:0}
 .check li{padding:8px 0 8px 30px;border-bottom:1px solid var(--line);position:relative}
 .check li:before{content:"";position:absolute;left:2px;top:11px;width:16px;height:16px;border:2px solid var(--mute);border-radius:3px}
