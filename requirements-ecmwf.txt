@@ -1,0 +1,4 @@
+# Isolated only for tools/ecmwf_point.py (ECMWF open data, GRIB decoding)
+ecmwf-opendata==0.3.35
+eccodes==2.50.0
+eccodeslib==2.50.0.33
