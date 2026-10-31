@@ -60,8 +60,8 @@ def same_weeks(rows: list[tuple[str, float]], today: date, half: int = 7) -> lis
 
 
 def river(today: date, keep_history: bool = False) -> dict:
-    # The 30-year daily record is ~330 KB gzipped and changes by a day at a time. One copy is kept
-    # (data/captures/usgs/, 2026-10-31); the daily run records only its hash in the manifest.
+    # The 30-year daily record is ~330 KB gzipped and changes by a day at a time. The pulls of
+    # 2026-10-31 are kept in data/captures/usgs/; the daily run records only its hash in the manifest.
     feats = get_json(DAILY.format(s=RIVER), "usgs", f"{RIVER}-daily", keep=keep_history)["features"]
     rows = [(f["properties"]["time"], float(f["properties"]["value"])) for f in feats
             if f["properties"].get("value") not in (None, "")]
