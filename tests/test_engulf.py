@@ -37,6 +37,46 @@ class Sky(unittest.TestCase):
         self.assertLess(abs(m["illuminated"] - 0.28), 0.06)
 
 
+class Outlook(unittest.TestCase):
+    def test_point_in_polygon_with_a_hole(self):
+        from engulf import outlook
+        square = [(0, 0), (10, 0), (10, 10), (0, 10)]
+        self.assertTrue(outlook.inside(5, 5, square))
+        self.assertFalse(outlook.inside(15, 5, square))
+        kml = b"""<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>8-14 Day Temperature Outlook - Created: 10/30/2026 - Valid: 11/07/2026 - 11/13/2026</name>
+        <Placemark><name>33.0% Chance of Above Normal Temperature</name><Polygon><outerBoundaryIs><LinearRing><coordinates>0,0 10,0 10,10 0,10 0,0</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+        <Placemark><name>50.0% Chance of Above Normal Temperature</name><Polygon><outerBoundaryIs><LinearRing><coordinates>2,2 4,2 4,4 2,4 2,2</coordinates></LinearRing></outerBoundaryIs></Polygon></Placemark>
+        </Document></kml>"""
+        self.assertEqual(outlook.read_kml(kml, 3, 3)["chance"], 50.0)
+        self.assertEqual(outlook.read_kml(kml, 8, 8)["chance"], 33.0)
+        self.assertEqual(outlook.read_kml(kml, 20, 20)["lean"], "equal chances")
+        self.assertEqual(outlook.read_kml(kml, 8, 8)["period"], ["2026-11-07", "2026-11-13"])
+
+
+class Blend(unittest.TestCase):
+    def test_forecast_weight_by_lead(self):
+        from engulf import blend
+        self.assertEqual(blend.forecast_weight(3), 1.0)
+        self.assertEqual(blend.forecast_weight(7), 1.0)
+        self.assertEqual(blend.forecast_weight(11), 0.75)
+        self.assertEqual(blend.forecast_weight(15), 0.5)
+        self.assertEqual(blend.forecast_weight(20), 0.5)
+
+    def test_estimate_blends_and_nudges(self):
+        from engulf import blend
+        normal = {"high_f": 72, "morning_f": 45, "evening_feels_f": 52, "overnight_f": 49, "wet": 0.14}
+        fc = {"high_f": 68, "morning_f": 50, "evening_feels_f": 56, "overnight_f": 50, "wet": 0.1}
+        outlook = {"outlooks": {"8-14 day": {"temperature": {"period": ["2026-11-07", "2026-11-13"], "lean": "above", "chance": 33.0},
+                                             "rain": {"period": ["2026-11-07", "2026-11-13"], "lean": "near", "chance": 36.0}}}}
+        e = blend.estimate("2026-11-12", date(2026, 11, 1), fc, normal, outlook)   # 11 days out: 75% forecast
+        self.assertEqual(e["high_f"], round(0.75 * 68 + 0.25 * 73.5))               # normal nudged +1.5° for a slight warm lean
+        self.assertEqual(e["inputs"]["normal_rain_factor"], 1.0)                     # "near normal" rain: no nudge
+        none = blend.estimate("2026-11-15", date(2026, 10, 20), None, normal, outlook)
+        self.assertEqual((none["high_f"], none["inputs"]["forecast_weight"]), (72, 0.0))   # outside the outlook's dates
+        close = blend.estimate("2026-11-14", date(2026, 11, 10), fc, normal, outlook)
+        self.assertEqual(close["high_f"], 68)
+
+
 class Station(unittest.TestCase):
     def hour(self, d, h, wind, gust=None, rain=0.0):
         return {"date": d, "hour": h, "temp_f": 50.0, "dew_f": 45.0, "wind_mph": wind, "gust_mph": gust, "rain_in": rain}
@@ -96,24 +136,64 @@ class Ground(unittest.TestCase):
 
 
 class Reading(unittest.TestCase):
+    def test_river_words(self):
+        self.assertEqual(reading.river_words(0.05), "very low")
+        self.assertEqual(reading.river_words(0.36), "about normal")
+        self.assertEqual(reading.river_words(0.95), "very high")
+
+    def test_no_jargon_in_reader_text(self):
+        import json
+        from engulf import ROOT
+        f, g, c = (json.loads((ROOT / p).read_text()) for p in ("data/forecast-latest.json", "data/ground-latest.json", "data/climatology.json"))
+        days = [reading.day_reading(i, d, f, c, g, EV) for i, d in enumerate(EV["days"])]
+        text = " ".join(x for d in days for x in d["lines"] + d["kit"]["means"]).lower()
+        for word in ("ensemble", "runs", "median", "percentile", "climatology", "cfs", "model", "leaning", "p10", "share"):
+            self.assertNotIn(word, text, word)
+
     def test_odds_words(self):
-        self.assertEqual(reading.odds(None), "not yet in any model's reach")
-        self.assertEqual(reading.odds(0), "no run shows it")
-        self.assertEqual(reading.odds(0.04), "fewer than 1 run in 10")
-        self.assertEqual(reading.odds(0.1), "about 1 run in 10")
-        self.assertEqual(reading.odds(0.33), "about 3 runs in 10")
-        self.assertEqual(reading.odds(0.97), "nearly every run")
+        self.assertEqual(reading.odds(None), "too far out to say")
+        self.assertEqual(reading.odds(0), "very unlikely")
+        self.assertEqual(reading.odds(0.04), "unlikely (under 1 in 10)")
+        self.assertEqual(reading.odds(0.1), "about 1 in 10")
+        self.assertEqual(reading.odds(0.33), "about 3 in 10")
+        self.assertEqual(reading.odds(0.97), "almost certain")
 
     def test_pooling_weights_by_run_count(self):
         models = {"A": {"days": {"d": {"runs": 50, "x": 0.0}}}, "B": {"days": {"d": {"runs": 30, "x": 1.0}}},
                   "C": {"days": {"d": {"runs": 0}}}}
         self.assertEqual(reading.pooled(models, "d", "x"), (0.38, 80))
 
+    def test_banner_names_the_date_then_changes(self):
+        burn = date(2026, 11, 14)
+        self.assertIn("preliminary until about Nov 7", reading.banner(date(2026, 10, 31), burn))
+        self.assertIn("firming up", reading.banner(date(2026, 11, 8), burn))
+
+    def test_why_explains_the_blend(self):
+        days = [{"date": "2026-11-12", "kit": {"inputs": {"forecast_weight": 0.69, "outlook": {"temperature": "above (33%)"}}}},
+                {"date": "2026-11-14", "kit": {"inputs": {"forecast_weight": 0.56, "outlook": {}}}}]
+        outlook = {"outlooks": {"8-14 day": {"temperature": {"period": ["2026-11-07", "2026-11-13"], "lean": "above", "chance": 33.0}}}}
+        ground = {"recent": {"highs_vs_normal_f": 3.8, "rain_in": 1.9, "normal_rain_in": 3.5}}
+        text = " ".join(reading.why(days, ground, outlook, date(2026, 10, 31)))
+        for bit in ("56% to 69%", "normal Engulf week", "slightly warmer", "Thursday", "warm and dry", "isn't in the numbers"):
+            self.assertIn(bit, text)
+        close = [{"date": "2026-11-14", "kit": {"inputs": {"forecast_weight": 1.0, "outlook": {}}}}]
+        self.assertIn("within a week", reading.why(close, {}, {}, date(2026, 11, 10))[0])
+
+    def test_lean_words(self):
+        self.assertEqual(reading.lean_words({"lean": "above", "chance": 33}, "temperature"), "slightly warmer than normal")
+        self.assertEqual(reading.lean_words({"lean": "below", "chance": 55}, "rain"), "likely drier than normal")
+        self.assertEqual(reading.lean_words({"lean": "near", "chance": 36}, "rain"), "rain about normal")
+        self.assertEqual(reading.lean_words({"lean": "equal chances", "chance": None}, "rain"), "no clear lean on rain")
+
+    def test_one_in(self):
+        self.assertEqual(reading.one_in(0.14), "1 in 7")
+        self.assertEqual(reading.one_in(0.1), "1 in 10")
+
     def test_lead_wording(self):
         first = date(2026, 11, 12)
-        self.assertIn("climatology alone", reading.lead(date(2026, 10, 20), first))
-        self.assertIn("ensembles only", reading.lead(date(2026, 10, 31), first))
-        self.assertIn("National Weather Service", reading.lead(date(2026, 11, 8), first))
+        self.assertIn("normal year", reading.lead(date(2026, 10, 20), first))
+        self.assertIn("best guesses", reading.lead(date(2026, 10, 31), first))
+        self.assertIn("burn night is now in", reading.lead(date(2026, 11, 8), first))
 
 
 class Kit(unittest.TestCase):
@@ -122,27 +202,18 @@ class Kit(unittest.TestCase):
         self.assertEqual(kit.feels(40, 2), 40)
         self.assertEqual(round(kit.feels(40, 10)), 34)          # NWS chart: 40°F at 10 mph feels 34°F
 
-    def test_layers_get_warmer_as_it_gets_colder(self):
-        self.assertIn("t-shirt", kit.dress(80))
-        self.assertIn("fleece", kit.dress(50))
-        self.assertIn("winter", kit.dress(30))
-
-    def test_bag_rating_has_a_margin_and_rounds_down(self):
-        self.assertEqual(kit.sleep_rating(36), 25)
-        self.assertEqual(kit.sleep_rating(30), 20)
-
-    def test_meals_follow_the_day(self):
-        cold = kit.meals({"morning_f": 40, "high_f": 60, "evening_feels_f": 45}, False, False)
-        self.assertTrue(any("hot" in x for x in cold) and any("thermos" in x for x in cold))
-        burn = kit.meals({"morning_f": 55, "high_f": 78, "evening_feels_f": 60}, True, False)
-        self.assertTrue(any("6:30" in x for x in burn) and any("ice" in x for x in burn))
-        first = kit.meals({"morning_f": 40, "high_f": 70}, False, False, True, "5:06 pm")
-        self.assertFalse(any(x.startswith("Breakfast") for x in first))
-
-    def test_packing_plans_for_the_colder_of_forecast_and_past(self):
-        lines = kit.packing([{"overnight_p10_f": 45}], None, None, past_cold=35)
-        self.assertIn("25°F", lines[0])
-
+    def test_meaning_lines(self):
+        cold = kit.meaning({"high_f": 72, "evening_feels_f": 50, "overnight_f": 38, "overnight_p10_f": 30}, 0.4,
+                           first=True, last=False, daylight_after_gates=7.1, dewy=0.34)
+        text = " ".join(cold)
+        for bit in ("A big swing", "cold night", "Frost", "7 hours of daylight", "dew", "mud"):
+            self.assertIn(bit, text)
+        mild = kit.meaning({"high_f": 70, "evening_feels_f": 60, "overnight_f": 55, "overnight_p10_f": 50}, 0.1,
+                           first=False, last=False, daylight_after_gates=7, dewy=0.34)
+        self.assertEqual(len(mild), 1)
+        last = kit.meaning({"high_f": 66, "evening_feels_f": 52, "overnight_f": None}, 0.5,
+                           first=False, last=True, daylight_after_gates=7, dewy=None)
+        self.assertTrue(any("off the land by 5 pm" in x for x in last) and any("muddy" in x for x in last))
 
 class Site(unittest.TestCase):
     def load(self):
@@ -160,7 +231,13 @@ class Site(unittest.TestCase):
         self.assertNotIn("<script", html)
         self.assertNotIn("src=\"http", html)
         self.assertIn("Burn night", html)
-        self.assertIn("not Engulf's", html)
+        self.assertIn("Not an official Engulf page", html)
+
+    def test_page_has_no_jargon(self):
+        import re
+        html = re.sub(r"<[^>]+>", " ", site.render(EV, *self.load())).lower()
+        for word in ("ensemble", "model runs", "median", "climatology", "cfs", "leaning", "p10"):
+            self.assertNotIn(word, html, word)
 
     def test_band_formatting(self):
         self.assertEqual(site.rng({"median": 5}), "5°F")

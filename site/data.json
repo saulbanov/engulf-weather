@@ -411,8 +411,18 @@
   },
   "meaning": "Drought and river state near Engulf's site, read on the date below.",
   "read_on": "2026-10-31",
+  "recent": {
+   "days_reported": 29,
+   "from": "2026-10-01",
+   "highs_vs_normal_f": 3.8,
+   "lows_vs_normal_f": 1.9,
+   "normal_rain_in": 3.53,
+   "rain_in": 1.92,
+   "source": "McComb, MS airport (ACIS), against its 1991-2020 normals",
+   "to": "2026-10-30"
+  },
   "river": {
-   "at": "2026-10-31T00:00:00.000-05:00",
+   "at": "2026-10-31T01:00:00.000-05:00",
    "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading.",
    "flow_cfs": 97.6,
    "median_same_weeks_cfs": 106.0,
@@ -422,41 +432,74 @@
    "source": "Tangipahoa River at Osyka, MS (USGS 07375280)"
   }
  },
+ "outlook": {
+  "meaning": "NOAA Climate Prediction Center outlooks at the site: the lean for a whole period, not a day's forecast.",
+  "outlooks": {
+   "8-14 day": {
+    "rain": {
+     "chance": 36.0,
+     "issued": "8-14 Day Precipitation Outlook - Created: 10/30/2026 - Valid: 11/07/2026 - 11/13/2026",
+     "lean": "near",
+     "period": [
+      "2026-11-07",
+      "2026-11-13"
+     ]
+    },
+    "temperature": {
+     "chance": 33.0,
+     "issued": "8-14 Day Temperature Outlook - Created: 10/30/2026 - Valid: 11/07/2026 - 11/13/2026",
+     "lean": "above",
+     "period": [
+      "2026-11-07",
+      "2026-11-13"
+     ]
+    }
+   }
+  },
+  "source": "NOAA Climate Prediction Center"
+ },
  "reading": {
+  "banner": "This is preliminary until about Nov 7, when the hour-by-hour forecast for burn night comes in. It gets more accurate the closer we get to the burn.",
   "days": [
    {
     "about": "arrival and setup; gates 10 am to 10 pm",
     "burn": null,
     "date": "2026-11-12",
-    "high_f": 70,
+    "high_f": 71,
     "kit": {
-     "eat": [
-      "Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.",
-      "Dinner: something easy and pre-made; sunset is 5:06 pm, and camp goes up faster in daylight."
-     ],
-     "evening_feels_f": 56,
+     "evening_feels_f": 55,
      "evening_p10_f": 45,
-     "from": "the model runs",
-     "high_f": 70,
+     "from": "the forecast",
+     "high_f": 71,
      "high_p90_f": 77,
-     "morning_f": 50,
+     "inputs": {
+      "days_ahead": 12,
+      "forecast_weight": 0.69,
+      "normal_rain_factor": 1.0,
+      "normal_shift_f": 1.5,
+      "outlook": {
+       "temperature": "above (33%)"
+      }
+     },
+     "means": [
+      "71\u00b0 in the afternoon, about 55\u00b0 after dark once the wind is counted, and near 51\u00b0 by morning.",
+      "Gates open at 10 am, which leaves about 7 hours of daylight to set up.",
+      "Calm nights here often bring heavy dew: anything left out gets wet without rain."
+     ],
+     "morning_f": 49,
      "overnight_f": 51,
      "overnight_p10_f": 42,
-     "wear": [
-      "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
-      "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
-      "Overnight (low near 51\u00b0F): sleep in a dry base layer and socks."
-     ]
+     "wet": 0.08
     },
     "lines": [
-     "82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70\u00b0F (the week's usual is 72\u00b0F); morning low near 50\u00b0F (usual 45\u00b0F).",
-     "Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).",
-     "A night at 40\u00b0F or colder: fewer than 1 run in 10."
+     "Afternoon around 71\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
+     "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
+     "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10)."
     ],
-    "low_f": 50,
+    "low_f": 49,
     "runs": 82,
     "share_low_at_or_below_40": 0.01,
-    "share_rain_at_least_0.1": 0.06,
+    "share_rain_at_least_0.1": 0.08,
     "sunrise": "6:25 am",
     "sunset": "5:06 pm"
    },
@@ -464,32 +507,36 @@
     "about": "the full day on site",
     "burn": null,
     "date": "2026-11-13",
-    "high_f": 70,
+    "high_f": 71,
     "kit": {
-     "eat": [
-      "Breakfast: no-cook is fine; mornings are mild.",
-      "Lunch: anything that travels; the afternoon won't spoil much."
-     ],
-     "evening_feels_f": 56,
+     "evening_feels_f": 55,
      "evening_p10_f": 47,
-     "from": "the model runs",
-     "high_f": 70,
+     "from": "the forecast",
+     "high_f": 71,
      "high_p90_f": 78,
-     "morning_f": 51,
+     "inputs": {
+      "days_ahead": 13,
+      "forecast_weight": 0.62,
+      "normal_rain_factor": 1.0,
+      "normal_shift_f": 1.5,
+      "outlook": {
+       "temperature": "above (33%)"
+      }
+     },
+     "means": [
+      "71\u00b0 in the afternoon, about 55\u00b0 after dark once the wind is counted, and near 50\u00b0 by morning."
+     ],
+     "morning_f": 49,
      "overnight_f": 50,
      "overnight_p10_f": 43,
-     "wear": [
-      "Afternoon (near 70\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
-      "After dark (feels near 56\u00b0F): a fleece or sweater under a light jacket.",
-      "Overnight (low near 50\u00b0F): sleep in a dry base layer and socks."
-     ]
+     "wet": 0.14
     },
     "lines": [
-     "82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70\u00b0F (the week's usual is 72\u00b0F); morning low near 51\u00b0F (usual 45\u00b0F).",
-     "Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).",
-     "A night at 40\u00b0F or colder: fewer than 1 run in 10."
+     "Afternoon around 71\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
+     "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
+     "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10)."
     ],
-    "low_f": 51,
+    "low_f": 49,
     "runs": 82,
     "share_low_at_or_below_40": 0.04,
     "share_rain_at_least_0.1": 0.14,
@@ -512,37 +559,38 @@
     "date": "2026-11-14",
     "high_f": 72,
     "kit": {
-     "eat": [
-      "Breakfast: no-cook is fine; mornings are mild.",
-      "Lunch: anything that travels; the afternoon won't spoil much.",
-      "Dinner: a real meal by 6:30 pm. The temple burns around 8 and the effigy around 10, and you'll be standing a while."
-     ],
-     "evening_feels_f": 54,
+     "evening_feels_f": 53,
      "evening_p10_f": 47,
-     "from": "the model runs",
+     "from": "the forecast",
      "high_f": 72,
      "high_p90_f": 76,
-     "morning_f": 51,
-     "overnight_f": 46,
+     "inputs": {
+      "days_ahead": 14,
+      "forecast_weight": 0.56,
+      "normal_rain_factor": 1.0,
+      "normal_shift_f": 0.0,
+      "outlook": {}
+     },
+     "means": [
+      "A big swing: 72\u00b0 in the afternoon, about 53\u00b0 after dark once the wind is counted, and near 47\u00b0 by morning."
+     ],
+     "morning_f": 48,
+     "overnight_f": 47,
      "overnight_p10_f": 36,
-     "wear": [
-      "Afternoon (near 72\u00b0F): a t-shirt, with a long-sleeve shirt handy.",
-      "After dark (feels near 54\u00b0F): a fleece or sweater under a light jacket.",
-      "Overnight (low near 46\u00b0F): sleep in a dry base layer and socks."
-     ]
+     "wet": 0.17
     },
     "lines": [
-     "31 runs from NOAA GEFS. Afternoon near 72\u00b0F (the week's usual is 72\u00b0F); morning low near 51\u00b0F (usual 45\u00b0F).",
-     "Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).",
-     "A night at 40\u00b0F or colder: about 1 run in 10.",
-     "Burn hours (7 pm to midnight), 31 runs: wind of 15 mph or more, no run shows it; gusts of 25 mph or more, about 1 run in 10; rain, about 1 run in 10.",
-     "Thirty years at McComb: burn-hour wind reached 15 mph on 4% of mid-November nights; the usual peak is 6 mph.",
-     "Moon: waxing crescent, 28% lit, so a dark sky around the burns."
+     "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 48\u00b0F (normal: 45\u00b0F).",
+     "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
+     "Chance of a night at 40\u00b0F or colder: about 1 in 10.",
+     "Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: about 1 in 10. Rain: about 1 in 10.",
+     "Over the past 30 years, wind on mid-November nights here usually tops out around 6 mph; it reached 15 mph on about 1 night in 25.",
+     "Moon: a thin crescent, 28% lit. A dark sky for the burns."
     ],
-    "low_f": 51,
+    "low_f": 48,
     "runs": 31,
     "share_low_at_or_below_40": 0.06,
-    "share_rain_at_least_0.1": 0.19,
+    "share_rain_at_least_0.1": 0.17,
     "sunrise": "6:27 am",
     "sunset": "5:05 pm"
    },
@@ -550,35 +598,38 @@
     "about": "exodus: off the land by 5 pm",
     "burn": null,
     "date": "2026-11-15",
-    "high_f": 66,
+    "high_f": 69,
     "kit": {
-     "eat": [
-      "Breakfast: something hot. Mornings near 46\u00b0F make coffee and oats worth it (a stove cleared with your camp; personal fires are not allowed).",
-      "Lunch: anything that travels; the afternoon won't spoil much.",
-      "Dinner: on the road. Eat the cooler down and pack out by 5 pm."
-     ],
      "evening_feels_f": 52,
      "evening_p10_f": null,
-     "from": "the model runs",
-     "high_f": 66,
+     "from": "the forecast",
+     "high_f": 69,
      "high_p90_f": 77,
+     "inputs": {
+      "days_ahead": 15,
+      "forecast_weight": 0.5,
+      "normal_rain_factor": 1.0,
+      "normal_shift_f": 0.0,
+      "outlook": {}
+     },
+     "means": [
+      "Around 69\u00b0 for packing up; everyone has to be off the land by 5 pm."
+     ],
      "morning_f": 46,
      "overnight_f": null,
      "overnight_p10_f": null,
-     "wear": [
-      "Afternoon (near 66\u00b0F): long sleeves and a light layer."
-     ]
+     "wet": 0.18
     },
     "lines": [
-     "31 runs from NOAA GEFS. Afternoon near 66\u00b0F (the week's usual is 72\u00b0F); morning low near 46\u00b0F (usual 45\u00b0F).",
-     "Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).",
-     "A night at 40\u00b0F or colder: about 3 runs in 10.",
-     "The Tangipahoa at Osyka runs 97.6 cfs, at or above 36% of past readings for these weeks."
+     "Afternoon around 69\u00b0F (normal: 72\u00b0F). Early morning around 46\u00b0F (normal: 45\u00b0F).",
+     "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
+     "Chance of a night at 40\u00b0F or colder: about 3 in 10.",
+     "The nearby Tangipahoa River is about normal for this time of year."
     ],
     "low_f": 46,
     "runs": 31,
     "share_low_at_or_below_40": 0.26,
-    "share_rain_at_least_0.1": 0.23,
+    "share_rain_at_least_0.1": 0.18,
     "sunrise": "6:28 am",
     "sunset": "5:04 pm"
    }
@@ -624,17 +675,21 @@
    ]
   },
   "forecast_read_at": "2026-10-31T01:09-05:00",
-  "lead": "12 days out: ensembles only. Read the shares as leanings, not plans.",
-  "meaning": "Engulf weather reading: each day's forecast against past years, and what to wear, pack and eat.",
-  "packing": [
-   "Sleep: a bag rated 25\u00b0F or warmer, plus a pad (the cold comes up from the ground). The coldest likely night is about 35\u00b0F (in past years, 1 night in 10 went to 35\u00b0F or below). Generators are off 10 pm to 10 am, so no plug-in heat.",
-   "Burn night and evenings: a warm jacket, hat and something for your hands. Evenings can feel as cold as 45\u00b0F; in past years 1 evening in 10 felt 36\u00b0F or colder, so a hat and gloves earn their space.",
-   "Afternoons: a t-shirt, sun hat and sunscreen. Afternoons can reach 78\u00b0F, and shade is limited.",
-   "Rain: a rain shell and mud boots whatever the forecast. The event asks for both, and 23% of runs show rain on at least one day.",
-   "Dew: dry bags or a bin for clothes and electronics; in past years 34% of calm predawn hours came within 3\u00b0F of the dew point, which wets everything without rain.",
-   "Water: 1.5 gallons a person a day (the event's number); more if afternoons are warm."
-  ],
+  "lead": "12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
+  "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
   "refused": [],
+  "summary": [
+   "Expect afternoons around 71\u00b0, nights around 49\u00b0, and little rain.",
+   "Burn night looks like light wind (around 5 mph), probably dry, and about 54\u00b0 at the burns.",
+   "In a normal Engulf week, afternoons run around 72\u00b0 and nights around 45\u00b0; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph.",
+   "When you'll know more: the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees."
+  ],
+  "why": [
+   "The latest forecasts from the European and US weather services make up 50% to 69% of each day's numbers. This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.",
+   "NOAA's longer-range outlook leans slightly warmer than normal for Nov 7\u201313, so the normal-year part of Thursday and Friday is nudged that way.",
+   "The last month ran warm and dry, but that says little about any single day two weeks from now, so it isn't in the numbers.",
+   "Each update leans more on the forecast; from a week out it's all forecast."
+  ],
   "written_on": "2026-10-31"
  }
 }

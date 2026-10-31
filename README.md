@@ -10,7 +10,7 @@ Weather for planning [Engulf](https://www.engulfburn.org/), the New Orleans regi
 - **It shows odds, not a single guess.** Twelve days out, no single forecast deserves trust. The reading counts how many of 82 model runs show something: ECMWF's 51-run ensemble plus NOAA's 31-run ensemble. "About 2 runs in 10 show rain" is the honest form.
 - **Every number has a baseline.** Each forecast is set beside 30 years of the same mid-November week: site highs, lows and rain (1996–2025), and burn-hour wind from McComb, MS, the nearest airport station with a long record.
 - **It reads the ground.** It checks how much of the parish is in drought (a dry parish can ban burning, and Engulf's fire policy says a ban can restrict fire at the event) and how the nearest river runs compared with past years, for the Sunday exodus.
-- **It turns that into what to wear, pack and eat.** It covers clothes for the afternoon, after dark (counting the wind's chill) and overnight. The packing list plans for the cold end of the runs, including a sleeping-bag rating. Meal ideas follow the event's own rules: no personal fires, ice sold noon–4 pm only, and 1.5 gallons of water per person per day.
+- **It says what the weather means, not what to bring.** People who go to burns know how to camp. Each day gets a few plain lines: how far it drops from afternoon to night, how cold it feels after dark once the wind is counted, whether frost or heavy dew is likely, how much daylight is left after the gates open, and whether rain would turn the roads to mud.
 
 ## The 30-year baseline for festival week (Nov 9–18, 1996–2025)
 
@@ -44,7 +44,7 @@ If Open-Meteo refuses (its free limit counts calls per internet address), the fo
 
 - `config/event.json`: dates, gate hours, burn times, the site, and its neighbouring station and river gauge. Each value names its source.
 - `engulf/rules.py`: the thresholds the reading flags (15 mph wind, 25 mph gusts, 0.1 in rain, 40°F nights and so on). These are planning lines, **not Engulf policy**. The Fire Art Response Team and burn leads decide what burns.
-- `engulf/climatology.py`, `forecast.py`, `ground.py`, `astro.py`, `kit.py`, `reading.py`: the steps, in order. `kit.py` turns the numbers into clothes, a packing list and meals.
+- `engulf/climatology.py`, `forecast.py`, `ground.py`, `astro.py`, `kit.py`, `reading.py`: the steps, in order. `kit.py` turns each day's numbers into a few lines on what they mean.
 - `data/`: the latest numbers, plus `captures/` (every download, gzipped) and `manifest.jsonl` (each download's URL, time and hash).
 - `readings/`: one reading per day, plus `latest.md` and `latest.json`.
 - [`docs/CASE_STUDY.md`](docs/CASE_STUDY.md): what carried over from the Hill Country tools, what didn't, and what it would take to do this for any event.
