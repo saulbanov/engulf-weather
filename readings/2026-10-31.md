@@ -14,7 +14,7 @@
 - The last month ran warm and dry, but that says little about any single day two weeks from now, so it isn't in the numbers.
 - Each update leans more on the forecast; from a week out it's all forecast.
 
-_12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day._ Forecast read 2026-10-31T08:10-05:00.
+_12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day._ Forecast read 2026-10-31T08:12-05:00.
 
 ## Thursday Nov 12: arrival and setup; gates 10 am to 10 pm
 _Sunrise 6:25 am, sunset 5:06 pm._
