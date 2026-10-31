@@ -215,9 +215,9 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict, outlook: dict |
 <title>Engulf 2026 weather</title>
 <meta name=description content="Forecast for Engulf 2026, and what it means,, Kentwood LA, Nov 12–15.">
 <style>{CSS}</style></head><body><main>
-<p class=banner>{e(r.get('banner', ''))}</p>
 <header><h1>Engulf 2026 weather</h1>
-<p class=small>Kentwood, Louisiana · Thu Nov 12 to Sun Nov 15 · updated {e(updated)}, twice a day</p></header>
+<p class=small>Kentwood, Louisiana · Thu Nov 12 to Sun Nov 15 · updated {e(updated)}, twice a day</p>
+<p class=banner>{e(r.get('banner', ''))}</p></header>
 <section class=summary><h2>The short version</h2>{bullets(r.get("summary", []))}</section>
 <section class=summary><h2>Why we think that</h2>{bullets(r.get("why", []))}</section>
 {glance(ev, f, clim, r)}
@@ -255,7 +255,7 @@ section.summary h2{margin-top:.6em}section.summary li{margin:.45em 0}details{mar
 .sum{color:var(--accent);font-weight:600;margin:2px 0}.temps{font-size:1.5rem}.check{list-style:none;padding:0}
 .check li{padding:8px 0 8px 30px;border-bottom:1px solid var(--line);position:relative}
 .check li:before{content:"";position:absolute;left:2px;top:11px;width:16px;height:16px;border:2px solid var(--mute);border-radius:3px}
-.banner{margin:0 0 12px;padding:10px 14px;border-radius:6px;background:var(--fg);color:var(--bg);font-weight:600}
+.banner{margin:8px 0 0;padding:2px 0 2px 10px;border-left:3px solid var(--accent);font-size:.95rem}
 """
 
 
