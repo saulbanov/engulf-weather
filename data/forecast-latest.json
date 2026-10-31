@@ -1,6 +1,6 @@
 {
  "meaning": "Forecasts for Engulf's days and burn hours, as read on the date below; shares are of model runs.",
- "read_at": "2026-10-31T08:12-05:00",
+ "read_at": "2026-10-31T10:19-05:00",
  "models": {
   "ECMWF ENS": {
    "days": {

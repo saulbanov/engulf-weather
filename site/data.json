@@ -370,7 +370,7 @@
    "issued": "2026-10-31T10:41:50+00:00",
    "source": "National Weather Service hourly forecast, LIX grid 53,132"
   },
-  "read_at": "2026-10-31T08:12-05:00",
+  "read_at": "2026-10-31T10:19-05:00",
   "refused": [],
   "stale": {}
  },
@@ -428,7 +428,7 @@
    "to": "2026-10-30"
   },
   "river": {
-   "at": "2026-10-31T08:00:00.000-05:00",
+   "at": "2026-10-31T10:00:00.000-05:00",
    "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading.",
    "flow_cfs": 98.8,
    "median_same_weeks_cfs": 106.0,
@@ -686,7 +686,7 @@
     }
    ]
   },
-  "forecast_read_at": "2026-10-31T08:12-05:00",
+  "forecast_read_at": "2026-10-31T10:19-05:00",
   "lead": "12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
   "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
   "refused": [],
