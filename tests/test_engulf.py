@@ -202,6 +202,11 @@ class Kit(unittest.TestCase):
         self.assertEqual(kit.feels(40, 2), 40)
         self.assertEqual(round(kit.feels(40, 10)), 34)          # NWS chart: 40°F at 10 mph feels 34°F
 
+    def test_wear_phrases(self):
+        self.assertEqual(kit.wear(80), "t-shirt weather")
+        self.assertEqual(kit.wear(50), "a fleece or light jacket")
+        self.assertEqual(kit.wear(33), "winter layers")
+
     def test_meaning_lines(self):
         cold = kit.meaning({"high_f": 72, "evening_feels_f": 50, "overnight_f": 38, "overnight_p10_f": 30}, 0.4,
                            first=True, last=False, daylight_after_gates=7.1, dewy=0.34)

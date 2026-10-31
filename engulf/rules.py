@@ -31,6 +31,19 @@ SWING_F = 25             # afternoon-to-morning drop at or above this is called 
 MUD_CHANCE = 0.3         # a day this likely to see 0.1 in of rain gets the mud line
 DEWY_SHARE = 0.25        # share of calm predawn hours near the dew point that earns the dew line
 
+# What to wear, by how cold it feels (°F, wind counted), warmest first. Short phrases for the summary.
+WEAR = [
+    (78, "t-shirt weather"),
+    (68, "a t-shirt, maybe long sleeves"),
+    (58, "long sleeves or a light layer"),
+    (48, "a fleece or light jacket"),
+    (38, "a warm jacket, hat and gloves"),
+    (28, "winter layers"),
+    (-99, "full winter gear"),
+]
+
+STANDING_STILL_F = 5     # standing still for hours at the burns feels this much colder than the air
+
 # Blending the forecast with a normal year (engulf/blend.py). The forecast is taken as is up to a week
 # out; beyond that its weight falls to half at 15 days, the far edge of the European forecast. A normal
 # year is nudged by NOAA's 8-14 day outlook where it covers the day: degrees for temperature, a
