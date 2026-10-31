@@ -33,11 +33,10 @@ DEWY_SHARE = 0.25        # share of calm predawn hours near the dew point that e
 
 # What to wear, by how cold it feels (°F, wind counted), warmest first. Short phrases for the summary.
 WEAR = [
-    (78, "t-shirt weather"),
-    (68, "a t-shirt, maybe long sleeves"),
-    (58, "long sleeves or a light layer"),
-    (48, "a fleece or light jacket"),
-    (38, "a warm jacket, hat and gloves"),
+    (68, "T-shirt"),
+    (58, "long sleeves"),
+    (48, "fleece"),
+    (38, "warm jacket, hat, gloves"),
     (28, "winter layers"),
     (-99, "full winter gear"),
 ]
