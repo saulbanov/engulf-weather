@@ -56,14 +56,16 @@ def estimate(day: str, today: date, forecast: dict | None, normal: dict, outlook
     w = forecast_weight(lead) if forecast else 0.0
     lean = lean_for(day, outlook)
     shift, factor = temp_shift(lean.get("temperature")), rain_factor(lean.get("rain"))
-    out = {}
+    out, filled = {}, []
     for k in ("high_f", "morning_f", "evening_feels_f", "overnight_f"):
         n = None if normal.get(k) is None else normal[k] + shift
         f = (forecast or {}).get(k)
+        if forecast and f is None and n is not None:
+            filled.append(k)      # the forecast reaches the day but not this part of it: a normal year stands in, and says so
         out[k] = None if n is None and f is None else round(f if n is None else (n if f is None else w * f + (1 - w) * n))
     nwet = min(1.0, normal["wet"] * factor)
     fwet = (forecast or {}).get("wet")
     out["wet"] = round(nwet if fwet is None else w * fwet + (1 - w) * nwet, 2)
-    out["inputs"] = {"days_ahead": lead, "forecast_weight": w, "normal_shift_f": shift, "normal_rain_factor": round(factor, 2),
+    out["inputs"] = {"days_ahead": lead, "forecast_weight": w, "normal_only": filled, "normal_shift_f": shift, "normal_rain_factor": round(factor, 2),
                      "outlook": {k: f"{v['lean']} ({v['chance']:g}%)" for k, v in lean.items()}}
     return out

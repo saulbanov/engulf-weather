@@ -62,7 +62,7 @@ def build() -> dict:
         row = {}
         for kind, f in (("temperature", temp), ("rain", prcp)):
             try:
-                kmz = get(BASE + f, "cpc", f.replace(".kmz", ""), keep=False,   # ~290 KB a map; the manifest keeps its hash
+                kmz = get(BASE + f, "cpc", f.replace(".kmz", ""), keep="new",   # ~290 KB a map, kept once per new issue
                           accept="application/vnd.google-earth.kmz")
                 with zipfile.ZipFile(io.BytesIO(kmz)) as z:
                     row[kind] = read_kml(z.read(next(n for n in z.namelist() if n.endswith(".kml"))), lon, lat)

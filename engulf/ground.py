@@ -94,7 +94,8 @@ def recent(today: date, days: int = 30) -> dict:
     return {"source": "McComb, MS airport (ACIS), against its 1991-2020 normals", "from": start.isoformat(), "to": end.isoformat(),
             "days_reported": len(wet), "highs_vs_normal_f": round(sum(hi) / len(hi), 1) if hi else None,
             "lows_vs_normal_f": round(sum(lo) / len(lo), 1) if lo else None,
-            "rain_in": round(sum(a for a, _ in wet), 2), "normal_rain_in": round(sum(b for _, b in wet), 2)}
+            "rain_in": round(sum(a for a, _ in wet), 2) if wet else None,          # no reports is unknown, not dry
+            "normal_rain_in": round(sum(b for _, b in wet), 2) if wet else None}
 
 
 def build(today: date | None = None) -> dict:

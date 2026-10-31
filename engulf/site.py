@@ -96,7 +96,8 @@ def burn_table(ev: dict, f: dict, clim: dict) -> str:
     if bs:
         share = lambda k: chance(pooled_share([(b[k], b["runs"]) for b in bs]))
         rows.append(["Forecast", rng(pooled_spread([b["max_wind_mph"] for b in bs]), " mph"), share("share_wind_at_least_15"),
-                     share("share_gust_at_least_25"), share("share_rain_at_least_0.1"), rng(pooled_spread([b["coldest_f"] for b in bs]))])
+                     share("share_gust_at_least_25"), share("share_rain_at_least_0.1"),
+                     rng(pooled_spread([b.get("coldest_feels_f") or b["coldest_f"] for b in bs]))])
     else:
         rows.append(["Forecast", "too far out", "", "", "", ""])
     rows.append(["Normal year", f"{bh['median_max_wind_mph_burn_hours']} mph", chance(bh["share_nights_wind_at_least_15"]),
@@ -181,6 +182,8 @@ def how_built(ev: dict, r: dict, ground: dict, outlook: dict) -> str:
         i = d["kit"]["inputs"]
         words = {("temperature", "above"): "warmer", ("temperature", "below"): "colder", ("rain", "above"): "wetter", ("rain", "below"): "drier"}
         lean = ", ".join(f"{words[(k, v.split()[0])]} {v.split()[1]}" for k, v in i["outlook"].items()) or "no lean, or outside its dates"
+        if i.get("normal_only"):
+            lean += "; " + ", ".join(x.replace("_f", "").replace("_", " ") for x in i["normal_only"]) + " from a normal year (forecast doesn't reach it)"
         rows.append([e(day_name(d["date"])), str(i["days_ahead"]), f"{round(i['forecast_weight'] * 100)}%", e(lean),
                      f"{d['kit']['high_f']}° / {d['kit']['morning_f']}°", e(chance(d["kit"]["wet"]))])
     o = ((outlook.get("outlooks") or {}).get("8-14 day") or {})
@@ -191,10 +194,13 @@ def how_built(ev: dict, r: dict, ground: dict, outlook: dict) -> str:
                f"{e(reading.lean_words(t, 'temperature'))}; {e(reading.lean_words(rn, 'rain'))}.</p>")
     rc = ground.get("recent") or {}
     recent = ""
-    if rc.get("highs_vs_normal_f") is not None:
-        recent = (f"<p>Last 30 days at McComb ({e(rc['from'])} to {e(rc['to'])}): highs {rc['highs_vs_normal_f']:+.1f}° and lows "
-                  f"{rc['lows_vs_normal_f']:+.1f}° against normal; {rc['rain_in']:.2f} of a normal {rc['normal_rain_in']:.2f} inches of rain. "
-                  "Used for the dry-ground line, not the temperatures.</p>")
+    if rc.get("from"):
+        sign = lambda x: "not reported" if x is None else f"{x:+.1f}°"
+        rain = ("rain not reported" if rc.get("rain_in") is None
+                else f"{rc['rain_in']:.2f} of a normal {rc['normal_rain_in']:.2f} inches of rain")
+        recent = (f"<p>Last 30 days at McComb ({e(rc['from'])} to {e(rc['to'])}): highs {sign(rc.get('highs_vs_normal_f'))} and lows "
+                  f"{sign(rc.get('lows_vs_normal_f'))} against normal; {rain}. Not used in the numbers: how the last month went says "
+                  "little about a single day two weeks out.</p>")
     return ("<p>Each day's numbers blend the forecast with a normal year for that date. Up to a week out the forecast counts "
             "fully; further out it counts less, down to half at two weeks. A normal year is nudged warmer, colder, wetter or drier "
             "when NOAA's outlook leans that way for the day.</p>"
@@ -209,7 +215,11 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict, outlook: dict |
     if rv.get("share_of_same_weeks_at_or_below") is not None:
         river = (f"<p>The Tangipahoa River near the site is {e(reading.river_words(rv['share_of_same_weeks_at_or_below']))} for this "
                  "time of year. The event warns heavy rain can flood the site's roads.</p>")
-    refused = f"<p class=note>Some sources didn't answer this update: {e('; '.join(f['refused']))}</p>" if f.get("refused") else ""
+    refused = ""
+    if f.get("stale"):
+        when = min(f["stale"].values())
+        refused = (f"<p class=note>Some forecasts couldn't be updated this time, so the page uses the last ones we got, from "
+                   f"{e(datetime.fromisoformat(when).strftime('%a %b %-d, %-I:%M %p'))}.</p>")
     return f"""<!doctype html>
 <html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>Engulf 2026 weather</title>
@@ -224,7 +234,7 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict, outlook: dict |
 <section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{nws_table(ev, f)}</section>
 <section class=method><h2>The details</h2>
 <details><summary>Burn night, by the numbers</summary>{burn_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p></details>
-<details><summary>Every day, by the numbers</summary>{days_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range.</p></details>
+<details><summary>Every day: the raw forecasts</summary>{days_table(ev, f, clim)}<p class=note>These are the forecasts alone, before they are blended with a normal year, so they can differ from the day cards above. Numbers in brackets are the likely range.</p></details>
 <details><summary>How this estimate is built</summary>{how_built(ev, r, ground, outlook)}</details>
 <details><summary>Drought and river</summary>{"<p>" + md_bold(reading.drought_words(dr)) + "</p>" if dr.get("share_of_parish") else ""}{river}</details>
 <details><summary>Where this comes from</summary>{bullets(reading.ABOUT_PAGE)}<p class=note>Numbers and code: <a href="{REPO}">github.com/saulbanov/engulf-weather</a>.</p></details>

@@ -1,12 +1,12 @@
 {
  "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
  "written_on": "2026-10-31",
- "forecast_read_at": "2026-10-31T01:09-05:00",
+ "forecast_read_at": "2026-10-31T08:10-05:00",
  "lead": "12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
  "banner": "This is preliminary until about Nov 7, when the hour-by-hour forecast for burn night comes in. It gets more accurate the closer we get to the burn.",
  "summary": [
-  "Expect afternoons around 71\u00b0, nights around 49\u00b0, and little rain. Day: T-shirt. Night: fleece.",
-  "Burn night looks like light wind (around 5 mph), probably dry, and about 54\u00b0 at the burns. Night: fleece.",
+  "Expect afternoons around 72\u00b0, nights around 51\u00b0, and a chance of a shower or two. Day: T-shirt. Night: fleece.",
+  "Burn night looks like light wind (around 5 mph), probably dry, and about 58\u00b0 at the burns. Night: fleece.",
   "In a normal Engulf week, afternoons run around 72\u00b0 and nights around 45\u00b0; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year.",
   "When you'll know more: the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees."
  ],
@@ -20,22 +20,23 @@
   {
    "kit": {
     "high_f": 71,
-    "morning_f": 49,
+    "morning_f": 48,
     "evening_feels_f": 55,
     "overnight_f": 51,
     "wet": 0.08,
     "inputs": {
      "days_ahead": 12,
      "forecast_weight": 0.69,
+     "normal_only": [],
      "normal_shift_f": 1.5,
      "normal_rain_factor": 1.0,
      "outlook": {
       "temperature": "above (33%)"
      }
     },
-    "high_p90_f": 77,
-    "evening_p10_f": 45,
-    "overnight_p10_f": 42,
+    "high_p90_f": 79,
+    "evening_p10_f": 47,
+    "overnight_p10_f": 43,
     "from": "the forecast",
     "means": [
      "71\u00b0 in the afternoon, about 55\u00b0 after dark once the wind is counted, and near 51\u00b0 by morning.",
@@ -47,28 +48,29 @@
    "about": "arrival and setup; gates 10 am to 10 pm",
    "runs": 82,
    "lines": [
-    "Afternoon around 71\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
+    "Afternoon around 71\u00b0F (normal: 72\u00b0F). Early morning around 48\u00b0F (normal: 45\u00b0F).",
     "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
-    "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10)."
+    "Chance of a night at 40\u00b0F or colder: about 1 in 10."
    ],
    "sunrise": "6:25 am",
    "sunset": "5:06 pm",
    "high_f": 71,
-   "low_f": 49,
+   "low_f": 48,
    "share_rain_at_least_0.1": 0.08,
-   "share_low_at_or_below_40": 0.01,
+   "share_low_at_or_below_40": 0.08,
    "burn": null
   },
   {
    "kit": {
-    "high_f": 71,
+    "high_f": 72,
     "morning_f": 49,
-    "evening_feels_f": 55,
-    "overnight_f": 50,
-    "wet": 0.14,
+    "evening_feels_f": 56,
+    "overnight_f": 51,
+    "wet": 0.21,
     "inputs": {
      "days_ahead": 13,
      "forecast_weight": 0.62,
+     "normal_only": [],
      "normal_shift_f": 1.5,
      "normal_rain_factor": 1.0,
      "outlook": {
@@ -76,73 +78,74 @@
      }
     },
     "high_p90_f": 78,
-    "evening_p10_f": 47,
+    "evening_p10_f": 44,
     "overnight_p10_f": 43,
     "from": "the forecast",
     "means": [
-     "71\u00b0 in the afternoon, about 55\u00b0 after dark once the wind is counted, and near 50\u00b0 by morning."
+     "72\u00b0 in the afternoon, about 56\u00b0 after dark once the wind is counted, and near 51\u00b0 by morning."
     ]
    },
    "date": "2026-11-13",
    "about": "the full day on site",
    "runs": 82,
    "lines": [
-    "Afternoon around 71\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
-    "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
+    "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
+    "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
     "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10)."
    ],
    "sunrise": "6:26 am",
    "sunset": "5:06 pm",
-   "high_f": 71,
+   "high_f": 72,
    "low_f": 49,
-   "share_rain_at_least_0.1": 0.14,
+   "share_rain_at_least_0.1": 0.21,
    "share_low_at_or_below_40": 0.04,
    "burn": null
   },
   {
    "kit": {
     "high_f": 72,
-    "morning_f": 48,
-    "evening_feels_f": 53,
-    "overnight_f": 47,
-    "wet": 0.17,
+    "morning_f": 49,
+    "evening_feels_f": 55,
+    "overnight_f": 52,
+    "wet": 0.15,
     "inputs": {
      "days_ahead": 14,
      "forecast_weight": 0.56,
+     "normal_only": [],
      "normal_shift_f": 0.0,
      "normal_rain_factor": 1.0,
      "outlook": {}
     },
     "high_p90_f": 76,
-    "evening_p10_f": 47,
-    "overnight_p10_f": 36,
+    "evening_p10_f": 49,
+    "overnight_p10_f": 43,
     "from": "the forecast",
     "means": [
-     "A big swing: 72\u00b0 in the afternoon, about 53\u00b0 after dark once the wind is counted, and near 47\u00b0 by morning."
+     "72\u00b0 in the afternoon, about 55\u00b0 after dark once the wind is counted, and near 52\u00b0 by morning."
     ]
    },
    "date": "2026-11-14",
    "about": "burn night: temple around 8 pm, effigy around 10 pm",
    "runs": 31,
    "lines": [
-    "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 48\u00b0F (normal: 45\u00b0F).",
+    "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
     "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
     "Chance of a night at 40\u00b0F or colder: about 1 in 10.",
-    "Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: about 1 in 10. Rain: about 1 in 10.",
+    "Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: about 1 in 10. Rain: very unlikely.",
     "Over the past 30 years, wind on mid-November nights here usually tops out around 6 mph; it reached 15 mph on about 1 night in 25.",
     "Moon: a thin crescent, 28% lit. A dark sky for the burns."
    ],
    "sunrise": "6:27 am",
    "sunset": "5:05 pm",
    "high_f": 72,
-   "low_f": 48,
-   "share_rain_at_least_0.1": 0.17,
-   "share_low_at_or_below_40": 0.06,
+   "low_f": 49,
+   "share_rain_at_least_0.1": 0.15,
+   "share_low_at_or_below_40": 0.1,
    "burn": {
     "runs": 31,
     "share_wind_at_least_15": 0.0,
-    "share_gust_at_least_25": 0.1,
-    "share_rain_at_least_0.1": 0.1,
+    "share_gust_at_least_25": 0.06,
+    "share_rain_at_least_0.1": 0.0,
     "moon": {
      "age_days": 5.3,
      "phase": "waxing crescent",
@@ -152,14 +155,17 @@
   },
   {
    "kit": {
-    "high_f": 69,
-    "morning_f": 46,
-    "evening_feels_f": 52,
+    "high_f": 72,
+    "morning_f": 50,
+    "evening_feels_f": 55,
     "overnight_f": null,
-    "wet": 0.18,
+    "wet": 0.17,
     "inputs": {
      "days_ahead": 15,
      "forecast_weight": 0.5,
+     "normal_only": [
+      "overnight_f"
+     ],
      "normal_shift_f": 0.0,
      "normal_rain_factor": 1.0,
      "outlook": {}
@@ -169,24 +175,24 @@
     "overnight_p10_f": null,
     "from": "the forecast",
     "means": [
-     "Around 69\u00b0 for packing up; everyone has to be off the land by 5 pm."
+     "Around 72\u00b0 for packing up; everyone has to be off the land by 5 pm."
     ]
    },
    "date": "2026-11-15",
    "about": "exodus: off the land by 5 pm",
    "runs": 31,
    "lines": [
-    "Afternoon around 69\u00b0F (normal: 72\u00b0F). Early morning around 46\u00b0F (normal: 45\u00b0F).",
+    "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 50\u00b0F (normal: 45\u00b0F).",
     "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
-    "Chance of a night at 40\u00b0F or colder: about 3 in 10.",
+    "Chance of a night at 40\u00b0F or colder: about 1 in 10.",
     "The nearby Tangipahoa River is about normal for this time of year."
    ],
    "sunrise": "6:28 am",
    "sunset": "5:04 pm",
-   "high_f": 69,
-   "low_f": 46,
-   "share_rain_at_least_0.1": 0.18,
-   "share_low_at_or_below_40": 0.26,
+   "high_f": 72,
+   "low_f": 50,
+   "share_rain_at_least_0.1": 0.17,
+   "share_low_at_or_below_40": 0.06,
    "burn": null
   }
  ],
@@ -230,5 +236,6 @@
   ],
   "burn_ban": "not checked: see tangipahoa.org; bans are issued and lifted at short notice"
  },
- "refused": []
+ "refused": [],
+ "stale": {}
 }
