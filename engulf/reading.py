@@ -131,13 +131,6 @@ def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: d
         ww = "light wind" if wind < 10 else ("a breeze" if wind < rules.WINDY_MPH else "wind")
         out.append(f"Burn night looks like {ww} (around {wind} mph), {'probably dry' if (r or 0) < 0.2 else 'a chance of rain'}, "
                    f"and about {cold}° at the burns.")
-    rc, dr = ground.get("recent") or {}, (ground.get("drought") or {}).get("share_of_parish") or {}
-    dry_fall = rc.get("normal_rain_in") and rc["rain_in"] / rc["normal_rain_in"] < 0.75
-    if dr.get("D1", 0) >= 0.5 or dry_fall:
-        out.append("The ground is dry: " + ("October ran warm and dry, and " if dry_fall and (rc.get("highs_vs_normal_f") or 0) >= 1.5
-                   else ("October ran dry, and " if dry_fall else ""))
-                   + ("the parish is in drought. " if dr.get("D1", 0) >= 0.5 else "")
-                   + "Burn bans are possible.")
     out.append(f"In a normal Engulf week, afternoons run around {sd['high_f']['median']}° and nights around {sd['low_f']['median']}°; "
                f"it rains on about {one_in(sd['share_days_rain_at_least_0.1'])} days, frost comes about {one_in(sd['share_nights_at_or_below_32'])} nights, "
                f"and wind at burn time rarely reaches {rules.WINDY_MPH} mph.")
@@ -152,6 +145,40 @@ def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: d
         when.append(f"from about {(burn - timedelta(days=3)).strftime('%b %-d')}, three days out, forecasts are usually within a few degrees")
     if when:
         out.append("When you'll know more: " + "; ".join(when) + ".")
+    return out
+
+
+def why(days: list[dict], ground: dict, outlook: dict, today: date) -> list[str]:
+    """Why we think that: where the summary's numbers come from, in plain lines filled from the blend's inputs."""
+    out = []
+    ws = [d["kit"]["inputs"]["forecast_weight"] for d in days]
+    lo_w, hi_w = round(min(ws) * 100), round(max(ws) * 100)
+    if max(ws) == 0:
+        out.append("No forecast reaches the festival yet, so these are the numbers for a normal Engulf week.")
+    elif min(ws) == 1:
+        out.append("The festival is within a week, so these numbers are straight from the latest forecasts: "
+                   "the European and US weather services, and the National Weather Service hour by hour.")
+    else:
+        share = f"{lo_w}%" if lo_w == hi_w else f"{lo_w}% to {hi_w}%"
+        out.append(f"The latest forecasts from the European and US weather services make up {share} of each day's numbers. "
+                   "This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.")
+    leans = {k: v for d in days for k, v in d["kit"]["inputs"]["outlook"].items()}
+    o = ((outlook.get("outlooks") or {}).get("8-14 day") or {})
+    t = o.get("temperature") or {}
+    if leans and t.get("period"):
+        d1, d2 = (datetime.fromisoformat(x) for x in t["period"])
+        covered = [datetime.fromisoformat(d["date"]).strftime("%A") for d in days if d["kit"]["inputs"]["outlook"]]
+        out.append(f"NOAA's longer-range outlook leans {lean_words(t, 'temperature')} for {d1.strftime('%b %-d')}–{d2.strftime('%-d')}, "
+                   f"so the normal-year part of {' and '.join(covered)} is nudged that way.")
+    elif t.get("period"):
+        out.append("NOAA's longer-range outlook doesn't lean either way for these days, so it doesn't change the numbers.")
+    rc = ground.get("recent") or {}
+    if rc.get("highs_vs_normal_f") is not None and rc.get("normal_rain_in"):
+        d, share = rc["highs_vs_normal_f"], rc["rain_in"] / rc["normal_rain_in"]
+        how = ("warm and dry" if d >= 1.5 and share < 0.75 else "warm" if d >= 1.5 else "dry" if share < 0.75 else "about normal")
+        out.append(f"The last month ran {how}, but that says little about any single day two weeks from now, so it isn't in the numbers.")
+    if 0 < min(ws) < 1:
+        out.append("Each update leans more on the forecast; from a week out it's all forecast.")
     return out
 
 
@@ -263,6 +290,7 @@ def build(today: date | None = None) -> dict:
            "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
            "banner": banner(today, date.fromisoformat(ev["burn_window"]["date"])),
            "summary": summary(f, clim, ground, outlook, ev, today, days),
+           "why": why(days, ground, outlook, today),
            "days": days, "drought": ground.get("drought"), "refused": f.get("refused", [])}
     (ROOT / "readings").mkdir(exist_ok=True)
     (ROOT / "readings" / "latest.json").write_text(json.dumps(out, indent=1) + "\n")
@@ -274,11 +302,8 @@ def build(today: date | None = None) -> dict:
 
 def render(r: dict, clim: dict) -> str:
     L = [f"# Engulf weather, read {r['written_on']}", "", f"**{r['banner']}**", "", *[f"- {x}" for x in r["summary"]], "",
+         "## Why we think that", "", *[f"- {x}" for x in r["why"]], "",
          f"_{r['lead']}_ Forecast read {r['forecast_read_at']}.", ""]
-    dr = r.get("drought") or {}
-    if dr.get("share_of_parish"):
-        s = dr["share_of_parish"]
-        L += [drought_words(dr), ""]
     for d in r["days"]:
         L += [f"## {datetime.fromisoformat(d['date']).strftime('%A %b %-d')}: {d['about']}",
               f"_Sunrise {d['sunrise']}, sunset {d['sunset']}._", ""] + [f"- {x}" for x in d["lines"]] + [""]

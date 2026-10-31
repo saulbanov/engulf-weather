@@ -168,6 +168,17 @@ class Reading(unittest.TestCase):
         self.assertIn("preliminary until about Nov 7", reading.banner(date(2026, 10, 31), burn))
         self.assertIn("firming up", reading.banner(date(2026, 11, 8), burn))
 
+    def test_why_explains_the_blend(self):
+        days = [{"date": "2026-11-12", "kit": {"inputs": {"forecast_weight": 0.69, "outlook": {"temperature": "above (33%)"}}}},
+                {"date": "2026-11-14", "kit": {"inputs": {"forecast_weight": 0.56, "outlook": {}}}}]
+        outlook = {"outlooks": {"8-14 day": {"temperature": {"period": ["2026-11-07", "2026-11-13"], "lean": "above", "chance": 33.0}}}}
+        ground = {"recent": {"highs_vs_normal_f": 3.8, "rain_in": 1.9, "normal_rain_in": 3.5}}
+        text = " ".join(reading.why(days, ground, outlook, date(2026, 10, 31)))
+        for bit in ("56% to 69%", "normal Engulf week", "slightly warmer", "Thursday", "warm and dry", "isn't in the numbers"):
+            self.assertIn(bit, text)
+        close = [{"date": "2026-11-14", "kit": {"inputs": {"forecast_weight": 1.0, "outlook": {}}}}]
+        self.assertIn("within a week", reading.why(close, {}, {}, date(2026, 11, 10))[0])
+
     def test_lean_words(self):
         self.assertEqual(reading.lean_words({"lean": "above", "chance": 33}, "temperature"), "slightly warmer than normal")
         self.assertEqual(reading.lean_words({"lean": "below", "chance": 55}, "rain"), "likely drier than normal")

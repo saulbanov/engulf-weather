@@ -205,10 +205,6 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict, outlook: dict |
     outlook = outlook or {}
     dr, rv = ground.get("drought") or {}, ground.get("river") or {}
     updated = datetime.fromisoformat(f["read_at"]).strftime("%a %b %-d, %-I:%M %p Central")
-    fire = ""
-    if dr.get("share_of_parish"):
-        fire = ("<p class=small><b>Fire note:</b> the parish is in drought. Dry spells are when parishes ban burning, and Engulf's rules "
-                "say a ban can limit fire at the event. This page doesn't track bans; check tangipahoa.org.</p>")
     river = ""
     if rv.get("share_of_same_weeks_at_or_below") is not None:
         river = (f"<p>The Tangipahoa River near the site is {e(reading.river_words(rv['share_of_same_weeks_at_or_below']))} for this "
@@ -223,8 +219,9 @@ def render(ev: dict, f: dict, ground: dict, clim: dict, r: dict, outlook: dict |
 <header><h1>Engulf 2026 weather</h1>
 <p class=small>Kentwood, Louisiana · Thu Nov 12 to Sun Nov 15 · updated {e(updated)}, twice a day</p></header>
 <section class=summary><h2>The short version</h2>{bullets(r.get("summary", []))}</section>
+<section class=summary><h2>Why we think that</h2>{bullets(r.get("why", []))}</section>
 {glance(ev, f, clim, r)}
-<section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{fire}{nws_table(ev, f)}</section>
+<section><h2>Burn night</h2><p class=small>Saturday: temple around 8 pm, effigy around 10 pm.</p><p>{burn_sentence(f, clim, r)}</p>{nws_table(ev, f)}</section>
 <section class=method><h2>The details</h2>
 <details><summary>Burn night, by the numbers</summary>{burn_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range. "Normal year" is the same week over the past 30 years.</p></details>
 <details><summary>Every day, by the numbers</summary>{days_table(ev, f, clim)}<p class=note>Numbers in brackets are the likely range.</p></details>

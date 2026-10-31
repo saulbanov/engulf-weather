@@ -4,13 +4,17 @@
 
 - Expect afternoons around 71°, nights around 49°, and little rain.
 - Burn night looks like light wind (around 5 mph), probably dry, and about 54° at the burns.
-- The ground is dry: October ran warm and dry, and the parish is in drought. Burn bans are possible.
 - In a normal Engulf week, afternoons run around 72° and nights around 45°; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph.
 - When you'll know more: the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees.
 
-_12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day._ Forecast read 2026-10-31T01:09-05:00.
+## Why we think that
 
-**The ground is dry.** As of Oct 27, all of Tangipahoa Parish is in drought, and about 23% is in severe drought (US Drought Monitor). Dry spells are when parishes ban burning, and Engulf's rules say a ban can limit fire at the event. This page doesn't check for bans; the parish posts them at tangipahoa.org.
+- The latest forecasts from the European and US weather services make up 50% to 69% of each day's numbers. This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.
+- NOAA's longer-range outlook leans slightly warmer than normal for Nov 7–13, so the normal-year part of Thursday and Friday is nudged that way.
+- The last month ran warm and dry, but that says little about any single day two weeks from now, so it isn't in the numbers.
+- Each update leans more on the forecast; from a week out it's all forecast.
+
+_12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day._ Forecast read 2026-10-31T01:09-05:00.
 
 ## Thursday Nov 12: arrival and setup; gates 10 am to 10 pm
 _Sunrise 6:25 am, sunset 5:06 pm._
