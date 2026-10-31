@@ -119,8 +119,11 @@ def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: d
     nights = [d["kit"]["overnight_f"] for d in days if d["kit"].get("overnight_f") is not None]
     wet = max(d["kit"]["wet"] for d in days)
     rain = "little rain" if wet < 0.2 else ("a chance of a shower or two" if wet < 0.5 else "rain likely on at least one day")
-    out.append(f"Expect afternoons around {round(sum(his) / len(his))}°, nights around "
-               f"{round(sum(nights) / len(nights)) if nights else sd['low_f']['median']}°, and {rain}.")
+    evs = [d["kit"]["evening_feels_f"] for d in days if d["kit"].get("evening_feels_f") is not None]
+    hi_avg, eve_avg = round(sum(his) / len(his)), round(sum(evs) / len(evs)) if evs else None
+    out.append(f"Expect afternoons around {hi_avg}°, nights around "
+               f"{round(sum(nights) / len(nights)) if nights else sd['low_f']['median']}°, and {rain}. "
+               f"Day: {kit.wear(hi_avg)}." + (f" Night: {kit.wear(eve_avg)}." if eve_avg is not None else ""))
     bd = ev["burn_window"]["date"]
     w, br = pooled_burn(models, "share_wind_at_least_15")
     if br:
@@ -130,10 +133,11 @@ def summary(f: dict, clim: dict, ground: dict, outlook: dict, ev: dict, today: d
         r, _ = pooled_burn(models, "share_rain_at_least_0.1")
         ww = "light wind" if wind < 10 else ("a breeze" if wind < rules.WINDY_MPH else "wind")
         out.append(f"Burn night looks like {ww} (around {wind} mph), {'probably dry' if (r or 0) < 0.2 else 'a chance of rain'}, "
-                   f"and about {cold}° at the burns.")
+                   f"and about {cold}° at the burns. Night: {kit.wear(cold - rules.STANDING_STILL_F)}.")
     out.append(f"In a normal Engulf week, afternoons run around {sd['high_f']['median']}° and nights around {sd['low_f']['median']}°; "
                f"it rains on about {one_in(sd['share_days_rain_at_least_0.1'])} days, frost comes about {one_in(sd['share_nights_at_or_below_32'])} nights, "
-               f"and wind at burn time rarely reaches {rules.WINDY_MPH} mph.")
+               f"and wind at burn time rarely reaches {rules.WINDY_MPH} mph. Day: {kit.wear(sd['high_f']['median'])}. "
+               f"Night: {kit.wear(sd['low_f']['median'])}; {kit.wear(sd['low_f']['p10'])} in a cold year.")
     burn = date.fromisoformat(bd)
     when = []
     ecmwf_burn = next((m.get("burn", {}).get("runs") for n, m in models.items() if n.startswith("ECMWF")), None)

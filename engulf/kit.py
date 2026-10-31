@@ -16,6 +16,13 @@ def feels(temp_f: float, wind_mph: float) -> float:
     return 35.74 + 0.6215 * temp_f - 35.75 * v + 0.4275 * temp_f * v
 
 
+def wear(f: float | None) -> str:
+    """The short what-to-wear phrase for how cold it feels (rules.WEAR)."""
+    if f is None:
+        return ""
+    return next(words for floor, words in rules.WEAR if f >= floor)
+
+
 def meaning(k: dict, wet: float | None, *, first: bool, last: bool, daylight_after_gates: float | None,
             dewy: float | None) -> list[str]:
     """A few lines on what the day's weather means, from its numbers (k: high_f, evening_feels_f, overnight_f, overnight_p10_f)."""

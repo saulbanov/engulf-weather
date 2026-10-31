@@ -2,9 +2,9 @@
 
 **This is preliminary until about Nov 7, when the hour-by-hour forecast for burn night comes in. It gets more accurate the closer we get to the burn.**
 
-- Expect afternoons around 71°, nights around 49°, and little rain.
-- Burn night looks like light wind (around 5 mph), probably dry, and about 54° at the burns.
-- In a normal Engulf week, afternoons run around 72° and nights around 45°; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph.
+- Expect afternoons around 71°, nights around 49°, and little rain. Day: T-shirt. Night: fleece.
+- Burn night looks like light wind (around 5 mph), probably dry, and about 54° at the burns. Night: fleece.
+- In a normal Engulf week, afternoons run around 72° and nights around 45°; it rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year.
 - When you'll know more: the European forecast reaches burn night in the next day or two; the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees.
 
 ## Why we think that
