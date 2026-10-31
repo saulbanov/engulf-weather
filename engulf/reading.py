@@ -1,10 +1,8 @@
-"""The weather horoscope: one reading per festival day, written from the numbers, never instead of them.
+"""The daily reading: for each festival day, what the model runs show against what the same week has
+done in 30 past years, then what to wear and eat; for the weekend, what to pack.
 
-Each day gets a sign (the Gate, the Wanderer, the Effigy, the Exodus), a star count and a few lines
-of reading, then the numbers the lines came from: what the model runs show, against what the same
-week has done in 30 past years. The stars are arithmetic: start at five, take away for each flagged
-thing in proportion to the share of runs that show it. The voice is a horoscope's; the numbers are
-not. Words like "safe" or "dangerous" are never used (data rule 8); the burn crew decides.
+Every line comes from a number in data/. Words like "safe" or "dangerous" are never used (data
+rule 8); the burn crew decides.
 """
 from __future__ import annotations
 import json
@@ -12,10 +10,10 @@ from datetime import date, datetime
 from zoneinfo import ZoneInfo
 from . import ROOT, event, astro, kit, rules
 
-SIGNS = {0: ("The Gate", "arrival, setting up camp, the roads in"),
-         1: ("The Wanderer", "the long art day and the night after"),
-         2: ("The Effigy", "the temple at 8 and the effigy at 10"),
-         3: ("The Exodus", "packing out, off the land by 5 pm")}
+ABOUT = {0: "arrival and setup; gates 10 am to 10 pm",
+         1: "the full day on site",
+         2: "burn night: temple around 8 pm, effigy around 10 pm",
+         3: "exodus: off the land by 5 pm"}
 
 
 def pooled(models: dict, day: str, key: str) -> tuple[float | None, int]:
@@ -94,12 +92,6 @@ def odds(p: float | None) -> str:
     return "nearly every run" if n >= 10 else f"about {n} run{'s' if n > 1 else ''} in 10"
 
 
-def stars(flags: list[tuple[float | None, float]]) -> int:
-    """Five, less weight × share for each flag; never below one."""
-    s = 5.0 - sum((p or 0) * w for p, w in flags)
-    return max(1, min(5, round(s)))
-
-
 def lead(today: date, first: date) -> str:
     n = (first - today).days
     if n > 15:
@@ -111,14 +103,13 @@ def lead(today: date, first: date) -> str:
 
 def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -> dict:
     models = f["models"]
-    sign, about = SIGNS[i]
+    about = ABOUT[i]
     wet, runs = pooled(models, day, "share_rain_at_least_0.1")
     soak, _ = pooled(models, day, "share_rain_at_least_0.5")
     cold, _ = pooled(models, day, "share_low_at_or_below_40")
     frost, _ = pooled(models, day, "share_low_at_or_below_32")
     hi, lo = median_of(models, day, "high_f"), median_of(models, day, "low_f")
     sd, bh = clim["site_daily"], clim["burn_hours"]
-    flags = [(wet, 1.5), (soak, 1.5), (cold, 1.0), (frost, 1.5)]
     lines = []
     if runs == 0:
         lines.append(f"The models have not reached this day yet. In past years it has rained 0.1 in or more on "
@@ -135,7 +126,6 @@ def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -
         w, br = pooled_burn(models, "share_wind_at_least_15")
         g, _ = pooled_burn(models, "share_gust_at_least_25")
         r, _ = pooled_burn(models, "share_rain_at_least_0.1")
-        flags += [(w, 2.0), (g, 1.5), (r, 1.5)]
         m = astro.moon(datetime.fromisoformat(f"{day}T22:00").replace(tzinfo=ZoneInfo(ev["timezone"])))
         burn = {"runs": br, "share_wind_at_least_15": w, "share_gust_at_least_25": g, "share_rain_at_least_0.1": r, "moon": m}
         if br:
@@ -143,20 +133,16 @@ def day_reading(i: int, day: str, f: dict, clim: dict, ground: dict, ev: dict) -
                          f"{odds(g)}; rain, {odds(r)}.")
         lines.append(f"Thirty years at McComb: burn-hour wind reached 15 mph on {round(bh['share_nights_wind_at_least_15'] * 100)}% "
                      f"of mid-November nights; the usual peak is {bh['median_max_wind_mph_burn_hours']} mph.")
-        lines.append(f"The moon is a {m['phase']}, {round(m['illuminated'] * 100)}% lit: the fire will be the brightest thing in the sky.")
+        lines.append(f"Moon: {m['phase']}, {round(m['illuminated'] * 100)}% lit, so a dark sky around the burns.")
     if i == 3:
         rv = ground.get("river", {})
         if rv.get("flow_cfs") is not None:
             lines.append(f"The Tangipahoa at Osyka runs {rv['flow_cfs']:g} cfs, at or above "
                          f"{round(rv['share_of_same_weeks_at_or_below'] * 100)}% of past readings for these weeks.")
     rise, set_ = astro.sun(date.fromisoformat(day), ev["site"]["lat"], ev["site"]["lon"], ev["timezone"])
-    return {"kit": wear_eat(i, day, models, clim, ev), "date": day, "sign": sign, "about": about, "stars": stars(flags), "runs": runs, "lines": lines,
+    return {"kit": wear_eat(i, day, models, clim, ev), "date": day, "about": about, "runs": runs, "lines": lines,
             "sunrise": rise.strftime("%-I:%M am"), "sunset": set_.strftime("%-I:%M pm"),
             "high_f": hi, "low_f": lo, "share_rain_at_least_0.1": wet, "share_low_at_or_below_40": cold, "burn": burn}
-
-
-OPENERS = {5: "The sky is on your side.", 4: "Mostly kind skies; keep one eye up.",
-           3: "Mixed signals from above.", 2: "The weather wants a word.", 1: "Batten everything."}
 
 
 def build(today: date | None = None) -> dict:
@@ -166,7 +152,7 @@ def build(today: date | None = None) -> dict:
     f = json.loads((ROOT / "data" / "forecast-latest.json").read_text())
     ground = json.loads((ROOT / "data" / "ground-latest.json").read_text())
     days = [day_reading(i, d, f, clim, ground, ev) for i, d in enumerate(ev["days"])]
-    out = {"meaning": "Engulf weather horoscope: readings for each day, from the numbers below them.",
+    out = {"meaning": "Engulf weather reading: each day's forecast against past years, and what to wear, pack and eat.",
            "written_on": today.isoformat(), "forecast_read_at": f["read_at"], "lead": lead(today, date.fromisoformat(ev["days"][0])),
            "days": days, "drought": ground.get("drought"), "refused": f.get("refused", []),
            "packing": kit.packing([d["kit"] for d in days], any_rain(f["models"], ev), clim["burn_hours"].get("share_predawn_hours_dewy"),
@@ -180,7 +166,7 @@ def build(today: date | None = None) -> dict:
 
 
 def render(r: dict, clim: dict) -> str:
-    L = [f"# Engulf weather horoscope, written {r['written_on']}", "",
+    L = [f"# Engulf weather, read {r['written_on']}", "",
          f"_{r['lead']}_ Forecast read {r['forecast_read_at']}.", ""]
     dr = r.get("drought") or {}
     if dr.get("share_of_parish"):
@@ -191,9 +177,8 @@ def render(r: dict, clim: dict) -> str:
     L += ["## Pack for the weekend", "", "_Planned for the cold end of the runs: a layer you didn't need costs less than one you didn't bring._", ""]
     L += [f"- {x}" for x in r["packing"]] + [""]
     for d in r["days"]:
-        L += [f"## {d['sign']} — {datetime.fromisoformat(d['date']).strftime('%A %b %-d')}  {'★' * d['stars']}{'☆' * (5 - d['stars'])}",
-              f"_{d['about']}. Sunrise {d['sunrise']}, sunset {d['sunset']}._", "",
-              f"{OPENERS[d['stars']]}", ""] + [f"- {x}" for x in d["lines"]] + [""]
+        L += [f"## {datetime.fromisoformat(d['date']).strftime('%A %b %-d')}: {d['about']}",
+              f"_Sunrise {d['sunrise']}, sunset {d['sunset']}._", ""] + [f"- {x}" for x in d["lines"]] + [""]
         L += [f"**Wear** (from {d['kit']['from']}):", ""] + [f"- {x}" for x in d["kit"]["wear"]] + [""]
         L += ["**Eat:**", ""] + [f"- {x}" for x in d["kit"]["eat"]] + [""]
     L += ["## How to read this", "",
@@ -201,8 +186,7 @@ def render(r: dict, clim: dict) -> str:
           "They are leanings, not promises; past about a week no single forecast is better than the spread.",
           f"- \"Usual\" and \"past years\" mean {clim['window']}, {clim['site_daily']['years'][0]}–{clim['site_daily']['years'][1]}: "
           "highs, lows and rain from PRISM's 4 km grid (modelled); burn-hour wind from McComb's airport station 26 km north (measured).",
-          "- Stars are arithmetic, not judgement: five, less a weight for each flagged thing times the share of runs showing it. "
-          "The thresholds are in `engulf/rules.py`; they are planning lines, not Engulf policy. The Fire Art Response Team and burn leads decide what burns.",
+          "- The thresholds are in `engulf/rules.py`; they are planning lines, not Engulf policy. The Fire Art Response Team and burn leads decide what burns.",
           "- Data: `data/forecast-latest.json`, `data/climatology.json`, `data/ground-latest.json`; every download is kept in `data/captures/` and listed in `data/manifest.jsonl`.", ""]
     if r.get("refused"):
         L += ["**Sources that refused today:** " + "; ".join(r["refused"]), ""]

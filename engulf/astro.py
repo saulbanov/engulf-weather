@@ -1,4 +1,4 @@
-"""Sunrise, sunset and the moon for the site: the sky half of the horoscope, by arithmetic.
+"""Sunrise, sunset and the moon for the site, by arithmetic.
 
 Sun: NOAA's solar-position equations (the ones behind its online calculator), good to about a
 minute at these latitudes. Moon: the phase from the mean synodic month counted from the new moon of

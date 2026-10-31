@@ -1,4 +1,4 @@
-# Engulf weather horoscope, written 2026-10-31
+# Engulf weather, read 2026-10-31
 
 _12 days out: ensembles only. Read the shares as leanings, not plans._ Forecast read 2026-10-31T01:09-05:00.
 
@@ -15,10 +15,8 @@ _Planned for the cold end of the runs: a layer you didn't need costs less than o
 - Dew: dry bags or a bin for clothes and electronics; in past years 34% of calm predawn hours came within 3°F of the dew point, which wets everything without rain.
 - Water: 1.5 gallons a person a day (the event's number); more if afternoons are warm.
 
-## The Gate — Thursday Nov 12  ★★★★★
-_arrival, setting up camp, the roads in. Sunrise 6:25 am, sunset 5:06 pm._
-
-The sky is on your side.
+## Thursday Nov 12: arrival and setup; gates 10 am to 10 pm
+_Sunrise 6:25 am, sunset 5:06 pm._
 
 - 82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70°F (the week's usual is 72°F); morning low near 50°F (usual 45°F).
 - Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).
@@ -35,10 +33,8 @@ The sky is on your side.
 - Before you come: eat on the road. Gates open at 10 am and setup eats the afternoon.
 - Dinner: something easy and pre-made; sunset is 5:06 pm, and camp goes up faster in daylight.
 
-## The Wanderer — Friday Nov 13  ★★★★★
-_the long art day and the night after. Sunrise 6:26 am, sunset 5:06 pm._
-
-The sky is on your side.
+## Friday Nov 13: the full day on site
+_Sunrise 6:26 am, sunset 5:06 pm._
 
 - 82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70°F (the week's usual is 72°F); morning low near 51°F (usual 45°F).
 - Rain of 0.1 in or more: about 1 run in 10 (in past years, 14% of these days).
@@ -55,17 +51,15 @@ The sky is on your side.
 - Breakfast: no-cook is fine; mornings are mild.
 - Lunch: anything that travels; the afternoon won't spoil much.
 
-## The Effigy — Saturday Nov 14  ★★★★☆
-_the temple at 8 and the effigy at 10. Sunrise 6:27 am, sunset 5:05 pm._
-
-Mostly kind skies; keep one eye up.
+## Saturday Nov 14: burn night: temple around 8 pm, effigy around 10 pm
+_Sunrise 6:27 am, sunset 5:05 pm._
 
 - 31 runs from NOAA GEFS. Afternoon near 72°F (the week's usual is 72°F); morning low near 51°F (usual 45°F).
 - Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).
 - A night at 40°F or colder: about 1 run in 10.
 - Burn hours (7 pm to midnight), 31 runs: wind of 15 mph or more, no run shows it; gusts of 25 mph or more, about 1 run in 10; rain, about 1 run in 10.
 - Thirty years at McComb: burn-hour wind reached 15 mph on 4% of mid-November nights; the usual peak is 6 mph.
-- The moon is a waxing crescent, 28% lit: the fire will be the brightest thing in the sky.
+- Moon: waxing crescent, 28% lit, so a dark sky around the burns.
 
 **Wear** (from the model runs):
 
@@ -79,10 +73,8 @@ Mostly kind skies; keep one eye up.
 - Lunch: anything that travels; the afternoon won't spoil much.
 - Dinner: a real meal by 6:30 pm. The temple burns around 8 and the effigy around 10, and you'll be standing a while.
 
-## The Exodus — Sunday Nov 15  ★★★★☆
-_packing out, off the land by 5 pm. Sunrise 6:28 am, sunset 5:04 pm._
-
-Mostly kind skies; keep one eye up.
+## Sunday Nov 15: exodus: off the land by 5 pm
+_Sunrise 6:28 am, sunset 5:04 pm._
 
 - 31 runs from NOAA GEFS. Afternoon near 66°F (the week's usual is 72°F); morning low near 46°F (usual 45°F).
 - Rain of 0.1 in or more: about 2 runs in 10 (in past years, 14% of these days).
@@ -103,5 +95,5 @@ Mostly kind skies; keep one eye up.
 
 - Shares are of model runs: ECMWF's 51-run ensemble and NOAA's 31-run GEFS, pooled where both reach the day. They are leanings, not promises; past about a week no single forecast is better than the spread.
 - "Usual" and "past years" mean 11-09 to 11-18 each year (the event's days ±3), 1996–2025: highs, lows and rain from PRISM's 4 km grid (modelled); burn-hour wind from McComb's airport station 26 km north (measured).
-- Stars are arithmetic, not judgement: five, less a weight for each flagged thing times the share of runs showing it. The thresholds are in `engulf/rules.py`; they are planning lines, not Engulf policy. The Fire Art Response Team and burn leads decide what burns.
+- The thresholds are in `engulf/rules.py`; they are planning lines, not Engulf policy. The Fire Art Response Team and burn leads decide what burns.
 - Data: `data/forecast-latest.json`, `data/climatology.json`, `data/ground-latest.json`; every download is kept in `data/captures/` and listed in `data/manifest.jsonl`.

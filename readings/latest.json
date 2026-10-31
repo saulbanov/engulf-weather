@@ -1,5 +1,5 @@
 {
- "meaning": "Engulf weather horoscope: readings for each day, from the numbers below them.",
+ "meaning": "Engulf weather reading: each day's forecast against past years, and what to wear, pack and eat.",
  "written_on": "2026-10-31",
  "forecast_read_at": "2026-10-31T01:09-05:00",
  "lead": "12 days out: ensembles only. Read the shares as leanings, not plans.",
@@ -25,9 +25,7 @@
     ]
    },
    "date": "2026-11-12",
-   "sign": "The Gate",
-   "about": "arrival, setting up camp, the roads in",
-   "stars": 5,
+   "about": "arrival and setup; gates 10 am to 10 pm",
    "runs": 82,
    "lines": [
     "82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70\u00b0F (the week's usual is 72\u00b0F); morning low near 50\u00b0F (usual 45\u00b0F).",
@@ -63,9 +61,7 @@
     ]
    },
    "date": "2026-11-13",
-   "sign": "The Wanderer",
-   "about": "the long art day and the night after",
-   "stars": 5,
+   "about": "the full day on site",
    "runs": 82,
    "lines": [
     "82 runs from ECMWF ENS, NOAA GEFS. Afternoon near 70\u00b0F (the week's usual is 72\u00b0F); morning low near 51\u00b0F (usual 45\u00b0F).",
@@ -102,9 +98,7 @@
     ]
    },
    "date": "2026-11-14",
-   "sign": "The Effigy",
-   "about": "the temple at 8 and the effigy at 10",
-   "stars": 4,
+   "about": "burn night: temple around 8 pm, effigy around 10 pm",
    "runs": 31,
    "lines": [
     "31 runs from NOAA GEFS. Afternoon near 72\u00b0F (the week's usual is 72\u00b0F); morning low near 51\u00b0F (usual 45\u00b0F).",
@@ -112,7 +106,7 @@
     "A night at 40\u00b0F or colder: about 1 run in 10.",
     "Burn hours (7 pm to midnight), 31 runs: wind of 15 mph or more, no run shows it; gusts of 25 mph or more, about 1 run in 10; rain, about 1 run in 10.",
     "Thirty years at McComb: burn-hour wind reached 15 mph on 4% of mid-November nights; the usual peak is 6 mph.",
-    "The moon is a waxing crescent, 28% lit: the fire will be the brightest thing in the sky."
+    "Moon: waxing crescent, 28% lit, so a dark sky around the burns."
    ],
    "sunrise": "6:27 am",
    "sunset": "5:05 pm",
@@ -152,9 +146,7 @@
     ]
    },
    "date": "2026-11-15",
-   "sign": "The Exodus",
-   "about": "packing out, off the land by 5 pm",
-   "stars": 4,
+   "about": "exodus: off the land by 5 pm",
    "runs": 31,
    "lines": [
     "31 runs from NOAA GEFS. Afternoon near 66\u00b0F (the week's usual is 72\u00b0F); morning low near 46\u00b0F (usual 45\u00b0F).",

@@ -5,7 +5,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from engulf import astro, climatology, event, forecast, ground, horoscope, kit
+from engulf import astro, climatology, event, forecast, ground, reading, kit
 
 EV = event()
 TZ = ZoneInfo(EV["timezone"])
@@ -97,28 +97,23 @@ class Ground(unittest.TestCase):
 
 class Reading(unittest.TestCase):
     def test_odds_words(self):
-        self.assertEqual(horoscope.odds(None), "not yet in any model's reach")
-        self.assertEqual(horoscope.odds(0), "no run shows it")
-        self.assertEqual(horoscope.odds(0.04), "fewer than 1 run in 10")
-        self.assertEqual(horoscope.odds(0.1), "about 1 run in 10")
-        self.assertEqual(horoscope.odds(0.33), "about 3 runs in 10")
-        self.assertEqual(horoscope.odds(0.97), "nearly every run")
-
-    def test_stars_fall_with_share_and_floor_at_one(self):
-        self.assertEqual(horoscope.stars([]), 5)
-        self.assertEqual(horoscope.stars([(0.5, 2.0)]), 4)
-        self.assertEqual(horoscope.stars([(1.0, 2.0), (1.0, 1.5), (1.0, 1.5)]), 1)
+        self.assertEqual(reading.odds(None), "not yet in any model's reach")
+        self.assertEqual(reading.odds(0), "no run shows it")
+        self.assertEqual(reading.odds(0.04), "fewer than 1 run in 10")
+        self.assertEqual(reading.odds(0.1), "about 1 run in 10")
+        self.assertEqual(reading.odds(0.33), "about 3 runs in 10")
+        self.assertEqual(reading.odds(0.97), "nearly every run")
 
     def test_pooling_weights_by_run_count(self):
         models = {"A": {"days": {"d": {"runs": 50, "x": 0.0}}}, "B": {"days": {"d": {"runs": 30, "x": 1.0}}},
                   "C": {"days": {"d": {"runs": 0}}}}
-        self.assertEqual(horoscope.pooled(models, "d", "x"), (0.38, 80))
+        self.assertEqual(reading.pooled(models, "d", "x"), (0.38, 80))
 
     def test_lead_wording(self):
         first = date(2026, 11, 12)
-        self.assertIn("climatology alone", horoscope.lead(date(2026, 10, 20), first))
-        self.assertIn("ensembles only", horoscope.lead(date(2026, 10, 31), first))
-        self.assertIn("National Weather Service", horoscope.lead(date(2026, 11, 8), first))
+        self.assertIn("climatology alone", reading.lead(date(2026, 10, 20), first))
+        self.assertIn("ensembles only", reading.lead(date(2026, 10, 31), first))
+        self.assertIn("National Weather Service", reading.lead(date(2026, 11, 8), first))
 
 
 class Kit(unittest.TestCase):

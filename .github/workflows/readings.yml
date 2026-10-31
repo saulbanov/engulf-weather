@@ -1,6 +1,6 @@
 name: daily reading
 
-# Every morning until the event ends: fetch the forecasts, drought and river, write the horoscope,
+# Every morning until the event ends: fetch the forecasts, drought and river, write the reading,
 # and commit what was fetched and written. Manual runs from the Actions tab work any day.
 on:
   schedule:
