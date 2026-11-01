@@ -167,36 +167,36 @@
    "ECMWF ENS": {
     "burn": {
      "coldest_f": {
-      "median": 59,
-      "p10": 51,
-      "p90": 66
+      "median": 58,
+      "p10": 49,
+      "p90": 68
      },
      "coldest_feels_f": {
-      "median": 59,
-      "p10": 51,
-      "p90": 66
+      "median": 58,
+      "p10": 47,
+      "p90": 68
      },
      "max_wind_mph": {
       "median": 7,
-      "p10": 4,
+      "p10": 5,
       "p90": 11
      },
      "runs": 51,
-     "share_gust_at_least_25": 0.29,
-     "share_rain_at_least_0.1": 0.12,
-     "share_wind_at_least_15": 0.0
+     "share_gust_at_least_25": 0.2,
+     "share_rain_at_least_0.1": 0.06,
+     "share_wind_at_least_15": 0.02
     },
     "days": {
      "2026-11-12": {
       "evening_feels_f": {
-       "median": 56,
-       "p10": 49,
+       "median": 58,
+       "p10": 47,
        "p90": 65
       },
       "high_f": {
-       "median": 68,
-       "p10": 62,
-       "p90": 75
+       "median": 71,
+       "p10": 63,
+       "p90": 76
       },
       "low_f": {
        "median": 48,
@@ -204,69 +204,69 @@
        "p90": 57
       },
       "overnight_low_f": {
-       "median": 50,
+       "median": 54,
        "p10": 44,
-       "p90": 62
+       "p90": 64
       },
       "runs": 51,
       "share_low_at_or_below_32": 0.0,
-      "share_low_at_or_below_40": 0.02,
+      "share_low_at_or_below_40": 0.08,
       "share_rain_at_least_0.1": 0.08,
-      "share_rain_at_least_0.5": 0.0
+      "share_rain_at_least_0.5": 0.04
      },
      "2026-11-13": {
       "evening_feels_f": {
-       "median": 58,
-       "p10": 51,
+       "median": 57,
+       "p10": 43,
        "p90": 66
       },
       "high_f": {
-       "median": 69,
-       "p10": 64,
-       "p90": 78
+       "median": 73,
+       "p10": 62,
+       "p90": 77
       },
       "low_f": {
-       "median": 50,
+       "median": 54,
        "p10": 44,
-       "p90": 62
+       "p90": 64
       },
       "overnight_low_f": {
-       "median": 53,
-       "p10": 43,
+       "median": 54,
+       "p10": 40,
        "p90": 64
       },
       "runs": 51,
       "share_low_at_or_below_32": 0.0,
-      "share_low_at_or_below_40": 0.0,
+      "share_low_at_or_below_40": 0.06,
       "share_rain_at_least_0.1": 0.27,
-      "share_rain_at_least_0.5": 0.1
+      "share_rain_at_least_0.5": 0.12
      },
      "2026-11-14": {
       "evening_feels_f": {
-       "median": 59,
-       "p10": 51,
-       "p90": 66
+       "median": 58,
+       "p10": 47,
+       "p90": 68
       },
       "high_f": {
-       "median": 70,
-       "p10": 63,
-       "p90": 79
+       "median": 72,
+       "p10": 64,
+       "p90": 80
       },
       "low_f": {
-       "median": 53,
-       "p10": 43,
+       "median": 54,
+       "p10": 40,
        "p90": 64
       },
       "overnight_low_f": {
-       "median": 56,
-       "p10": 46,
-       "p90": 63
+       "median": 54,
+       "p10": 45,
+       "p90": 66
       },
       "runs": 51,
       "share_low_at_or_below_32": 0.0,
-      "share_low_at_or_below_40": 0.02,
-      "share_rain_at_least_0.1": 0.33,
-      "share_rain_at_least_0.5": 0.14
+      "share_low_at_or_below_40": 0.12,
+      "share_rain_at_least_0.1": 0.24,
+      "share_rain_at_least_0.5": 0.1
      },
      "2026-11-15": {
       "note": "beyond this model's reach today",
@@ -277,129 +277,129 @@
    "NOAA GEFS": {
     "burn": {
      "coldest_f": {
-      "median": 60,
-      "p10": 50,
-      "p90": 66
+      "median": 61,
+      "p10": 53,
+      "p90": 67
      },
      "coldest_feels_f": {
-      "median": 60,
-      "p10": 47,
-      "p90": 66
+      "median": 61,
+      "p10": 53,
+      "p90": 67
      },
      "max_wind_mph": {
       "median": 5,
-      "p10": 3,
+      "p10": 4,
       "p90": 8
      },
      "runs": 31,
-     "share_gust_at_least_25": 0.23,
-     "share_rain_at_least_0.1": 0.1,
+     "share_gust_at_least_25": 0.13,
+     "share_rain_at_least_0.1": 0.03,
      "share_wind_at_least_15": 0.0
     },
     "days": {
      "2026-11-12": {
       "evening_feels_f": {
-       "median": 61,
-       "p10": 56,
-       "p90": 66
+       "median": 60,
+       "p10": 52,
+       "p90": 67
       },
       "high_f": {
        "median": 75,
-       "p10": 70,
+       "p10": 69,
        "p90": 78
       },
       "low_f": {
        "median": 52,
-       "p10": 47,
-       "p90": 61
+       "p10": 44,
+       "p90": 60
       },
       "overnight_low_f": {
-       "median": 56,
-       "p10": 52,
-       "p90": 64
+       "median": 53,
+       "p10": 48,
+       "p90": 67
       },
       "runs": 31,
       "share_low_at_or_below_32": 0.0,
       "share_low_at_or_below_40": 0.0,
-      "share_rain_at_least_0.1": 0.1,
-      "share_rain_at_least_0.5": 0.03
+      "share_rain_at_least_0.1": 0.13,
+      "share_rain_at_least_0.5": 0.06
      },
      "2026-11-13": {
       "evening_feels_f": {
-       "median": 60,
-       "p10": 54,
-       "p90": 66
+       "median": 59,
+       "p10": 50,
+       "p90": 67
       },
       "high_f": {
-       "median": 76,
-       "p10": 69,
+       "median": 74,
+       "p10": 67,
        "p90": 79
       },
       "low_f": {
-       "median": 56,
-       "p10": 52,
-       "p90": 64
+       "median": 53,
+       "p10": 48,
+       "p90": 67
       },
       "overnight_low_f": {
-       "median": 54,
-       "p10": 48,
-       "p90": 62
+       "median": 56,
+       "p10": 45,
+       "p90": 65
       },
       "runs": 31,
       "share_low_at_or_below_32": 0.0,
       "share_low_at_or_below_40": 0.0,
-      "share_rain_at_least_0.1": 0.26,
+      "share_rain_at_least_0.1": 0.23,
       "share_rain_at_least_0.5": 0.03
      },
      "2026-11-14": {
       "evening_feels_f": {
-       "median": 60,
-       "p10": 47,
-       "p90": 66
+       "median": 61,
+       "p10": 53,
+       "p90": 67
       },
       "high_f": {
-       "median": 75,
-       "p10": 62,
-       "p90": 80
+       "median": 73,
+       "p10": 67,
+       "p90": 81
       },
       "low_f": {
-       "median": 54,
-       "p10": 48,
-       "p90": 62
+       "median": 56,
+       "p10": 45,
+       "p90": 65
       },
       "overnight_low_f": {
-       "median": 52,
-       "p10": 43,
-       "p90": 61
+       "median": 58,
+       "p10": 48,
+       "p90": 66
       },
       "runs": 31,
       "share_low_at_or_below_32": 0.0,
-      "share_low_at_or_below_40": 0.03,
-      "share_rain_at_least_0.1": 0.16,
-      "share_rain_at_least_0.5": 0.06
+      "share_low_at_or_below_40": 0.0,
+      "share_rain_at_least_0.1": 0.23,
+      "share_rain_at_least_0.5": 0.1
      },
      "2026-11-15": {
       "evening_feels_f": {
-       "median": 55,
-       "p10": 48,
-       "p90": 66
+       "median": 59,
+       "p10": 52,
+       "p90": 65
       },
       "high_f": {
        "median": 72,
-       "p10": 63,
-       "p90": 78
+       "p10": 66,
+       "p90": 79
       },
       "low_f": {
-       "median": 52,
-       "p10": 43,
-       "p90": 61
+       "median": 58,
+       "p10": 48,
+       "p90": 66
       },
       "overnight_low_f": null,
       "runs": 31,
       "share_low_at_or_below_32": 0.0,
       "share_low_at_or_below_40": 0.03,
-      "share_rain_at_least_0.1": 0.13,
-      "share_rain_at_least_0.5": 0.03
+      "share_rain_at_least_0.1": 0.26,
+      "share_rain_at_least_0.5": 0.1
      }
     }
    }
@@ -407,10 +407,10 @@
   "nws": {
    "hours": [],
    "hours_in_event": 0,
-   "issued": "2026-10-31T19:01:57+00:00",
+   "issued": "2026-11-01T11:29:07+00:00",
    "source": "National Weather Service hourly forecast, LIX grid 53,132"
   },
-  "read_at": "2026-10-31T19:09-05:00",
+  "read_at": "2026-11-01T10:02-06:00",
   "refused": [],
   "stale": {}
  },
@@ -458,23 +458,23 @@
   "meaning": "Drought and river state near Engulf's site, read on the date below.",
   "read_on": "2026-11-01",
   "recent": {
-   "days_reported": 29,
+   "days_reported": 30,
    "from": "2026-10-02",
-   "highs_vs_normal_f": 3.8,
-   "lows_vs_normal_f": 1.7,
-   "normal_rain_in": 3.54,
-   "rain_in": 1.67,
+   "highs_vs_normal_f": 3.9,
+   "lows_vs_normal_f": 2.2,
+   "normal_rain_in": 3.67,
+   "rain_in": 2.03,
    "source": "McComb, MS airport (ACIS), against its 1991-2020 normals",
    "to": "2026-10-31"
   },
   "river": {
-   "at": "2026-10-31T18:00:00.000-05:00",
+   "at": "2026-11-01T09:00:00.000-06:00",
    "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading.",
-   "flow_cfs": 100.0,
+   "flow_cfs": 109.0,
    "median_same_weeks_cfs": 106.0,
    "record": "daily means 1996\u20132026",
    "same_weeks_values": 450,
-   "share_of_same_weeks_at_or_below": 0.4,
+   "share_of_same_weeks_at_or_below": 0.52,
    "source": "Tangipahoa River at Osyka, MS (USGS 07375280)"
   }
  },
@@ -511,13 +511,56 @@
     "about": "arrival and setup; gates 10 am to 10 pm",
     "burn": null,
     "date": "2026-11-12",
-    "high_f": 72,
+    "high_f": 73,
+    "kit": {
+     "evening_feels_f": 58,
+     "evening_p10_f": 47,
+     "from": "the forecast",
+     "high_f": 73,
+     "high_p90_f": 78,
+     "inputs": {
+      "days_ahead": 11,
+      "forecast_weight": 0.75,
+      "normal_only": [],
+      "normal_rain_factor": 1.0,
+      "normal_shift_f": 1.5,
+      "outlook": {
+       "temperature": "above (33%)"
+      }
+     },
+     "means": [
+      "73\u00b0 in the afternoon, about 58\u00b0 after dark once the wind is counted, and near 53\u00b0 by morning.",
+      "Gates open at 10 am, which leaves about 7 hours of daylight to set up.",
+      "Calm nights here often bring heavy dew: anything left out gets wet without rain."
+     ],
+     "morning_f": 49,
+     "overnight_f": 53,
+     "overnight_p10_f": 44,
+     "wet": 0.11
+    },
+    "lines": [
+     "Afternoon around 73\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
+     "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
+     "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10)."
+    ],
+    "low_f": 49,
+    "runs": 82,
+    "share_low_at_or_below_40": 0.05,
+    "share_rain_at_least_0.1": 0.11,
+    "sunrise": "6:25 am",
+    "sunset": "5:06 pm"
+   },
+   {
+    "about": "the full day on site",
+    "burn": null,
+    "date": "2026-11-13",
+    "high_f": 74,
     "kit": {
      "evening_feels_f": 57,
-     "evening_p10_f": 49,
+     "evening_p10_f": 43,
      "from": "the forecast",
-     "high_f": 72,
-     "high_p90_f": 78,
+     "high_f": 74,
+     "high_p90_f": 79,
      "inputs": {
       "days_ahead": 12,
       "forecast_weight": 0.69,
@@ -529,63 +572,21 @@
       }
      },
      "means": [
-      "72\u00b0 in the afternoon, about 57\u00b0 after dark once the wind is counted, and near 52\u00b0 by morning.",
-      "Gates open at 10 am, which leaves about 7 hours of daylight to set up.",
-      "Calm nights here often bring heavy dew: anything left out gets wet without rain."
+      "74\u00b0 in the afternoon, about 57\u00b0 after dark once the wind is counted, and near 54\u00b0 by morning."
      ],
-     "morning_f": 49,
-     "overnight_f": 52,
-     "overnight_p10_f": 44,
-     "wet": 0.11
-    },
-    "lines": [
-     "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 49\u00b0F (normal: 45\u00b0F).",
-     "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
-     "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10)."
-    ],
-    "low_f": 49,
-    "runs": 82,
-    "share_low_at_or_below_40": 0.01,
-    "share_rain_at_least_0.1": 0.11,
-    "sunrise": "6:25 am",
-    "sunset": "5:06 pm"
-   },
-   {
-    "about": "the full day on site",
-    "burn": null,
-    "date": "2026-11-13",
-    "high_f": 73,
-    "kit": {
-     "evening_feels_f": 57,
-     "evening_p10_f": 51,
-     "from": "the forecast",
-     "high_f": 73,
-     "high_p90_f": 79,
-     "inputs": {
-      "days_ahead": 13,
-      "forecast_weight": 0.62,
-      "normal_only": [],
-      "normal_rain_factor": 1.0,
-      "normal_shift_f": 1.5,
-      "outlook": {
-       "temperature": "above (33%)"
-      }
-     },
-     "means": [
-      "73\u00b0 in the afternoon, about 57\u00b0 after dark once the wind is counted, and near 53\u00b0 by morning."
-     ],
-     "morning_f": 51,
-     "overnight_f": 53,
-     "overnight_p10_f": 43,
+     "morning_f": 52,
+     "overnight_f": 54,
+     "overnight_p10_f": 40,
      "wet": 0.22
     },
     "lines": [
-     "Afternoon around 73\u00b0F (normal: 72\u00b0F). Early morning around 51\u00b0F (normal: 45\u00b0F).",
-     "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10."
+     "Afternoon around 74\u00b0F (normal: 72\u00b0F). Early morning around 52\u00b0F (normal: 45\u00b0F).",
+     "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
+     "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10)."
     ],
-    "low_f": 51,
+    "low_f": 52,
     "runs": 82,
-    "share_low_at_or_below_40": 0.0,
+    "share_low_at_or_below_40": 0.04,
     "share_rain_at_least_0.1": 0.22,
     "sunrise": "6:26 am",
     "sunset": "5:06 pm"
@@ -599,21 +600,21 @@
       "phase": "waxing crescent"
      },
      "runs": 82,
-     "share_gust_at_least_25": 0.27,
-     "share_rain_at_least_0.1": 0.11,
-     "share_wind_at_least_15": 0.0
+     "share_gust_at_least_25": 0.17,
+     "share_rain_at_least_0.1": 0.05,
+     "share_wind_at_least_15": 0.01
     },
     "date": "2026-11-14",
     "high_f": 73,
     "kit": {
-     "evening_feels_f": 57,
+     "evening_feels_f": 58,
      "evening_p10_f": 47,
      "from": "the forecast",
      "high_f": 73,
-     "high_p90_f": 80,
+     "high_p90_f": 81,
      "inputs": {
-      "days_ahead": 14,
-      "forecast_weight": 0.56,
+      "days_ahead": 13,
+      "forecast_weight": 0.62,
       "normal_only": [],
       "normal_rain_factor": 1.0,
       "normal_shift_f": 1.5,
@@ -622,25 +623,25 @@
       }
      },
      "means": [
-      "73\u00b0 in the afternoon, about 57\u00b0 after dark once the wind is counted, and near 52\u00b0 by morning."
+      "73\u00b0 in the afternoon, about 58\u00b0 after dark once the wind is counted, and near 54\u00b0 by morning."
      ],
-     "morning_f": 51,
-     "overnight_f": 52,
-     "overnight_p10_f": 43,
-     "wet": 0.21
+     "morning_f": 52,
+     "overnight_f": 54,
+     "overnight_p10_f": 45,
+     "wet": 0.2
     },
     "lines": [
-     "Afternoon around 73\u00b0F (normal: 72\u00b0F). Early morning around 51\u00b0F (normal: 45\u00b0F).",
+     "Afternoon around 73\u00b0F (normal: 72\u00b0F). Early morning around 52\u00b0F (normal: 45\u00b0F).",
      "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
-     "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10).",
-     "Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: about 3 in 10. Rain: about 1 in 10.",
+     "Chance of a night at 40\u00b0F or colder: about 1 in 10.",
+     "Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: unlikely (under 1 in 10). Gusts 25 mph or stronger: about 2 in 10. Rain: unlikely (under 1 in 10).",
      "Over the past 30 years, wind on mid-November nights here usually tops out around 6 mph; it reached 15 mph on about 1 night in 25.",
      "Moon: a thin crescent, 28% lit. A dark sky for the burns."
     ],
-    "low_f": 51,
+    "low_f": 52,
     "runs": 82,
-    "share_low_at_or_below_40": 0.02,
-    "share_rain_at_least_0.1": 0.21,
+    "share_low_at_or_below_40": 0.07,
+    "share_rain_at_least_0.1": 0.2,
     "sunrise": "6:27 am",
     "sunset": "5:05 pm"
    },
@@ -650,14 +651,14 @@
     "date": "2026-11-15",
     "high_f": 72,
     "kit": {
-     "evening_feels_f": 54,
+     "evening_feels_f": 56,
      "evening_p10_f": null,
      "from": "the forecast",
      "high_f": 72,
-     "high_p90_f": 78,
+     "high_p90_f": 79,
      "inputs": {
-      "days_ahead": 15,
-      "forecast_weight": 0.5,
+      "days_ahead": 14,
+      "forecast_weight": 0.56,
       "normal_only": [
        "overnight_f"
       ],
@@ -668,21 +669,21 @@
      "means": [
       "Around 72\u00b0 for packing up; everyone has to be off the land by 5 pm."
      ],
-     "morning_f": 48,
+     "morning_f": 52,
      "overnight_f": null,
      "overnight_p10_f": null,
-     "wet": 0.14
+     "wet": 0.21
     },
     "lines": [
-     "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 48\u00b0F (normal: 45\u00b0F).",
-     "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
+     "Afternoon around 72\u00b0F (normal: 72\u00b0F). Early morning around 52\u00b0F (normal: 45\u00b0F).",
+     "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
      "Chance of a night at 40\u00b0F or colder: unlikely (under 1 in 10).",
      "The nearby Tangipahoa River is about normal for this time of year."
     ],
-    "low_f": 48,
+    "low_f": 52,
     "runs": 31,
     "share_low_at_or_below_40": 0.03,
-    "share_rain_at_least_0.1": 0.14,
+    "share_rain_at_least_0.1": 0.21,
     "sunrise": "6:28 am",
     "sunset": "5:04 pm"
    }
@@ -727,23 +728,23 @@
     }
    ]
   },
-  "forecast_read_at": "2026-10-31T19:09-05:00",
-  "lead": "12 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
+  "forecast_read_at": "2026-11-01T10:02-06:00",
+  "lead": "11 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
   "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
   "refused": [],
   "stale": {},
   "summary": [
-   "Expect afternoons around 72\u00b0, nights around 52\u00b0, and a chance of a shower or two. Day: T-shirt. Night: fleece.",
+   "Expect afternoons around 73\u00b0, nights around 54\u00b0, and a chance of a shower or two. Day: T-shirt. Night: fleece.",
    "Burn night looks like light wind (around 6 mph), probably dry, and about 60\u00b0 at the burns. Night: fleece.",
    "A normal Engulf week: afternoons around 72\u00b0, nights around 45\u00b0. It rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year.",
    "When you'll know more: the hour-by-hour forecast for burn night starts around Nov 7; from about Nov 11, three days out, forecasts are usually within a few degrees."
   ],
   "why": [
-   "The latest forecasts from the European and US weather services make up 50% to 69% of each day's numbers. This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.",
+   "The latest forecasts from the European and US weather services make up 56% to 75% of each day's numbers. This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.",
    "NOAA's longer-range outlook leans slightly warmer than normal for Nov 8\u201314, so the normal-year part of Thursday and Friday and Saturday is nudged that way.",
    "The last month ran warm and dry, but that says little about any single day two weeks from now, so it isn't in the numbers.",
    "Each update leans more on the forecast; from a week out it's all forecast."
   ],
-  "written_on": "2026-10-31"
+  "written_on": "2026-11-01"
  }
 }
