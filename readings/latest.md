@@ -10,8 +10,8 @@
 ## Why we think that
 
 - **The latest forecasts from the European and US weather services make up 69% to 88% of each day's numbers.** This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.
-- **NOAA's longer-range outlook leans likely warmer than normal for Nov 11–17, so the normal-year part of Thursday and Friday and Saturday and Sunday is nudged that way.**
-- **The last month ran warm and dry, but that says little about any single day two weeks from now, so it isn't in the numbers.**
+- **NOAA's longer-range outlook leans clearly warmer than normal for Nov 11–17, so the normal-year part of every day is nudged that way.**
+- **The last month ran warm and dry, but that says little about any single day a week or more out, so it isn't in the numbers.**
 - **Each update leans more on the forecast; from a week out it's all forecast.**
 
 _9 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day._ Forecast read 2026-11-03T17:21-06:00.
