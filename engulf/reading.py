@@ -108,7 +108,7 @@ def lean_words(o: dict, what: str) -> str:
     if o["lean"] == "near":
         return f"{what} about normal"
     word = {"temperature": ("warmer", "colder"), "rain": ("wetter", "drier")}[what][o["lean"] == "below"]
-    strength = "slightly " if o["chance"] < 40 else ("" if o["chance"] < 50 else "likely ")
+    strength = "slightly " if o["chance"] < 40 else ("" if o["chance"] < 50 else "clearly ")
     return f"{strength}{word} than normal"
 
 
@@ -175,17 +175,24 @@ def why(days: list[dict], ground: dict, outlook: dict, today: date) -> list[str]
         d1, d2 = (datetime.fromisoformat(x) for x in t["period"])
         covered = [datetime.fromisoformat(d["date"]).strftime("%A") for d in days if d["kit"]["inputs"]["outlook"]]
         out.append(f"NOAA's longer-range outlook leans {lean_words(t, 'temperature')} for {d1.strftime('%b %-d')}–{d2.strftime('%-d')}, "
-                   f"so the normal-year part of {' and '.join(covered)} is nudged that way.")
+                   f"so the normal-year part of {day_list(covered, len(days))} is nudged that way.")
     elif t.get("period"):
         out.append("NOAA's longer-range outlook doesn't lean either way for these days, so it doesn't change the numbers.")
     rc = ground.get("recent") or {}
     if rc.get("highs_vs_normal_f") is not None and rc.get("normal_rain_in"):
         d, share = rc["highs_vs_normal_f"], rc["rain_in"] / rc["normal_rain_in"]
         how = ("warm and dry" if d >= 1.5 and share < 0.75 else "warm" if d >= 1.5 else "dry" if share < 0.75 else "about normal")
-        out.append(f"The last month ran {how}, but that says little about any single day two weeks from now, so it isn't in the numbers.")
+        out.append(f"The last month ran {how}, but that says little about any single day a week or more out, so it isn't in the numbers.")
     if 0 < min(ws) < 1:
         out.append("Each update leans more on the forecast; from a week out it's all forecast.")
     return out
+
+
+def day_list(names: list[str], total: int) -> str:
+    """'Thursday', 'Thursday and Friday', 'Thursday, Friday and Saturday', or 'every day' when all are named."""
+    if len(names) == total and total > 2:
+        return "every day"
+    return names[0] if len(names) == 1 else ", ".join(names[:-1]) + " and " + names[-1]
 
 
 def lead_split(x: str) -> tuple[str, str]:
