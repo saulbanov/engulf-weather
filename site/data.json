@@ -426,10 +426,10 @@
   "nws": {
    "hours": [],
    "hours_in_event": 0,
-   "issued": "2026-11-03T19:02:29+00:00",
+   "issued": "2026-11-03T23:20:37+00:00",
    "source": "National Weather Service hourly forecast, LIX grid 53,132"
   },
-  "read_at": "2026-11-03T17:21-06:00",
+  "read_at": "2026-11-03T19:23-06:00",
   "refused": [],
   "stale": {}
  },
@@ -475,25 +475,25 @@
    ]
   },
   "meaning": "Drought and river state near Engulf's site, read on the date below.",
-  "read_on": "2026-11-03",
+  "read_on": "2026-11-04",
   "recent": {
-   "days_reported": 30,
-   "from": "2026-10-04",
-   "highs_vs_normal_f": 4.1,
-   "lows_vs_normal_f": 2.5,
-   "normal_rain_in": 3.71,
-   "rain_in": 1.56,
+   "days_reported": 29,
+   "from": "2026-10-05",
+   "highs_vs_normal_f": 4.4,
+   "lows_vs_normal_f": 2.2,
+   "normal_rain_in": 3.6,
+   "rain_in": 0.45,
    "source": "McComb, MS airport (ACIS), against its 1991-2020 normals",
-   "to": "2026-11-02"
+   "to": "2026-11-03"
   },
   "river": {
-   "at": "2026-11-03T17:00:00.000-06:00",
+   "at": "2026-11-03T19:00:00.000-06:00",
    "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading.",
    "flow_cfs": 101.0,
-   "median_same_weeks_cfs": 109.0,
+   "median_same_weeks_cfs": 111.0,
    "record": "daily means 1996\u20132026",
    "same_weeks_values": 450,
-   "share_of_same_weeks_at_or_below": 0.41,
+   "share_of_same_weeks_at_or_below": 0.39,
    "source": "Tangipahoa River at Osyka, MS (USGS 07375280)"
   }
  },
@@ -748,7 +748,7 @@
     }
    ]
   },
-  "forecast_read_at": "2026-11-03T17:21-06:00",
+  "forecast_read_at": "2026-11-03T19:23-06:00",
   "lead": "9 days away. Forecasts this far ahead are rough, so treat these as best guesses. This page updates twice a day.",
   "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
   "refused": [],

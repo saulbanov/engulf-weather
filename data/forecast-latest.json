@@ -1,6 +1,6 @@
 {
  "meaning": "Forecasts for Engulf's days and burn hours, as read on the date below; shares are of model runs.",
- "read_at": "2026-11-03T17:21-06:00",
+ "read_at": "2026-11-03T19:23-06:00",
  "models": {
   "ECMWF ENS": {
    "days": {
@@ -263,7 +263,7 @@
  },
  "nws": {
   "source": "National Weather Service hourly forecast, LIX grid 53,132",
-  "issued": "2026-11-03T19:02:29+00:00",
+  "issued": "2026-11-03T23:20:37+00:00",
   "hours_in_event": 0,
   "hours": []
  },
