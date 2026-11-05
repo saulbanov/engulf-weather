@@ -4,7 +4,7 @@
  "drought": {
   "source": "US Drought Monitor, county statistics (percent of area, category or worse)",
   "parish": "Tangipahoa Parish",
-  "map_date": "2026-10-27",
+  "map_date": "2026-11-03",
   "share_of_parish": {
    "D0": 1.0,
    "D1": 1.0,
@@ -37,6 +37,11 @@
     "map_date": "2026-10-27",
     "D1_or_worse": 1.0,
     "D2_or_worse": 0.23
+   },
+   {
+    "map_date": "2026-11-03",
+    "D1_or_worse": 1.0,
+    "D2_or_worse": 0.23
    }
   ],
   "burn_ban": "not checked: see tangipahoa.org; bans are issued and lifted at short notice"
@@ -44,7 +49,7 @@
  "river": {
   "source": "Tangipahoa River at Osyka, MS (USGS 07375280)",
   "flow_cfs": 100.0,
-  "at": "2026-11-04T19:00:00.000-06:00",
+  "at": "2026-11-05T11:00:00.000-06:00",
   "record": "daily means 1996\u20132026",
   "same_weeks_values": 450,
   "share_of_same_weeks_at_or_below": 0.37,
@@ -55,10 +60,10 @@
   "source": "McComb, MS airport (ACIS), against its 1991-2020 normals",
   "from": "2026-10-06",
   "to": "2026-11-04",
-  "days_reported": 29,
+  "days_reported": 30,
   "highs_vs_normal_f": 4.6,
-  "lows_vs_normal_f": 2.3,
-  "rain_in": 0.44,
-  "normal_rain_in": 3.62
+  "lows_vs_normal_f": 2.5,
+  "rain_in": 0.47,
+  "normal_rain_in": 3.76
  }
 }
