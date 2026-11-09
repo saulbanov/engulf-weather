@@ -2,41 +2,41 @@
 
 **Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn.**
 
-- **Expect afternoons around 64°, nights around 40°, and little rain.** Day: long sleeves. Night: warm jacket, hat, gloves.
-- **Burn night looks like light wind (around 5 mph), probably dry, and about 42° at the burns.** Night: winter layers.
+- **Expect afternoons around 63°, nights around 39°, and little rain.** Day: long sleeves. Night: warm jacket, hat, gloves.
+- **Burn night looks like light wind (around 4 mph), probably dry, and about 42° at the burns.** Night: winter layers.
 - **A normal Engulf week: afternoons around 72°, nights around 45°.** It rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year.
 - **When you'll know more: from about Nov 11, three days out, forecasts are usually within a few degrees.**
 
 ## Why we think that
 
 - **The festival is within a week, so these numbers are straight from the latest forecasts: the European and US weather services, and the National Weather Service hour by hour.**
-- **NOAA's longer-range outlook leans clearly warmer than normal for Nov 15–21, so the normal-year part of Sunday is nudged that way.**
+- **NOAA's longer-range outlook doesn't lean either way for these days, so it doesn't change the numbers.**
 - **The last month ran warm and dry, but that says little about any single day a week or more out, so it isn't in the numbers.**
 
-_4 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in._ Forecast read 2026-11-08T09:58-06:00.
+_4 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in._ Forecast read 2026-11-08T18:55-06:00.
 
 ## Thursday Nov 12: arrival and setup; gates 10 am to 10 pm
 _Sunrise 6:25 am, sunset 5:06 pm._
 
-- Afternoon around 71°F (normal: 72°F). Early morning around 57°F (normal: 45°F).
+- Afternoon around 70°F (normal: 72°F). Early morning around 57°F (normal: 45°F).
 - Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10.
 
 **What it means:**
 
-- A big swing: 71° in the afternoon, about 52° after dark once the wind is counted, and near 46° by morning.
+- A big swing: 70° in the afternoon, about 51° after dark once the wind is counted, and near 44° by morning.
 - Gates open at 10 am, which leaves about 7 hours of daylight to set up.
 - Calm nights here often bring heavy dew: anything left out gets wet without rain.
 
 ## Friday Nov 13: the full day on site
 _Sunrise 6:26 am, sunset 5:06 pm._
 
-- Afternoon around 62°F (normal: 72°F). Early morning around 46°F (normal: 45°F).
+- Afternoon around 59°F (normal: 72°F). Early morning around 44°F (normal: 45°F).
 - Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10.
-- Chance of a night at 40°F or colder: about 1 in 10.
+- Chance of a night at 40°F or colder: about 2 in 10.
 
 **What it means:**
 
-- A big swing: 62° in the afternoon, about 40° after dark once the wind is counted, and near 36° by morning.
+- 59° in the afternoon, about 38° after dark once the wind is counted, and near 36° by morning.
 - A cold night, down near 36°.
 - Frost is possible by morning.
 
@@ -44,29 +44,29 @@ _Sunrise 6:26 am, sunset 5:06 pm._
 _Sunrise 6:27 am, sunset 5:05 pm._
 
 - Afternoon around 59°F (normal: 72°F). Early morning around 36°F (normal: 45°F).
-- Chance of rain: unlikely (under 1 in 10). In a normal year it rains on about 1 of these days in 10.
+- Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10.
 - Chance of a night at 40°F or colder: about 8 in 10. Chance of frost: about 2 in 10.
-- Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: unlikely (under 1 in 10). Rain: unlikely (under 1 in 10).
+- Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: very unlikely. Rain: very unlikely.
 - Over the past 30 years, wind on mid-November nights here usually tops out around 6 mph; it reached 15 mph on about 1 night in 25.
 - Moon: a thin crescent, 28% lit. A dark sky for the burns.
 
 **What it means:**
 
-- 59° in the afternoon, about 40° after dark once the wind is counted, and near 38° by morning.
-- A cold night, down near 38°.
+- 59° in the afternoon, about 40° after dark once the wind is counted, and near 37° by morning.
+- A cold night, down near 37°.
 - Frost is possible by morning.
 
 ## Sunday Nov 15: exodus: off the land by 5 pm
 _Sunrise 6:28 am, sunset 5:04 pm._
 
-- Afternoon around 64°F (normal: 72°F). Early morning around 38°F (normal: 45°F).
-- Chance of rain: unlikely (under 1 in 10). In a normal year it rains on about 1 of these days in 10.
-- Chance of a night at 40°F or colder: about 7 in 10. Chance of frost: unlikely (under 1 in 10).
+- Afternoon around 63°F (normal: 72°F). Early morning around 37°F (normal: 45°F).
+- Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.
+- Chance of a night at 40°F or colder: about 7 in 10. Chance of frost: about 1 in 10.
 - The nearby Tangipahoa River is about normal for this time of year.
 
 **What it means:**
 
-- Around 64° for packing up; everyone has to be off the land by 5 pm.
+- Around 63° for packing up; everyone has to be off the land by 5 pm.
 
 ## Where this comes from
 
