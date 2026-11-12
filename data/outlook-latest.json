@@ -5,19 +5,19 @@
   "8-14 day": {
    "temperature": {
     "period": [
-     "2026-11-18",
-     "2026-11-24"
+     "2026-11-19",
+     "2026-11-25"
     ],
-    "issued": "8-14 Day Temperature Outlook - Created: 11/10/2026 - Valid: 11/18/2026 - 11/24/2026",
+    "issued": "8-14 Day Temperature Outlook - Created: 11/11/2026 - Valid: 11/19/2026 - 11/25/2026",
     "lean": "above",
-    "chance": 50.0
+    "chance": 33.0
    },
    "rain": {
     "period": [
-     "2026-11-18",
-     "2026-11-24"
+     "2026-11-19",
+     "2026-11-25"
     ],
-    "issued": "8-14 Day Precipitation Outlook - Created: 11/10/2026 - Valid: 11/18/2026 - 11/24/2026",
+    "issued": "8-14 Day Precipitation Outlook - Created: 11/11/2026 - Valid: 11/19/2026 - 11/25/2026",
     "lean": "above",
     "chance": 50.0
    }
