@@ -1,11 +1,11 @@
 {
  "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
  "written_on": "2026-11-12",
- "forecast_read_at": "2026-11-12T11:36-06:00",
+ "forecast_read_at": "2026-11-12T19:50-06:00",
  "lead": "0 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in.",
  "banner": "Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn.",
  "summary": [
-  "Expect afternoons around 64\u00b0, nights around 42\u00b0, and little rain. Day: long sleeves. Night: warm jacket, hat, gloves.",
+  "Expect afternoons around 64\u00b0, nights around 42\u00b0, and a chance of a shower or two. Day: long sleeves. Night: warm jacket, hat, gloves.",
   "Burn night looks like light wind (around 6 mph), probably dry, and about 44\u00b0 at the burns. Night: warm jacket, hat, gloves.",
   "A normal Engulf week: afternoons around 72\u00b0, nights around 45\u00b0. It rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year."
  ],
@@ -18,7 +18,7 @@
   {
    "kit": {
     "high_f": 73,
-    "morning_f": 57,
+    "morning_f": 56,
     "evening_feels_f": 54,
     "overnight_f": 48,
     "wet": 0.0,
@@ -30,7 +30,7 @@
      "normal_rain_factor": 1.0,
      "outlook": {}
     },
-    "high_p90_f": 76,
+    "high_p90_f": 75,
     "evening_p10_f": 52,
     "overnight_p10_f": 45,
     "from": "the forecast",
@@ -44,13 +44,13 @@
    "about": "arrival and setup; gates 10 am to 10 pm",
    "runs": 82,
    "lines": [
-    "Afternoon around 73\u00b0F (normal: 72\u00b0F). Early morning around 57\u00b0F (normal: 45\u00b0F).",
+    "Afternoon around 73\u00b0F (normal: 72\u00b0F). Early morning around 56\u00b0F (normal: 45\u00b0F).",
     "Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10."
    ],
    "sunrise": "6:25 am",
    "sunset": "5:06 pm",
    "high_f": 73,
-   "low_f": 57,
+   "low_f": 56,
    "share_rain_at_least_0.1": 0.0,
    "share_low_at_or_below_40": 0.0,
    "burn": null
@@ -71,7 +71,7 @@
      "outlook": {}
     },
     "high_p90_f": 68,
-    "evening_p10_f": 35,
+    "evening_p10_f": 36,
     "overnight_p10_f": 34,
     "from": "the forecast",
     "means": [
@@ -96,10 +96,10 @@
   },
   {
    "kit": {
-    "high_f": 58,
+    "high_f": 60,
     "morning_f": 38,
     "evening_feels_f": 41,
-    "overnight_f": 40,
+    "overnight_f": 41,
     "wet": 0.0,
     "inputs": {
      "days_ahead": 2,
@@ -109,32 +109,31 @@
      "normal_rain_factor": 1.0,
      "outlook": {}
     },
-    "high_p90_f": 65,
+    "high_p90_f": 64,
     "evening_p10_f": 37,
-    "overnight_p10_f": 35,
+    "overnight_p10_f": 36,
     "from": "the forecast",
     "means": [
-     "58\u00b0 in the afternoon, about 41\u00b0 after dark once the wind is counted, and near 40\u00b0 by morning.",
-     "A cold night, down near 40\u00b0."
+     "60\u00b0 in the afternoon, about 41\u00b0 after dark once the wind is counted, and near 41\u00b0 by morning."
     ]
    },
    "date": "2026-11-14",
    "about": "burn night: temple around 8 pm, effigy around 10 pm",
    "runs": 82,
    "lines": [
-    "Afternoon around 58\u00b0F (normal: 72\u00b0F). Early morning around 38\u00b0F (normal: 45\u00b0F).",
+    "Afternoon around 60\u00b0F (normal: 72\u00b0F). Early morning around 38\u00b0F (normal: 45\u00b0F).",
     "Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10.",
-    "Chance of a night at 40\u00b0F or colder: about 8 in 10.",
+    "Chance of a night at 40\u00b0F or colder: about 7 in 10.",
     "Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: very unlikely. Rain: very unlikely.",
     "Over the past 30 years, wind on mid-November nights here usually tops out around 6 mph; it reached 15 mph on about 1 night in 25.",
     "Moon: a thin crescent, 28% lit. A dark sky for the burns."
    ],
    "sunrise": "6:27 am",
    "sunset": "5:05 pm",
-   "high_f": 58,
+   "high_f": 60,
    "low_f": 38,
    "share_rain_at_least_0.1": 0.0,
-   "share_low_at_or_below_40": 0.78,
+   "share_low_at_or_below_40": 0.68,
    "burn": {
     "runs": 82,
     "share_wind_at_least_15": 0.0,
@@ -150,10 +149,10 @@
   {
    "kit": {
     "high_f": 62,
-    "morning_f": 40,
-    "evening_feels_f": 47,
+    "morning_f": 41,
+    "evening_feels_f": 46,
     "overnight_f": null,
-    "wet": 0.13,
+    "wet": 0.21,
     "inputs": {
      "days_ahead": 3,
      "forecast_weight": 1.0,
@@ -164,7 +163,7 @@
      "normal_rain_factor": 1.0,
      "outlook": {}
     },
-    "high_p90_f": 67,
+    "high_p90_f": 66,
     "evening_p10_f": null,
     "overnight_p10_f": null,
     "from": "the forecast",
@@ -176,16 +175,16 @@
    "about": "exodus: off the land by 5 pm",
    "runs": 82,
    "lines": [
-    "Afternoon around 62\u00b0F (normal: 72\u00b0F). Early morning around 40\u00b0F (normal: 45\u00b0F).",
-    "Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.",
+    "Afternoon around 62\u00b0F (normal: 72\u00b0F). Early morning around 41\u00b0F (normal: 45\u00b0F).",
+    "Chance of rain: about 2 in 10. In a normal year it rains on about 1 of these days in 10.",
     "Chance of a night at 40\u00b0F or colder: about 2 in 10.",
     "The nearby Tangipahoa River is lower than normal for this time of year."
    ],
    "sunrise": "6:28 am",
    "sunset": "5:04 pm",
    "high_f": 62,
-   "low_f": 40,
-   "share_rain_at_least_0.1": 0.13,
+   "low_f": 41,
+   "share_rain_at_least_0.1": 0.21,
    "share_low_at_or_below_40": 0.24,
    "burn": null
   }
