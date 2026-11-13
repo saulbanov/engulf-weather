@@ -53,11 +53,11 @@
  },
  "river": {
   "source": "Tangipahoa River at Osyka, MS (USGS 07375280)",
-  "flow_cfs": 96.4,
-  "at": "2026-11-12T19:00:00.000-06:00",
+  "flow_cfs": 97.6,
+  "at": "2026-11-13T11:00:00.000-06:00",
   "record": "daily means 1996\u20132026",
   "same_weeks_values": 450,
-  "share_of_same_weeks_at_or_below": 0.25,
+  "share_of_same_weeks_at_or_below": 0.28,
   "median_same_weeks_cfs": 119.0,
   "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading."
  },
@@ -65,10 +65,10 @@
   "source": "McComb, MS airport (ACIS), against its 1991-2020 normals",
   "from": "2026-10-14",
   "to": "2026-11-12",
-  "days_reported": 29,
+  "days_reported": 30,
   "highs_vs_normal_f": 4.4,
-  "lows_vs_normal_f": 2.6,
+  "lows_vs_normal_f": 2.5,
   "rain_in": 0.47,
-  "normal_rain_in": 3.84
+  "normal_rain_in": 3.96
  }
 }

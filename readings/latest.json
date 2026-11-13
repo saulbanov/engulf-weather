@@ -1,12 +1,12 @@
 {
  "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
- "written_on": "2026-11-12",
- "forecast_read_at": "2026-11-12T19:50-06:00",
- "lead": "0 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in.",
+ "written_on": "2026-11-13",
+ "forecast_read_at": "2026-11-13T11:12-06:00",
+ "lead": "-1 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in.",
  "banner": "Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn.",
  "summary": [
-  "Expect afternoons around 64\u00b0, nights around 42\u00b0, and a chance of a shower or two. Day: long sleeves. Night: warm jacket, hat, gloves.",
-  "Burn night looks like light wind (around 6 mph), probably dry, and about 44\u00b0 at the burns. Night: warm jacket, hat, gloves.",
+  "Expect afternoons around 65\u00b0, nights around 42\u00b0, and a chance of a shower or two. Day: long sleeves. Night: warm jacket, hat, gloves.",
+  "Burn night looks like light wind (around 6 mph), probably dry, and about 45\u00b0 at the burns. Night: warm jacket, hat, gloves.",
   "A normal Engulf week: afternoons around 72\u00b0, nights around 45\u00b0. It rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year."
  ],
  "why": [
@@ -17,13 +17,13 @@
  "days": [
   {
    "kit": {
-    "high_f": 73,
+    "high_f": 74,
     "morning_f": 56,
     "evening_feels_f": 54,
     "overnight_f": 48,
     "wet": 0.0,
     "inputs": {
-     "days_ahead": 0,
+     "days_ahead": -1,
      "forecast_weight": 1.0,
      "normal_only": [],
      "normal_shift_f": 0.0,
@@ -32,10 +32,10 @@
     },
     "high_p90_f": 75,
     "evening_p10_f": 52,
-    "overnight_p10_f": 45,
+    "overnight_p10_f": 46,
     "from": "the forecast",
     "means": [
-     "A big swing: 73\u00b0 in the afternoon, about 54\u00b0 after dark once the wind is counted, and near 48\u00b0 by morning.",
+     "A big swing: 74\u00b0 in the afternoon, about 54\u00b0 after dark once the wind is counted, and near 48\u00b0 by morning.",
      "Gates open at 10 am, which leaves about 7 hours of daylight to set up.",
      "Calm nights here often bring heavy dew: anything left out gets wet without rain."
     ]
@@ -44,12 +44,12 @@
    "about": "arrival and setup; gates 10 am to 10 pm",
    "runs": 82,
    "lines": [
-    "Afternoon around 73\u00b0F (normal: 72\u00b0F). Early morning around 56\u00b0F (normal: 45\u00b0F).",
+    "Afternoon around 74\u00b0F (normal: 72\u00b0F). Early morning around 56\u00b0F (normal: 45\u00b0F).",
     "Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10."
    ],
    "sunrise": "6:25 am",
    "sunset": "5:06 pm",
-   "high_f": 73,
+   "high_f": 74,
    "low_f": 56,
    "share_rain_at_least_0.1": 0.0,
    "share_low_at_or_below_40": 0.0,
@@ -59,23 +59,23 @@
    "kit": {
     "high_f": 63,
     "morning_f": 48,
-    "evening_feels_f": 40,
+    "evening_feels_f": 39,
     "overnight_f": 38,
     "wet": 0.0,
     "inputs": {
-     "days_ahead": 1,
+     "days_ahead": 0,
      "forecast_weight": 1.0,
      "normal_only": [],
      "normal_shift_f": 0.0,
      "normal_rain_factor": 1.0,
      "outlook": {}
     },
-    "high_p90_f": 68,
+    "high_p90_f": 66,
     "evening_p10_f": 36,
-    "overnight_p10_f": 34,
+    "overnight_p10_f": 35,
     "from": "the forecast",
     "means": [
-     "A big swing: 63\u00b0 in the afternoon, about 40\u00b0 after dark once the wind is counted, and near 38\u00b0 by morning.",
+     "A big swing: 63\u00b0 in the afternoon, about 39\u00b0 after dark once the wind is counted, and near 38\u00b0 by morning.",
      "A cold night, down near 38\u00b0."
     ]
    },
@@ -98,11 +98,11 @@
    "kit": {
     "high_f": 60,
     "morning_f": 38,
-    "evening_feels_f": 41,
+    "evening_feels_f": 42,
     "overnight_f": 41,
     "wet": 0.0,
     "inputs": {
-     "days_ahead": 2,
+     "days_ahead": 1,
      "forecast_weight": 1.0,
      "normal_only": [],
      "normal_shift_f": 0.0,
@@ -110,11 +110,11 @@
      "outlook": {}
     },
     "high_p90_f": 64,
-    "evening_p10_f": 37,
-    "overnight_p10_f": 36,
+    "evening_p10_f": 39,
+    "overnight_p10_f": 37,
     "from": "the forecast",
     "means": [
-     "60\u00b0 in the afternoon, about 41\u00b0 after dark once the wind is counted, and near 41\u00b0 by morning."
+     "60\u00b0 in the afternoon, about 42\u00b0 after dark once the wind is counted, and near 41\u00b0 by morning."
     ]
    },
    "date": "2026-11-14",
@@ -123,7 +123,7 @@
    "lines": [
     "Afternoon around 60\u00b0F (normal: 72\u00b0F). Early morning around 38\u00b0F (normal: 45\u00b0F).",
     "Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10.",
-    "Chance of a night at 40\u00b0F or colder: about 7 in 10.",
+    "Chance of a night at 40\u00b0F or colder: about 8 in 10.",
     "Burn night, 7 pm to midnight. Chance of wind 15 mph or stronger: very unlikely. Gusts 25 mph or stronger: very unlikely. Rain: very unlikely.",
     "Over the past 30 years, wind on mid-November nights here usually tops out around 6 mph; it reached 15 mph on about 1 night in 25.",
     "Moon: a thin crescent, 28% lit. A dark sky for the burns."
@@ -133,7 +133,7 @@
    "high_f": 60,
    "low_f": 38,
    "share_rain_at_least_0.1": 0.0,
-   "share_low_at_or_below_40": 0.68,
+   "share_low_at_or_below_40": 0.84,
    "burn": {
     "runs": 82,
     "share_wind_at_least_15": 0.0,
@@ -150,11 +150,11 @@
    "kit": {
     "high_f": 62,
     "morning_f": 41,
-    "evening_feels_f": 46,
+    "evening_feels_f": 48,
     "overnight_f": null,
-    "wet": 0.21,
+    "wet": 0.25,
     "inputs": {
-     "days_ahead": 3,
+     "days_ahead": 2,
      "forecast_weight": 1.0,
      "normal_only": [
       "overnight_f"
@@ -163,7 +163,7 @@
      "normal_rain_factor": 1.0,
      "outlook": {}
     },
-    "high_p90_f": 66,
+    "high_p90_f": 67,
     "evening_p10_f": null,
     "overnight_p10_f": null,
     "from": "the forecast",
@@ -184,8 +184,8 @@
    "sunset": "5:04 pm",
    "high_f": 62,
    "low_f": 41,
-   "share_rain_at_least_0.1": 0.21,
-   "share_low_at_or_below_40": 0.24,
+   "share_rain_at_least_0.1": 0.25,
+   "share_low_at_or_below_40": 0.25,
    "burn": null
   }
  ],
