@@ -1,6 +1,6 @@
 {
  "meaning": "Drought and river state near Engulf's site, read on the date below.",
- "read_on": "2026-11-14",
+ "read_on": "2026-11-15",
  "drought": {
   "source": "US Drought Monitor, county statistics (percent of area, category or worse)",
   "parish": "Tangipahoa Parish",
@@ -13,26 +13,6 @@
    "D4": 0.0
   },
   "weeks": [
-   {
-    "map_date": "2026-09-29",
-    "D1_or_worse": 0.82,
-    "D2_or_worse": 0.07
-   },
-   {
-    "map_date": "2026-10-06",
-    "D1_or_worse": 0.82,
-    "D2_or_worse": 0.03
-   },
-   {
-    "map_date": "2026-10-13",
-    "D1_or_worse": 0.87,
-    "D2_or_worse": 0.03
-   },
-   {
-    "map_date": "2026-10-20",
-    "D1_or_worse": 1.0,
-    "D2_or_worse": 0.22
-   },
    {
     "map_date": "2026-10-27",
     "D1_or_worse": 1.0,
@@ -53,22 +33,22 @@
  },
  "river": {
   "source": "Tangipahoa River at Osyka, MS (USGS 07375280)",
-  "flow_cfs": 96.4,
-  "at": "2026-11-14T09:00:00.000-06:00",
+  "flow_cfs": 95.2,
+  "at": "2026-11-14T18:00:00.000-06:00",
   "record": "daily means 1996\u20132026",
   "same_weeks_values": 450,
-  "share_of_same_weeks_at_or_below": 0.25,
-  "median_same_weeks_cfs": 119.0,
+  "share_of_same_weeks_at_or_below": 0.22,
+  "median_same_weeks_cfs": 120.0,
   "caveat": "Live readings are provisional. The record is daily means; today's value is one 15-minute reading."
  },
  "recent": {
   "source": "McComb, MS airport (ACIS), against its 1991-2020 normals",
-  "from": "2026-10-15",
-  "to": "2026-11-13",
-  "days_reported": 30,
-  "highs_vs_normal_f": 4.0,
+  "from": "2026-10-16",
+  "to": "2026-11-14",
+  "days_reported": 29,
+  "highs_vs_normal_f": 3.9,
   "lows_vs_normal_f": 2.3,
   "rain_in": 0.47,
-  "normal_rain_in": 3.97
+  "normal_rain_in": 3.85
  }
 }
