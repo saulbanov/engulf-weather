@@ -1,35 +1,12 @@
 {
  "meaning": "Forecasts for Engulf's days and burn hours, as read on the date below; shares are of model runs.",
- "read_at": "2026-11-15T19:03-06:00",
+ "read_at": "2026-11-16T13:36-06:00",
  "models": {
   "ECMWF ENS": {
    "days": {
     "2026-11-12": {
-     "runs": 51,
-     "high_f": {
-      "median": 73,
-      "p10": 72,
-      "p90": 74
-     },
-     "low_f": {
-      "median": 56,
-      "p10": 55,
-      "p90": 56
-     },
-     "evening_feels_f": {
-      "median": 53,
-      "p10": 52,
-      "p90": 54
-     },
-     "overnight_low_f": {
-      "median": 47,
-      "p10": 46,
-      "p90": 47
-     },
-     "share_rain_at_least_0.1": 0.0,
-     "share_rain_at_least_0.5": 0.0,
-     "share_low_at_or_below_40": 0.0,
-     "share_low_at_or_below_32": 0.0
+     "runs": 0,
+     "note": "beyond this model's reach today"
     },
     "2026-11-13": {
      "runs": 51,
@@ -88,9 +65,9 @@
     "2026-11-15": {
      "runs": 51,
      "high_f": {
-      "median": 60,
+      "median": 57,
       "p10": 55,
-      "p90": 62
+      "p90": 60
      },
      "low_f": {
       "median": 43,
@@ -98,12 +75,12 @@
       "p90": 45
      },
      "evening_feels_f": {
-      "median": 45,
+      "median": 44,
       "p10": 41,
-      "p90": 52
+      "p90": 46
      },
      "overnight_low_f": null,
-     "share_rain_at_least_0.1": 0.31,
+     "share_rain_at_least_0.1": 0.37,
      "share_rain_at_least_0.5": 0.0,
      "share_low_at_or_below_40": 0.0,
      "share_low_at_or_below_32": 0.0
@@ -134,31 +111,8 @@
   "NOAA GEFS": {
    "days": {
     "2026-11-12": {
-     "runs": 31,
-     "high_f": {
-      "median": 74,
-      "p10": 73,
-      "p90": 75
-     },
-     "low_f": {
-      "median": 56,
-      "p10": 56,
-      "p90": 57
-     },
-     "evening_feels_f": {
-      "median": 54,
-      "p10": 54,
-      "p90": 54
-     },
-     "overnight_low_f": {
-      "median": 48,
-      "p10": 47,
-      "p90": 48
-     },
-     "share_rain_at_least_0.1": 0.0,
-     "share_rain_at_least_0.5": 0.0,
-     "share_low_at_or_below_40": 0.0,
-     "share_low_at_or_below_32": 0.0
+     "runs": 0,
+     "note": "beyond this model's reach today"
     },
     "2026-11-13": {
      "runs": 31,
@@ -217,9 +171,9 @@
     "2026-11-15": {
      "runs": 31,
      "high_f": {
-      "median": 57,
-      "p10": 55,
-      "p90": 60
+      "median": 58,
+      "p10": 56,
+      "p90": 59
      },
      "low_f": {
       "median": 41,
@@ -228,11 +182,11 @@
      },
      "evening_feels_f": {
       "median": 50,
-      "p10": 46,
-      "p90": 52
+      "p10": 45,
+      "p90": 51
      },
      "overnight_low_f": null,
-     "share_rain_at_least_0.1": 0.0,
+     "share_rain_at_least_0.1": 0.03,
      "share_rain_at_least_0.5": 0.0,
      "share_low_at_or_below_40": 0.03,
      "share_low_at_or_below_32": 0.0
@@ -263,50 +217,9 @@
  },
  "nws": {
   "source": "National Weather Service hourly forecast, LIX grid 53,132",
-  "issued": "2026-11-15T22:51:25+00:00",
-  "hours_in_event": 5,
-  "hours": [
-   {
-    "time": "2026-11-15 19:00",
-    "temp_f": 52,
-    "wind": "5 mph",
-    "rain_chance": 30,
-    "dew_c": 4.444444444444445,
-    "sky": "Chance Rain Showers"
-   },
-   {
-    "time": "2026-11-15 20:00",
-    "temp_f": 51,
-    "wind": "5 mph",
-    "rain_chance": 31,
-    "dew_c": 4.444444444444445,
-    "sky": "Chance Rain Showers"
-   },
-   {
-    "time": "2026-11-15 21:00",
-    "temp_f": 50,
-    "wind": "5 mph",
-    "rain_chance": 35,
-    "dew_c": 4.444444444444445,
-    "sky": "Chance Rain Showers"
-   },
-   {
-    "time": "2026-11-15 22:00",
-    "temp_f": 49,
-    "wind": "5 mph",
-    "rain_chance": 30,
-    "dew_c": 4.444444444444445,
-    "sky": "Chance Rain Showers"
-   },
-   {
-    "time": "2026-11-15 23:00",
-    "temp_f": 48,
-    "wind": "5 mph",
-    "rain_chance": 27,
-    "dew_c": 5,
-    "sky": "Chance Rain Showers"
-   }
-  ]
+  "issued": "2026-11-16T17:18:23+00:00",
+  "hours_in_event": 0,
+  "hours": []
  },
  "refused": [],
  "stale": {}

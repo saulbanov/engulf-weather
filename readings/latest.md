@@ -1,28 +1,28 @@
-# Engulf weather, read 2026-11-15
+# Engulf weather, read 2026-11-16
 
 **Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn.**
 
-- **Expect afternoons around 64°, nights around 43°, and little rain.** Day: long sleeves. Night: warm jacket, hat, gloves.
+- **Expect afternoons around 64°, nights around 43°, and a chance of a shower or two.** Day: long sleeves. Night: warm jacket, hat, gloves.
 - **Burn night looks like light wind (around 6 mph), probably dry, and about 44° at the burns.** Night: warm jacket, hat, gloves.
 - **A normal Engulf week: afternoons around 72°, nights around 45°.** It rains on about 1 in 7 days, frost comes about 1 in 10 nights, and wind at burn time rarely reaches 15 mph. Day: T-shirt. Night: warm jacket, hat, gloves; winter layers in a cold year.
 
 ## Why we think that
 
-- **The festival is within a week, so these numbers are straight from the latest forecasts: the European and US weather services, and the National Weather Service hour by hour.**
+- **The latest forecasts from the European and US weather services make up 0% to 100% of each day's numbers.** This far out they're rough, so the rest is what a normal Engulf week looks like, from 30 years of records.
 - **NOAA's longer-range outlook doesn't lean either way for these days, so it doesn't change the numbers.**
 - **The last month ran warm and dry, but that says little about any single day a week or more out, so it isn't in the numbers.**
 
-_-3 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in._ Forecast read 2026-11-15T19:03-06:00.
+_-4 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in._ Forecast read 2026-11-16T13:36-06:00.
 
 ## Thursday Nov 12: arrival and setup; gates 10 am to 10 pm
 _Sunrise 6:25 am, sunset 5:06 pm._
 
-- Afternoon around 74°F (normal: 72°F). Early morning around 56°F (normal: 45°F).
-- Chance of rain: very unlikely. In a normal year it rains on about 1 of these days in 10.
+- Afternoon around 72°F (normal: 72°F). Early morning around 45°F (normal: 45°F).
+- Chance of rain: about 1 in 10. In a normal year it rains on about 1 of these days in 10.
 
 **What it means:**
 
-- A big swing: 74° in the afternoon, about 54° after dark once the wind is counted, and near 48° by morning.
+- 72° in the afternoon, about 52° after dark once the wind is counted, and near 49° by morning.
 - Gates open at 10 am, which leaves about 7 hours of daylight to set up.
 - Calm nights here often bring heavy dew: anything left out gets wet without rain.
 
