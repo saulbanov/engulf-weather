@@ -1,6 +1,6 @@
 {
  "meaning": "Forecasts for Engulf's days and burn hours, as read on the date below; shares are of model runs.",
- "read_at": "2026-11-15T10:21-06:00",
+ "read_at": "2026-11-15T19:03-06:00",
  "models": {
   "ECMWF ENS": {
    "days": {
@@ -205,8 +205,8 @@
       "p90": 41
      },
      "overnight_low_f": {
-      "median": 40,
-      "p10": 39,
+      "median": 41,
+      "p10": 40,
       "p90": 42
      },
      "share_rain_at_least_0.1": 0.0,
@@ -217,24 +217,24 @@
     "2026-11-15": {
      "runs": 31,
      "high_f": {
-      "median": 58,
-      "p10": 56,
-      "p90": 62
+      "median": 57,
+      "p10": 55,
+      "p90": 60
      },
      "low_f": {
-      "median": 40,
-      "p10": 39,
+      "median": 41,
+      "p10": 40,
       "p90": 42
      },
      "evening_feels_f": {
-      "median": 47,
-      "p10": 45,
+      "median": 50,
+      "p10": 46,
       "p90": 52
      },
      "overnight_low_f": null,
-     "share_rain_at_least_0.1": 0.06,
+     "share_rain_at_least_0.1": 0.0,
      "share_rain_at_least_0.5": 0.0,
-     "share_low_at_or_below_40": 0.42,
+     "share_low_at_or_below_40": 0.03,
      "share_low_at_or_below_32": 0.0
     }
    },
@@ -263,120 +263,48 @@
  },
  "nws": {
   "source": "National Weather Service hourly forecast, LIX grid 53,132",
-  "issued": "2026-11-15T13:14:31+00:00",
-  "hours_in_event": 14,
+  "issued": "2026-11-15T22:51:25+00:00",
+  "hours_in_event": 5,
   "hours": [
    {
-    "time": "2026-11-15 10:00",
-    "temp_f": 56,
-    "wind": "10 mph",
-    "rain_chance": 14,
-    "dew_c": 2.2222222222222223,
-    "sky": "Cloudy"
-   },
-   {
-    "time": "2026-11-15 11:00",
-    "temp_f": 59,
-    "wind": "10 mph",
-    "rain_chance": 14,
-    "dew_c": 2.2222222222222223,
-    "sky": "Cloudy"
-   },
-   {
-    "time": "2026-11-15 12:00",
-    "temp_f": 61,
-    "wind": "10 mph",
-    "rain_chance": 19,
-    "dew_c": 1.6666666666666667,
-    "sky": "Slight Chance Light Rain"
-   },
-   {
-    "time": "2026-11-15 13:00",
-    "temp_f": 62,
-    "wind": "10 mph",
-    "rain_chance": 24,
-    "dew_c": 1.6666666666666667,
-    "sky": "Slight Chance Light Rain"
-   },
-   {
-    "time": "2026-11-15 14:00",
-    "temp_f": 63,
-    "wind": "10 mph",
-    "rain_chance": 24,
-    "dew_c": 1.1111111111111112,
-    "sky": "Slight Chance Light Rain"
-   },
-   {
-    "time": "2026-11-15 15:00",
-    "temp_f": 63,
-    "wind": "10 mph",
-    "rain_chance": 39,
-    "dew_c": 1.1111111111111112,
-    "sky": "Chance Light Rain"
-   },
-   {
-    "time": "2026-11-15 16:00",
-    "temp_f": 64,
-    "wind": "10 mph",
-    "rain_chance": 34,
-    "dew_c": 1.6666666666666667,
-    "sky": "Chance Light Rain"
-   },
-   {
-    "time": "2026-11-15 17:00",
-    "temp_f": 62,
-    "wind": "10 mph",
-    "rain_chance": 34,
-    "dew_c": 2.2222222222222223,
-    "sky": "Chance Light Rain"
-   },
-   {
-    "time": "2026-11-15 18:00",
-    "temp_f": 58,
-    "wind": "10 mph",
-    "rain_chance": 29,
-    "dew_c": 2.7777777777777777,
-    "sky": "Chance Light Rain"
-   },
-   {
     "time": "2026-11-15 19:00",
-    "temp_f": 56,
+    "temp_f": 52,
     "wind": "5 mph",
     "rain_chance": 30,
-    "dew_c": 2.7777777777777777,
-    "sky": "Chance Light Rain"
+    "dew_c": 4.444444444444445,
+    "sky": "Chance Rain Showers"
    },
    {
     "time": "2026-11-15 20:00",
-    "temp_f": 53,
+    "temp_f": 51,
     "wind": "5 mph",
     "rain_chance": 31,
-    "dew_c": 3.3333333333333335,
-    "sky": "Chance Light Rain"
+    "dew_c": 4.444444444444445,
+    "sky": "Chance Rain Showers"
    },
    {
     "time": "2026-11-15 21:00",
-    "temp_f": 52,
+    "temp_f": 50,
     "wind": "5 mph",
     "rain_chance": 35,
-    "dew_c": 2.7777777777777777,
-    "sky": "Chance Light Rain"
+    "dew_c": 4.444444444444445,
+    "sky": "Chance Rain Showers"
    },
    {
     "time": "2026-11-15 22:00",
-    "temp_f": 51,
+    "temp_f": 49,
     "wind": "5 mph",
     "rain_chance": 30,
-    "dew_c": 3.888888888888889,
-    "sky": "Chance Light Rain"
+    "dew_c": 4.444444444444445,
+    "sky": "Chance Rain Showers"
    },
    {
     "time": "2026-11-15 23:00",
-    "temp_f": 50,
+    "temp_f": 48,
     "wind": "5 mph",
     "rain_chance": 27,
-    "dew_c": 4.444444444444445,
-    "sky": "Chance Light Rain"
+    "dew_c": 5,
+    "sky": "Chance Rain Showers"
    }
   ]
  },
