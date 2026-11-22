@@ -1,4 +1,4 @@
-# Engulf weather, read 2026-11-21
+# Engulf weather, read 2026-11-22
 
 **Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn.**
 
@@ -12,7 +12,7 @@
 - **NOAA's longer-range outlook doesn't lean either way for these days, so it doesn't change the numbers.**
 - **The last month ran warm and dry, but that says little about any single day a week or more out, so it isn't in the numbers.**
 
-_-9 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in._ Forecast read 2026-11-16T13:36-06:00.
+_-10 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in._ Forecast read 2026-11-16T13:36-06:00.
 
 ## Thursday Nov 12: arrival and setup; gates 10 am to 10 pm
 _Sunrise 6:25 am, sunset 5:06 pm._
