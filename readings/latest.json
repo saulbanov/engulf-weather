@@ -1,8 +1,8 @@
 {
  "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
- "written_on": "2026-11-25",
+ "written_on": "2026-11-26",
  "forecast_read_at": "2026-11-16T13:36-06:00",
- "lead": "-13 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in.",
+ "lead": "-14 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in.",
  "banner": "Burn night is within a week, so this forecast is firming up. It gets more accurate every update until the burn.",
  "summary": [
   "Expect afternoons around 64\u00b0, nights around 43\u00b0, and a chance of a shower or two. Day: long sleeves. Night: warm jacket, hat, gloves.",
@@ -23,7 +23,7 @@
     "overnight_f": 49,
     "wet": 0.14,
     "inputs": {
-     "days_ahead": -13,
+     "days_ahead": -14,
      "forecast_weight": 0.0,
      "normal_only": [],
      "normal_shift_f": 0.0,
@@ -63,7 +63,7 @@
     "overnight_f": 38,
     "wet": 0.0,
     "inputs": {
-     "days_ahead": -12,
+     "days_ahead": -13,
      "forecast_weight": 1.0,
      "normal_only": [],
      "normal_shift_f": 0.0,
@@ -102,7 +102,7 @@
     "overnight_f": 42,
     "wet": 0.0,
     "inputs": {
-     "days_ahead": -11,
+     "days_ahead": -12,
      "forecast_weight": 1.0,
      "normal_only": [],
      "normal_shift_f": 0.0,
@@ -154,7 +154,7 @@
     "overnight_f": null,
     "wet": 0.24,
     "inputs": {
-     "days_ahead": -10,
+     "days_ahead": -11,
      "forecast_weight": 1.0,
      "normal_only": [
       "overnight_f"

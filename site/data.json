@@ -482,7 +482,7 @@
      "high_f": 72,
      "high_p90_f": 80,
      "inputs": {
-      "days_ahead": -13,
+      "days_ahead": -14,
       "forecast_weight": 0.0,
       "normal_only": [],
       "normal_rain_factor": 1.0,
@@ -522,7 +522,7 @@
      "high_f": 64,
      "high_p90_f": 66,
      "inputs": {
-      "days_ahead": -12,
+      "days_ahead": -13,
       "forecast_weight": 1.0,
       "normal_only": [],
       "normal_rain_factor": 1.0,
@@ -571,7 +571,7 @@
      "high_f": 60,
      "high_p90_f": 63,
      "inputs": {
-      "days_ahead": -11,
+      "days_ahead": -12,
       "forecast_weight": 1.0,
       "normal_only": [],
       "normal_rain_factor": 1.0,
@@ -613,7 +613,7 @@
      "high_f": 58,
      "high_p90_f": 60,
      "inputs": {
-      "days_ahead": -10,
+      "days_ahead": -11,
       "forecast_weight": 1.0,
       "normal_only": [
        "overnight_f"
@@ -675,7 +675,7 @@
    ]
   },
   "forecast_read_at": "2026-11-16T13:36-06:00",
-  "lead": "-13 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in.",
+  "lead": "-14 days away. Forecasts are getting firmer, and the hour-by-hour forecast for burn night is now in.",
   "meaning": "Engulf weather reading: each day's forecast against past years, and what it means.",
   "refused": [],
   "stale": {},
@@ -689,6 +689,6 @@
    "NOAA's longer-range outlook doesn't lean either way for these days, so it doesn't change the numbers.",
    "The last month ran warm and dry, but that says little about any single day a week or more out, so it isn't in the numbers."
   ],
-  "written_on": "2026-11-25"
+  "written_on": "2026-11-26"
  }
 }
